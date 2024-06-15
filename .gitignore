@@ -1,0 +1,28 @@
+# Java(Javaの自動生成ファイルを対象外にする)
+*.class
+*.jar
+*.war
+*.ear
+
+# Idea(Ideaの自動生成ファイル/制御ファイルを対象外を対象外にする)
+.idea
+*.iml
+*.iws
+*.ipr
+
+# OS(OSで自動で作成されるファイルを対象外にする)
+Thumbs.db
+.DS_Store
+
+# Maven
+target
+
+# Build
+out
+build
+bin
+
+# Other
+*.log
+*.swp
+*.bak
