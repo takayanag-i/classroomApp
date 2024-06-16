@@ -1,19 +1,21 @@
 package jp.co.collasho.classroom.dao;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Map;
 
+import jp.co.collasho.classroom.common.Constants;
 import jp.co.collasho.classroom.entity.AbstractEntity;
 
 public abstract class AbstractInsertDao {
 
     /** コネクション */
-    private Connection conneciton;
-    /** テーブル名 */
-    String table;
+    protected Connection connection;
+    /** insert文 */
+    protected String insertQuery;
 
     /**
      * コンストラクタ
@@ -21,45 +23,61 @@ public abstract class AbstractInsertDao {
      * @param connection コネクション
      */
     public AbstractInsertDao(Connection connection) {
-        this.conneciton = connection;
+        this.connection = connection;
     }
 
-    // 共通のinsertメソッド
-    public void insert(AbstractEntity entity, String insertSQL) {
-        // TODO
+    /**
+     * insert文の実行
+     * 
+     * @param entity
+     */
+    public void insert(AbstractEntity entity) {
+        try (PreparedStatement pStmt = this.connection.prepareStatement(this.insertQuery)) {
+            setParameters(pStmt, entity);
+            pStmt.executeUpdate();
+
+            System.out.println("insertクエリを実行しました。");
+
+        } catch (SQLException e) {
+            throw new RuntimeException("insertクエリの実行に失敗しました。", e);
+        }
+        System.out.println("ステートメントを解放しました。");
     }
 
-    // 共通のinsertもどきメソッド
-    public void insertStub(AbstractEntity entity, String insertSQL) {
-        // TODO
+    /**
+     * insert文を実行したフリをする
+     * 
+     * @param entity
+     * @throws IOException
+     */
+    public void insertStub(AbstractEntity entity) throws IOException {
+        String tableName = this.getTableName();
+        String csvFilePath = Constants.CSV_DIR_PATH + tableName + ".csv";
+        int columnCount = entity.getClass().getDeclaredFields().length;
+
+        try (BufferedWriter csvWriter = new BufferedWriter(new FileWriter(csvFilePath, true))) {
+            String[] pStmtStub = new String[columnCount];
+            this.setParametersStub(pStmtStub, entity);
+
+            for (int i = 0; i < pStmtStub.length; i++) {
+                if (i > 0) {
+                    csvWriter.append(",");
+                }
+                csvWriter.append(pStmtStub[i]);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("insertもどきメソッドの入出力エラーが発生しました", e);
+        }
+
     }
 
     // エンティティのフィールドをpStmtにセッパラ
-    protected abstract void setParameters(PreparedStatement pStmt, AbstractEntity entity);
+    protected abstract void setParameters(PreparedStatement pStmt, AbstractEntity entity) throws SQLException;
 
-    /**
-     * もしメモリにテーブルがなかったら作成する
-     * 
-     * @throws SQLException
-     */
-    private void createTableIfNotExists() throws SQLException {
-        StringBuilder createTableSQL = new StringBuilder("CREATE TABLE IF NOT EXISTS" + this.table + " (");
+    // setParametersもどき
+    protected abstract void setParametersStub(String[] pStmtStub, AbstractEntity entity);
 
-        // TODO Mapを処理する
-
-        createTableSQL.setLength(createTableSQL.length() - 1); // 最後のカンマを削除
-        createTableSQL.append(")");
-        String query = createTableSQL.toString();
-
-        try (Statement stmt = this.conneciton.createStatement()) {
-            stmt.execute(query);
-        }
+    protected String getTableName() {
+        return this.insertQuery.split(" ")[2].trim(); // テーブル名を取得
     }
-
-    /**
-     * カラム定義を取得する抽象メソッド
-     * 
-     * @return <カラム名, 型>のマップ
-     */
-    public abstract Map<String, String> getColumnDefinitions();
 }

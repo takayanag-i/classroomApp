@@ -6,7 +6,20 @@ public class StudentEntity extends AbstractEntity {
     private String email;
     private String password;
 
-    // コンストラクタ
+    /**
+     * コンストラクタ
+     */
+    public StudentEntity() {
+    }
+
+    /**
+     * コンストラクタ
+     * 
+     * @param studentId
+     * @param name
+     * @param email
+     * @param password
+     */
     public StudentEntity(int studentId, String name, String email, String password) {
         this.studentId = studentId;
         this.name = name;
@@ -14,7 +27,9 @@ public class StudentEntity extends AbstractEntity {
         this.password = password;
     }
 
-    // ゲッターとセッター
+    /*
+     * ゲッタ・セッタ
+     */
     public int getStudentId() {
         return studentId;
     }
