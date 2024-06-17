@@ -1,4 +1,4 @@
-package jp.co.collasho.classroom.controller;
+package jp.co.collasho.classroom.test;
 
 // Jakarta Servlet 5.0 API ~
 import jakarta.servlet.annotation.WebServlet;
