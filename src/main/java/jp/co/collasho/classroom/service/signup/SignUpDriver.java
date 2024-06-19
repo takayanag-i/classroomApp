@@ -16,9 +16,10 @@ public class SignUpDriver {
                     new StudentEntity("1802", "山口", "mei2@example.com", "0403");
             studentDao.insert(studentEntity);
             connectionManager.commit();
+            System.out.println("サインアップに成功してコネクションを切断しました");
         } catch (SQLException e) {
             connectionManager.rollback();
-            System.out.println("エラーが発生しました");
+            System.out.println("サインアップに失敗してコネクションを切断しました");
         }
     }
 }
