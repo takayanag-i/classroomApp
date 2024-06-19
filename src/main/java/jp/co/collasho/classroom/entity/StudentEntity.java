@@ -1,7 +1,7 @@
 package jp.co.collasho.classroom.entity;
 
 public class StudentEntity extends AbstractEntity {
-    private int studentId;
+    private String studentId;
     private String name;
     private String email;
     private String password;
@@ -9,8 +9,7 @@ public class StudentEntity extends AbstractEntity {
     /**
      * コンストラクタ
      */
-    public StudentEntity() {
-    }
+    public StudentEntity() {}
 
     /**
      * コンストラクタ
@@ -20,7 +19,7 @@ public class StudentEntity extends AbstractEntity {
      * @param email
      * @param password
      */
-    public StudentEntity(int studentId, String name, String email, String password) {
+    public StudentEntity(String studentId, String name, String email, String password) {
         this.studentId = studentId;
         this.name = name;
         this.email = email;
@@ -30,11 +29,11 @@ public class StudentEntity extends AbstractEntity {
     /*
      * ゲッタ・セッタ
      */
-    public int getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(int studentId) {
+    public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
 

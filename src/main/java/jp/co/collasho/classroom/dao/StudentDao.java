@@ -16,26 +16,30 @@ public class StudentDao extends AbstractInsertDao {
      */
     public StudentDao(Connection connection) {
         super(connection);
-        this.insertQuery = "INSERT INTO students (student_id, name, email, password) VALUES (?, ?, ?, ?)";
+        this.insertQuery =
+                "INSERT INTO Students (student_id, name, email, password) VALUES (?, ?, ?, ?)";
     }
 
     /**
      * プリペアドステートメントにエンティティのフィールドをセットする
      * 
-     * @param pStmt  プリペアドステートメント
+     * @param pStmt プリペアドステートメント
      * @param entity エンティティ（studentエンティティにキャストされる）
      */
     @Override
-    protected void setParameters(PreparedStatement pStmt, AbstractEntity entity) throws SQLException {
+    protected PreparedStatement setParameters(PreparedStatement pStmt, AbstractEntity entity)
+            throws SQLException {
 
         if (entity instanceof StudentEntity) {
 
             StudentEntity studentEntity = (StudentEntity) entity;
 
-            pStmt.setInt(1, studentEntity.getStudentId());
+            pStmt.setString(1, studentEntity.getStudentId());
             pStmt.setString(2, studentEntity.getName());
             pStmt.setString(3, studentEntity.getEmail());
             pStmt.setString(4, studentEntity.getPassword());
+
+            return pStmt;
         } else {
             throw new IllegalArgumentException("エンティティの型がStudentEntityではありません。");
         }
@@ -45,14 +49,14 @@ public class StudentDao extends AbstractInsertDao {
      * プリペアドステートメントにエンティティのフィールドをセットするフリをする
      * 
      * @param pStmtStub プリペアドステートメントもどき配列
-     * @param entity    エンティティ（studentエンティティにキャストされる）
+     * @param entity エンティティ（studentエンティティにキャストされる）
      */
     @Override
     protected void setParametersStub(String[] pStmtStub, AbstractEntity entity) {
         if (entity instanceof StudentEntity) {
             StudentEntity studentEntity = (StudentEntity) entity;
 
-            pStmtStub[0] = String.valueOf(studentEntity.getStudentId());
+            pStmtStub[0] = studentEntity.getStudentId();
             pStmtStub[1] = studentEntity.getName();
             pStmtStub[2] = studentEntity.getEmail();
             pStmtStub[3] = studentEntity.getPassword();

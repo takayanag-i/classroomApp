@@ -26,3 +26,6 @@ bin
 *.log
 *.swp
 *.bak
+
+# Security
+DockerFile

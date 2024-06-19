@@ -13,7 +13,7 @@ public class Test {
     public static void main(String[] args) {
         // モックデータを作成
         StudentEntity student = new StudentEntity();
-        student.setStudentId(1);
+        student.setStudentId("1");
         student.setName("John Doe");
         student.setEmail("john.doe@example.com");
         student.setPassword("password123");

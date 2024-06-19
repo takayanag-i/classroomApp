@@ -8,7 +8,13 @@ public class ConnectionManager {
     /** コネクション */
     private Connection connection;
     /** JDBCURL */
-    private String jdbcUrl = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
+    private String jdbcUrl = "jdbc:mysql://localhost:13306/training_db";
+    /** ユーザ名 */
+    private String user = "root";
+    /** パスワード */
+    private String password = "password";
+    // stub実行用のjdbcUrlもどき
+    // private String jdbcUrlStub = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
 
     /**
      * コンストラクタ
@@ -25,8 +31,10 @@ public class ConnectionManager {
     public Connection getConnection() throws RuntimeException {
         if (this.connection == null) {
             try {
-                this.connection = DriverManager.getConnection(this.jdbcUrl);
+                this.connection =
+                        DriverManager.getConnection(this.jdbcUrl, this.user, this.password);
                 this.connection.setAutoCommit(false);
+                System.out.println("データベースに接続しました。");
             } catch (SQLException e) {
                 throw new RuntimeException("データベースの接続に失敗しました。", e);
             }

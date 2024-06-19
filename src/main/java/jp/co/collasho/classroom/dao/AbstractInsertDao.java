@@ -33,15 +33,14 @@ public abstract class AbstractInsertDao {
      */
     public void insert(AbstractEntity entity) {
         try (PreparedStatement pStmt = this.connection.prepareStatement(this.insertQuery)) {
-            setParameters(pStmt, entity);
-            pStmt.executeUpdate();
+            PreparedStatement pStmtReady = setParameters(pStmt, entity);
+            pStmtReady.executeUpdate();
 
-            System.out.println("insertクエリを実行しました。");
+            System.out.println("insertクエリを実行してステートメントを解放しました。");
 
         } catch (SQLException e) {
-            throw new RuntimeException("insertクエリの実行に失敗しました。", e);
+            throw new RuntimeException("insertクエリの実行に失敗してステートメントを解放しました。", e);
         }
-        System.out.println("ステートメントを解放しました。");
     }
 
     /**
@@ -72,7 +71,8 @@ public abstract class AbstractInsertDao {
     }
 
     // エンティティのフィールドをpStmtにセッパラ
-    protected abstract void setParameters(PreparedStatement pStmt, AbstractEntity entity) throws SQLException;
+    protected abstract PreparedStatement setParameters(PreparedStatement pStmt,
+            AbstractEntity entity) throws SQLException;
 
     // setParametersもどき
     protected abstract void setParametersStub(String[] pStmtStub, AbstractEntity entity);
