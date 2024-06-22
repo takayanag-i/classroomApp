@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,14 +65,14 @@
         <h1>Login</h1>
         <form action="loginServlet" method="post">
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text" id="username" name="username" value="${studentId}" required>
 
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
 
             <input type="submit" value="Login">
         </form>
-        <a class="register-link" href="SignUpServlet">New user? Register here</a>
+        <a class="register-link" href="SignUpServlet">New student? Register here</a>
     </div>
 </body>
 </html>

@@ -1,38 +1,35 @@
 ```mermaid
 erDiagram
-    STUDENTS {
-        int student_id PK
+    Students {
+        CHAR(4) student_id PK
+        NVARCHAR(31) name
+        VARCHAR(63) email
+        VARCHAR(63) password
+    }
+    
+    INSTRUCTORS {
+        string instructor_id PK
         string name
         string email
         string password
     }
-    
-    TEACHERS {
-        int teacher_id PK
-        string name
-        string email
-        string password
+        
+    Courses {
+        CHAR(5) course_id PK
+        NVARCHAR(31) course_name
+        NCHAR(2) day_of_week
+        INT period
     }
     
-    STAFF {
-        int staff_id PK
-        string name
-        string email
-        string password
+    Enrollments {
+        CHAR(4) student_id FK
+        CHAR(5) course_id FK
+        DATETIME2 enrollment_date
     }
-    
-    COURSES {
-        int course_id PK
-        string course_name
-        string description
-        int teacher_id FK
-    }
-    
-    ENROLLMENTS {
-        int enrollment_id PK
-        int student_id FK
-        int course_id FK
-        date enrollment_date
+
+    INSTRUCTIONS {
+        string course_id FK
+        string instructor_id FK
     }
     
     SYLLABUS {
@@ -41,23 +38,8 @@ erDiagram
         string content
     }
     
-    ROLES {
-        int role_id PK
-        string role_name
-    }
-    
-    USER_ROLES {
-        int user_role_id PK
-        int user_id FK
-        int role_id FK
-    }
-    
-    STUDENTS ||--o{ ENROLLMENTS : enrolls
-    COURSES ||--o{ ENROLLMENTS : includes
-    TEACHERS ||--o| COURSES : teaches
-    COURSES ||--o| SYLLABUS : has
-    STUDENTS ||--o{ USER_ROLES : has
-    TEACHERS ||--o{ USER_ROLES : has
-    STAFF ||--o{ USER_ROLES : has
-    ROLES ||--o{ USER_ROLES : assigns
+    Students ||--o{ Enrollments : enrolls
+    Courses ||--o{ Enrollments : includes
+    TEACHERS ||--o| Courses : teaches
+    Courses ||--o| SYLLABUS : has
 ```

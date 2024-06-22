@@ -14,7 +14,7 @@ import jp.co.collasho.classroom.exception.SignUpException;
  */
 public class SignUpDriver {
     /** コネクションマネージャ */
-    ConnectionManager connectionManager = new ConnectionManager();
+    private ConnectionManager connectionManager = new ConnectionManager();
 
     /**
      * ユーザ登録を実行する
@@ -27,7 +27,7 @@ public class SignUpDriver {
         try (Connection connection = this.connectionManager.getConnection()) {
             StudentEntity student = this.convertDtoToEntity(studentDto);
 
-            // DBチェック
+            // 重複ユーザチェック
             StudentDao studentDao = new StudentDao(connection);
             List<StudentEntity> allStudents = studentDao.getAll();
             this.CheckIdAndEmail(student, allStudents);
@@ -35,10 +35,8 @@ public class SignUpDriver {
             // インサート
             studentDao.insert(student);
             this.connectionManager.commit();
-            System.out.println("サインアップに成功してコネクションを切断しました");
         } catch (SQLException e) {
             connectionManager.rollback();
-            System.out.println("サインアップに失敗してコネクションを切断しました");
         }
     }
 
