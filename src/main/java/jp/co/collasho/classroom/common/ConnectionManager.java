@@ -27,16 +27,20 @@ public class ConnectionManager {
      * データベース接続
      * 
      * @throws RuntimeException
+     * @throws ClassNotFoundException
      */
     public Connection getConnection() throws RuntimeException {
         if (this.connection == null) {
             try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
                 this.connection =
                         DriverManager.getConnection(this.jdbcUrl, this.user, this.password);
                 this.connection.setAutoCommit(false);
                 System.out.println("データベースに接続しました。");
             } catch (SQLException e) {
                 throw new RuntimeException("データベースの接続に失敗しました。", e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("ドライバが見つからないためデータベースの接続に失敗しました。");
             }
         }
         return this.connection;

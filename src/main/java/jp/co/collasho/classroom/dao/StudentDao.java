@@ -2,66 +2,75 @@ package jp.co.collasho.classroom.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import jp.co.collasho.classroom.entity.AbstractEntity;
+import java.util.ArrayList;
+import java.util.List;
 import jp.co.collasho.classroom.entity.StudentEntity;
 
-public class StudentDao extends AbstractInsertDao {
+public class StudentDao {
+
+    /** コネクション */
+    private Connection connection;
+    /** insert文 */
+    private String insertQuery =
+            "INSERT INTO Students (student_id, name, email, password) VALUES (?, ?, ?, ?);";
+    private String selectQuery = "SELECT * FROM Students;";
 
     /**
-     * コンストラクタ：コネクションとクエリをフィールド
+     * コンストラクタ
      * 
      * @param connection
      */
     public StudentDao(Connection connection) {
-        super(connection);
-        this.insertQuery =
-                "INSERT INTO Students (student_id, name, email, password) VALUES (?, ?, ?, ?)";
+        this.connection = connection;
     }
 
+
     /**
-     * プリペアドステートメントにエンティティのフィールドをセットする
+     * insert文の実行
      * 
-     * @param pStmt プリペアドステートメント
-     * @param entity エンティティ（studentエンティティにキャストされる）
+     * @param student
      */
-    @Override
-    protected PreparedStatement setParameters(PreparedStatement pStmt, AbstractEntity entity)
-            throws SQLException {
+    public void insert(StudentEntity student) {
+        try (PreparedStatement pStmt = this.connection.prepareStatement(this.insertQuery)) {
+            pStmt.setString(1, student.getStudentId());
+            pStmt.setString(2, student.getName());
+            pStmt.setString(3, student.getEmail());
+            pStmt.setString(4, student.getPassword());
+            pStmt.executeUpdate();
 
-        if (entity instanceof StudentEntity) {
+            System.out.println("insertクエリを実行してステートメントを解放しました。");
 
-            StudentEntity studentEntity = (StudentEntity) entity;
-
-            pStmt.setString(1, studentEntity.getStudentId());
-            pStmt.setString(2, studentEntity.getName());
-            pStmt.setString(3, studentEntity.getEmail());
-            pStmt.setString(4, studentEntity.getPassword());
-
-            return pStmt;
-        } else {
-            throw new IllegalArgumentException("エンティティの型がStudentEntityではありません。");
+        } catch (SQLException e) {
+            throw new RuntimeException("insertクエリの実行に失敗してステートメントを解放しました。", e);
         }
     }
 
-    /**
-     * プリペアドステートメントにエンティティのフィールドをセットするフリをする
-     * 
-     * @param pStmtStub プリペアドステートメントもどき配列
-     * @param entity エンティティ（studentエンティティにキャストされる）
-     */
-    @Override
-    protected void setParametersStub(String[] pStmtStub, AbstractEntity entity) {
-        if (entity instanceof StudentEntity) {
-            StudentEntity studentEntity = (StudentEntity) entity;
+    public List<StudentEntity> getAll() {
+        List<StudentEntity> allStudents = new ArrayList<>();
+        try (PreparedStatement pStmt = this.connection.prepareStatement(this.selectQuery)) {
+            ResultSet resultSet = pStmt.executeQuery();
+            while (resultSet.next()) {
+                String studentId = resultSet.getString("student_id");
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                String password = resultSet.getString("password");
 
-            pStmtStub[0] = studentEntity.getStudentId();
-            pStmtStub[1] = studentEntity.getName();
-            pStmtStub[2] = studentEntity.getEmail();
-            pStmtStub[3] = studentEntity.getPassword();
-        } else {
-            throw new IllegalArgumentException("エンティティの型がStudentEntityではありません。");
+                StudentEntity student = new StudentEntity();
+                student.setStudentId(studentId);
+                student.setName(name);
+                student.setEmail(email);
+                student.setPassword(password);
+
+                allStudents.add(student);
+            }
+
+            System.out.println("selectクエリを実行してステートメントを解放しました。");
+        } catch (SQLException e) {
+            throw new RuntimeException("selectクエリの実行に失敗してステートメントを解放しました。");
         }
+
+        return allStudents;
     }
 }
