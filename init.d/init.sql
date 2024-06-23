@@ -118,3 +118,133 @@ INSERT INTO Enrollments (student_id, course_id, enrollment_date) VALUES
 ('1403', '1H022', '2024-04-01 14:00:00'),
 ('1403', '1H023', '2024-04-01 15:00:00'),
 ('1403', '1H024', '2024-04-01 16:00:00');
+
+--教員テーブルの作成
+CREATE TABLE Instructors (
+    instructor_id CHAR(5) NOT NULL,
+    name NVARCHAR(31) NOT NULL,
+    email VARCHAR(63) NOT NULL,
+    password VARCHAR(63),
+    PRIMARY KEY (instructor_id)
+);
+
+--ダミーレコードの作成
+INSERT INTO Instructors (instructor_id, name, email, password) VALUES
+('T001A', '佐藤健', 'satou.takeru@example.com', 'password123'),
+('T002A', '新垣結衣', 'aragaki.yui@example.com', 'password123'),
+('T003A', '松本潤', 'matsumoto.jun@example.com', 'password123'),
+('T004A', '石原さとみ', 'ishihara.satomi@example.com', 'password123'),
+('T005A', '山田孝之', 'yamada.takayuki@example.com', 'password123'),
+('T006A', '綾瀬はるか', 'ayase.haruka@example.com', 'password123'),
+('T007A', '二宮和也', 'ninomiya.kazunari@example.com', 'password123'),
+('T008A', '堀北真希', 'horikita.maki@example.com', 'password123'),
+('T009A', '櫻井翔', 'sakurai.sho@example.com', 'password123'),
+('T010A', '長澤まさみ', 'nagasawa.masami@example.com', 'password123'),
+('T011A', '大野智', 'ohno.satoshi@example.com', 'password123'),
+('T012A', '沢尻エリカ', 'sawajiri.erika@example.com', 'password123'),
+('T013A', '松坂桃李', 'matsuzaka.tori@example.com', 'password123'),
+('T014A', '宮崎あおい', 'miyazaki.aoi@example.com', 'password123'),
+('T015A', '小栗旬', 'oguri.shun@example.com', 'password123'),
+('T016A', '戸田恵梨香', 'toda.erika@example.com', 'password123'),
+('T017A', '三浦春馬', 'miura.haru@example.com', 'password123'),
+('T018A', '北川景子', 'kitagawa.keiko@example.com', 'password123'),
+('T019A', '生田斗真', 'ikuta.toma@example.com', 'password123'),
+('T020A', '石原さとみ', 'ishihara.satomi2@example.com', 'password123'),
+('T021B', 'Chris Evans', 'chris.evans@example.com', 'password123'),
+('T022B', 'Scarlett Johansson', 'scarlett.johansson@example.com', 'password123'),
+('T023B', 'Robert Downey Jr.', 'robert.downey@example.com', 'password123'),
+('T024B', 'Jennifer Lawrence', 'jennifer.lawrence@example.com', 'password123'),
+('T025B', 'Tom Hiddleston', 'tom.hiddleston@example.com', 'password123'),
+('T026B', '生見愛瑠', 'melulu@example.com', 'password123'),
+('T027B', '成瀬亜未', 'ami@example.com', 'password123'),
+('T028B', '吉田仁美', 'hitomi.yoshida@example.com', 'password123'),
+('T029B', '笠田卓哉', 't-kasada@example.com', 'password123'),
+('T030B', '高柳遼', 'noreply@example.com', 'password123');
+
+-- 担当テーブルの作成
+CREATE TABLE Instructions (
+    course_id CHAR(5) NOT NULL,
+    instructor_id CHAR(5) NOT NULL,
+    PRIMARY KEY (course_id, instructor_id),
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id),
+    FOREIGN KEY (instructor_id) REFERENCES Instructors(instructor_id)
+);
+
+-- 担当テーブルのダミーレコード生成
+INSERT INTO Instructions (course_id, instructor_id) VALUES
+-- 1人の教員による担当
+('1H001', 'T001A'),
+('1H002', 'T002A'),
+('1H003', 'T003A'),
+('1H004', 'T004A'),
+('1H005', 'T005A'),
+
+-- 2人の教員による担当
+('1H006', 'T006A'),
+('1H006', 'T021B'),
+('1H007', 'T007A'),
+('1H007', 'T022B'),
+('1H008', 'T008A'),
+('1H008', 'T023B'),
+
+-- 3人の教員による担当
+('1H009', 'T009A'),
+('1H009', 'T024B'),
+('1H009', 'T025B'),
+('1H010', 'T010A'),
+('1H010', 'T026B'),
+('1H010', 'T027B'),
+
+-- 5人の教員による担当
+('1H011', 'T011A'),
+('1H011', 'T028B'),
+('1H011', 'T029B'),
+('1H011', 'T030B'),
+('1H011', 'T001A'),
+('1H012', 'T012A'),
+('1H012', 'T002A'),
+('1H012', 'T003A'),
+('1H012', 'T004A'),
+('1H012', 'T005A'),
+
+-- 他のコース
+('1H013', 'T013A'),
+('1H014', 'T014A'),
+('1H015', 'T015A'),
+('1H016', 'T016A'),
+('1H017', 'T017A'),
+('1H018', 'T018A'),
+('1H019', 'T019A'),
+('1H020', 'T020A'),
+
+('1H021', 'T021B'),
+('1H022', 'T022B'),
+('1H023', 'T023B'),
+('1H024', 'T024B'),
+('1H025', 'T025B'),
+('1H026', 'T026B'),
+('1H027', 'T027B'),
+('1H028', 'T028B'),
+('1H029', 'T029B'),
+('1H030', 'T030B'),
+
+('1H031', 'T001A'),
+('1H032', 'T002A'),
+('1H033', 'T003A'),
+('1H034', 'T004A'),
+('1H035', 'T005A'),
+('1H036', 'T006A'),
+('1H037', 'T007A'),
+('1H038', 'T008A'),
+('1H039', 'T009A'),
+('1H040', 'T010A'),
+('1H041', 'T011A'),
+('1H042', 'T012A'),
+('1H043', 'T013A'),
+('1H044', 'T014A'),
+('1H045', 'T015A'),
+('1H046', 'T016A'),
+('1H047', 'T017A'),
+('1H048', 'T018A'),
+('1H049', 'T019A'),
+('1H050', 'T020A');

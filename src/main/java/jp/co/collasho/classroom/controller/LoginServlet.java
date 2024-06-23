@@ -7,7 +7,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jp.co.collasho.classroom.dto.LoginStudentDto;
+import jp.co.collasho.classroom.exception.LoginError;
 import jp.co.collasho.classroom.exception.ValidationError;
+import jp.co.collasho.classroom.service.login.LoginDriver;
 import jp.co.collasho.classroom.util.Validator;
 
 @WebServlet("/LoginServlet")
@@ -33,6 +37,17 @@ public class LoginServlet extends HttpServlet {
             Validator.checkUserId(studentId);
             Validator.checkPassword(password);
         } catch (ValidationError e) {
+            // TODO
+        }
+
+        // ログインユーザの情報を取得
+        LoginDriver driver = new LoginDriver();
+        try {
+            LoginStudentDto loginStudent = driver.drive(studentId, password);
+
+            HttpSession session = req.getSession();
+            session.setAttribute("loginStudent", loginStudent);
+        } catch (LoginError e) {
             // TODO
         }
     }

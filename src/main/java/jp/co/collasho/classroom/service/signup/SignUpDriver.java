@@ -7,7 +7,7 @@ import jp.co.collasho.classroom.common.ConnectionManager;
 import jp.co.collasho.classroom.dao.StudentDao;
 import jp.co.collasho.classroom.dto.StudentDto;
 import jp.co.collasho.classroom.entity.StudentEntity;
-import jp.co.collasho.classroom.exception.SignUpException;
+import jp.co.collasho.classroom.exception.SignUpError;
 
 /**
  * ユーザ登録のドライバ
@@ -22,7 +22,7 @@ public class SignUpDriver {
      * @param studentEntity
      * @throws ClassNotFoundException
      */
-    public void drive(StudentDto studentDto) throws SignUpException {
+    public void drive(StudentDto studentDto) throws SignUpError {
 
         try (Connection connection = this.connectionManager.getConnection()) {
             StudentEntity student = this.convertDtoToEntity(studentDto);
@@ -37,6 +37,7 @@ public class SignUpDriver {
             this.connectionManager.commit();
         } catch (SQLException e) {
             connectionManager.rollback();
+            throw new RuntimeException("登録の予期しないエラーが起こりました", e);
         }
     }
 
@@ -52,12 +53,12 @@ public class SignUpDriver {
     }
 
     private void CheckIdAndEmail(StudentEntity candidate, List<StudentEntity> allStudents)
-            throws SignUpException {
+            throws SignUpError {
         for (StudentEntity student : allStudents) {
             if (candidate.getStudentId().equals(student.getStudentId())) {
-                throw new SignUpException("重複するIDです");
+                throw new SignUpError("重複するIDです");
             } else if (candidate.getEmail().equals(student.getEmail())) {
-                throw new SignUpException("重複するメールアドレスです");
+                throw new SignUpError("重複するメールアドレスです");
             }
         }
     }

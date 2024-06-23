@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jp.co.collasho.classroom.dto.StudentDto;
-import jp.co.collasho.classroom.exception.SignUpException;
+import jp.co.collasho.classroom.exception.SignUpError;
 import jp.co.collasho.classroom.exception.ValidationError;
 import jp.co.collasho.classroom.service.signup.SignUpDriver;
 import jp.co.collasho.classroom.util.Validator;
@@ -59,7 +59,7 @@ public class SignUpServlet extends HttpServlet {
             req.setAttribute("studentId", studentId);
             // 成功したらログイン画面にフォワード
             req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, res);
-        } catch (SignUpException e) {
+        } catch (SignUpError e) {
             req.setAttribute("errorMessage", e.getMessage());
             // 失敗したらユーザ登録画面にリフォワード
             req.getRequestDispatcher("WEB-INF/jsp/signup.jsp").forward(req, res);

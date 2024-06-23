@@ -7,15 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import jp.co.collasho.classroom.entity.StudentEntity;
+import jp.co.collasho.classroom.exception.LoginError;
 
 public class StudentDao {
 
     /** コネクション */
     private Connection connection;
-    /** insert文 */
-    private String insertQuery =
-            "INSERT INTO Students (student_id, name, email, password) VALUES (?, ?, ?, ?);";
-    private String selectQuery = "SELECT * FROM Students;";
 
     /**
      * コンストラクタ
@@ -33,23 +30,26 @@ public class StudentDao {
      * @param student
      */
     public void insert(StudentEntity student) {
-        try (PreparedStatement pStmt = this.connection.prepareStatement(this.insertQuery)) {
+
+        String query =
+                "INSERT INTO Students (student_id, name, email, password) VALUES (?, ?, ?, ?);";
+
+        try (PreparedStatement pStmt = this.connection.prepareStatement(query)) {
             pStmt.setString(1, student.getStudentId());
             pStmt.setString(2, student.getName());
             pStmt.setString(3, student.getEmail());
             pStmt.setString(4, student.getPassword());
             pStmt.executeUpdate();
-
-            System.out.println("insertクエリを実行してステートメントを解放しました。");
-
         } catch (SQLException e) {
-            throw new RuntimeException("insertクエリの実行に失敗してステートメントを解放しました。", e);
+            throw new RuntimeException("INSERTクエリの実行に失敗してステートメントを解放しました。", e);
         }
     }
 
     public List<StudentEntity> getAll() {
         List<StudentEntity> allStudents = new ArrayList<>();
-        try (PreparedStatement pStmt = this.connection.prepareStatement(this.selectQuery)) {
+        String query = "SELECT * FROM Students;";
+
+        try (PreparedStatement pStmt = this.connection.prepareStatement(query)) {
             ResultSet resultSet = pStmt.executeQuery();
             while (resultSet.next()) {
                 String studentId = resultSet.getString("student_id");
@@ -57,20 +57,37 @@ public class StudentDao {
                 String email = resultSet.getString("email");
                 String password = resultSet.getString("password");
 
-                StudentEntity student = new StudentEntity();
-                student.setStudentId(studentId);
-                student.setName(name);
-                student.setEmail(email);
-                student.setPassword(password);
+                StudentEntity student = new StudentEntity(studentId, name, email, password);
 
                 allStudents.add(student);
             }
-
-            System.out.println("selectクエリを実行してステートメントを解放しました。");
         } catch (SQLException e) {
-            throw new RuntimeException("selectクエリの実行に失敗してステートメントを解放しました。");
+            throw new RuntimeException("SELECTクエリの実行に失敗してステートメントを解放しました。");
         }
 
         return allStudents;
+    }
+
+    public StudentEntity getStudentEntity(String studentId, String password) throws LoginError {
+        String query = "SELECT * FROM Students WHERE student_id = ? AND password = ?";
+
+        try (PreparedStatement pStmt = this.connection.prepareStatement(query)) {
+            pStmt.setString(1, studentId);
+            pStmt.setString(2, password);
+            ResultSet resultSet = pStmt.executeQuery();
+
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+
+                return new StudentEntity(studentId, name, email);
+
+            } else {
+                throw new LoginError("ログインに失敗しました");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("SELECTクエリの実行に失敗してステートメントを解放しました。");
+        }
     }
 }

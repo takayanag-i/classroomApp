@@ -1,28 +1,16 @@
-package jp.co.collasho.classroom.entity;
+package jp.co.collasho.classroom.dto;
 
-public class StudentEntity {
+import java.io.Serializable;
+
+public class LoginStudentDto implements Serializable {
     private String studentId;
     private String name;
     private String email;
-    private String password;
 
     /**
      * コンストラクタ
      */
-    public StudentEntity() {}
-
-    /**
-     * コンストラクタ
-     * 
-     * @param studentId
-     * @param name
-     * @param email
-     */
-    public StudentEntity(String studentId, String name, String email) {
-        this.studentId = studentId;
-        this.name = name;
-        this.email = email;
-    }
+    public LoginStudentDto() {}
 
     /**
      * コンストラクタ
@@ -32,11 +20,10 @@ public class StudentEntity {
      * @param email
      * @param password
      */
-    public StudentEntity(String studentId, String name, String email, String password) {
+    public LoginStudentDto(String studentId, String name, String email) {
         this.studentId = studentId;
         this.name = name;
         this.email = email;
-        this.password = password;
     }
 
     /*
@@ -64,13 +51,5 @@ public class StudentEntity {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

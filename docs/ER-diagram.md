@@ -7,11 +7,11 @@ erDiagram
         VARCHAR(63) password
     }
     
-    INSTRUCTORS {
-        string instructor_id PK
-        string name
-        string email
-        string password
+    Instructors {
+        CHAR(5) instructor_id PK
+        NVARCHAR(31) name
+        VARCHAR(63) email
+        VARCHAR(63) password
     }
         
     Courses {
@@ -27,17 +27,11 @@ erDiagram
         DATETIME2 enrollment_date
     }
 
-    INSTRUCTIONS {
+    Instructions {
         string course_id FK
         string instructor_id FK
     }
-    
-    SYLLABUS {
-        int syllabus_id PK
-        int course_id FK
-        string content
-    }
-    
+        
     Students ||--o{ Enrollments : enrolls
     Courses ||--o{ Enrollments : includes
     TEACHERS ||--o| Courses : teaches
