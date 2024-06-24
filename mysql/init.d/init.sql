@@ -119,7 +119,7 @@ INSERT INTO Enrollments (student_id, course_id, enrollment_date) VALUES
 ('1403', '1H023', '2024-04-01 15:00:00'),
 ('1403', '1H024', '2024-04-01 16:00:00');
 
---教員テーブルの作成
+-- 教員テーブルの作成
 CREATE TABLE Instructors (
     instructor_id CHAR(5) NOT NULL,
     name NVARCHAR(31) NOT NULL,
@@ -128,7 +128,7 @@ CREATE TABLE Instructors (
     PRIMARY KEY (instructor_id)
 );
 
---ダミーレコードの作成
+-- ダミーレコードの作成
 INSERT INTO Instructors (instructor_id, name, email, password) VALUES
 ('T001A', '佐藤健', 'satou.takeru@example.com', 'password123'),
 ('T002A', '新垣結衣', 'aragaki.yui@example.com', 'password123'),

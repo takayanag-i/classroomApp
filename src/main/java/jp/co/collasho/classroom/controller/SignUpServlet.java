@@ -35,7 +35,7 @@ public class SignUpServlet extends HttpServlet {
 
         // バリデーションチェック
         try {
-            Validator.checkUserId(studentId);
+            Validator.checkStudentId(studentId);
             Validator.checkName(name);
             Validator.checkEmail(email);
             Validator.checkPassword(password);

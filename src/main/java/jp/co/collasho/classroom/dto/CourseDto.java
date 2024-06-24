@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import jp.co.collasho.classroom.common.DayOfWeek;
 
-public class EnrollmentDto implements Serializable {
+public class CourseDto implements Serializable {
     /** 曜日 */
     private DayOfWeek dayOfWeek;
     /** 時限 */
@@ -15,6 +15,11 @@ public class EnrollmentDto implements Serializable {
     private String courseName;
     /** 担当教員リスト */
     private List<String> instructors;
+
+    /**
+     * コンストラクタ
+     */
+    public CourseDto() {}
 
     /*
      * ゲッタ・セッタ

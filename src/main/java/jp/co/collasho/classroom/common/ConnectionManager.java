@@ -13,8 +13,6 @@ public class ConnectionManager {
     private String user = "root";
     /** パスワード */
     private String password = "password";
-    // stub実行用のjdbcUrlもどき
-    // private String jdbcUrlStub = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
 
     /**
      * コンストラクタ

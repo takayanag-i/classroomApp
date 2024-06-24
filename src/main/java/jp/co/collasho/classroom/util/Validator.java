@@ -3,8 +3,8 @@ package jp.co.collasho.classroom.util;
 import jp.co.collasho.classroom.exception.ValidationError;
 
 public class Validator {
-    public static void checkUserId(String userId) throws ValidationError {
-        if (userId == null || "".equals(userId)) {
+    public static void checkStudentId(String studentId) throws ValidationError {
+        if (studentId == null || "".equals(studentId)) {
             throw new ValidationError("IDを入力してください。");
         }
         // その他のチェック 文字数など
