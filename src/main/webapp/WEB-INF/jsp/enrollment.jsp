@@ -42,5 +42,6 @@
             </c:forEach>
         </tbody>
     </table>
+    <a href="SearchServlet">履修登録</a>
 </body>
 </html>

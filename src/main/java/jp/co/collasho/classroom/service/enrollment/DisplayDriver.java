@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import jp.co.collasho.classroom.common.ConnectionManager;
-import jp.co.collasho.classroom.dao.EnrolledCourseDao;
+import jp.co.collasho.classroom.dao.CourseDao;
 import jp.co.collasho.classroom.dao.InstructionDao;
 import jp.co.collasho.classroom.dto.CourseDto;
 import jp.co.collasho.classroom.entity.CourseEntity;
@@ -26,26 +26,26 @@ public class DisplayDriver {
      * @return 対象とする学生が登録している講座のDTOのリスト
      */
     public List<CourseDto> drive(String studentId) {
-        List<CourseDto> enrollmentDtos = new ArrayList<>();
+        List<CourseDto> couseDtos = new ArrayList<>();
 
         try (Connection connection = this.connectionManager.getConnection()) {
-            EnrolledCourseDao enrollmentDao = new EnrolledCourseDao(connection);
+            CourseDao enrollmentDao = new CourseDao(connection);
             InstructionDao instructionDao = new InstructionDao(connection);
 
-            List<CourseEntity> courses = enrollmentDao.getCourses(studentId);
-            List<InstructionEntity> instrucions = instructionDao.getInstructions(courses);
+            List<CourseEntity> courses = enrollmentDao.getCoursesByStudenrId(studentId);
+            List<InstructionEntity> instrucions = instructionDao.getInstructionsByCourses(courses);
 
             InstructionLogic logic = new InstructionLogic(instrucions);
 
-            for (CourseEntity enrollmentEntity : courses) {
-                CourseDto enrollmentDto = logic.getEnrollmentDto(enrollmentEntity);
-                enrollmentDtos.add(enrollmentDto);
+            for (CourseEntity courseEntity : courses) {
+                CourseDto courseDto = logic.getCourseDto(courseEntity);
+                couseDtos.add(courseDto);
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("履修登録状況の表示に関して予期しないエラーが発生しました。");
+            throw new RuntimeException("履修登録状況の表示に関して予期しないエラーが発生しました。", e);
         }
 
-        return enrollmentDtos;
+        return couseDtos;
     }
 }

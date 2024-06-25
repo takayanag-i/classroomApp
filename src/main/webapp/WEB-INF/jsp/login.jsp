@@ -13,12 +13,8 @@
     <div class="login-container">
         <h1>Login</h1>
         <form action="LoginServlet" method="post">
-            <label for="student_id">出席番号:</label>
-            <input type="text" id="student_id" name="student_id" value="${studentId}" required>
-
-            <label for="password">パスワード:</label>
-            <input type="password" id="password" name="password" required>
-
+            <input type="text" id="student_id" name="student_id" value="${studentId}" placeholder="出席番号" required>
+            <input type="password" id="password" name="password" placeholder="パスワード" required>
             <input type="submit" value="Login">
         </form>
         <a class="register-link" href="SignUpServlet">New student? Register here</a>

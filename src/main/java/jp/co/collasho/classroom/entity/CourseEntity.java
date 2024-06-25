@@ -8,12 +8,27 @@ public class CourseEntity {
     /** 曜日略称 */
     private String dayOfWeekString;
     /** 時限 */
-    private int period;
+    private String period;
 
     /**
      * コンストラクタ
      */
     public CourseEntity() {}
+
+    /**
+     * コンストラクタ
+     * 
+     * @param courseId
+     * @param courseName
+     * @param dayOfWeekString
+     * @param period
+     */
+    public CourseEntity(String courseId, String courseName, String dayOfWeekString, String period) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.dayOfWeekString = dayOfWeekString;
+        this.period = period;
+    }
 
     /*
      * ゲッタ・セッタ
@@ -42,11 +57,11 @@ public class CourseEntity {
         this.dayOfWeekString = dayOfWeekString;
     }
 
-    public int getPeriod() {
+    public String getPeriod() {
         return period;
     }
 
-    public void setPeriod(int period) {
+    public void setPeriod(String period) {
         this.period = period;
     }
 }

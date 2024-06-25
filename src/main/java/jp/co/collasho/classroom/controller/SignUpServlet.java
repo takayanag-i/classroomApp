@@ -13,9 +13,18 @@ import jp.co.collasho.classroom.exception.ValidationError;
 import jp.co.collasho.classroom.service.signup.SignUpDriver;
 import jp.co.collasho.classroom.util.Validator;
 
+/**
+ * ユーザ登録処理のコントローラ
+ */
 @WebServlet("/SignUpServlet")
 public class SignUpServlet extends HttpServlet {
 
+    /**
+     * doGet
+     * 
+     * @param req リクエスト
+     * @param res レスポンス
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
@@ -23,6 +32,12 @@ public class SignUpServlet extends HttpServlet {
         req.getRequestDispatcher("WEB-INF/jsp/signup.jsp").forward(req, res);
     }
 
+    /**
+     * doPost
+     * 
+     * @param req リクエスト
+     * @param res レスポンス
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {

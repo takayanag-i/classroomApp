@@ -8,7 +8,7 @@ public class CourseDto implements Serializable {
     /** 曜日 */
     private DayOfWeek dayOfWeek;
     /** 時限 */
-    private int period;
+    private String period;
     /** コースId */
     private String courseId;
     /** コース名 */
@@ -32,11 +32,11 @@ public class CourseDto implements Serializable {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public int getPeriod() {
+    public String getPeriod() {
         return period;
     }
 
-    public void setPeriod(int period) {
+    public void setPeriod(String period) {
         this.period = period;
     }
 
