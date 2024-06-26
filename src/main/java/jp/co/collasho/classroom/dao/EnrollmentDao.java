@@ -27,7 +27,7 @@ public class EnrollmentDao {
         String query =
                 "insert into Enrollments (student_id, course_id, enrollment_date) values (?, ?, ?);";
         try (PreparedStatement pStmt = connection.prepareStatement(query)) {
-
+            // TODO
         } catch (SQLException e) {
             throw new RuntimeException("INSERTクエリの実行時に予期しないエラーが発生しました。", e);
         }

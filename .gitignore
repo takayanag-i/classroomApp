@@ -15,7 +15,9 @@ Thumbs.db
 .DS_Store
 
 # Maven
-target
+/target/*
+# But do not ignore WAR files
+!/target/classroom.war
 
 # Build
 out

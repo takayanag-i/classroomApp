@@ -1,4 +1,10 @@
 services:
+  app:
+    ports:
+      - "8888:8080"
+    build:
+      context: .
+      dockerfile: ./app/DockerFile
   mysql:
     container_name: "mysql"
     hostname: "mysql"
