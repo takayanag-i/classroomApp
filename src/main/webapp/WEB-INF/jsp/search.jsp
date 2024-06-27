@@ -127,53 +127,51 @@
                 <input type="text" id="instructor_name" name="instructor_name" placeholder="Instructor Name">
             </div>
             <div class="col">
-                <!-- 空の列 -->
+                <button type="submit"><i class="fas fa-search"></i>検索</button>
             </div>
-        </div>
-        <div class="form-row col-full">
-            <button type="submit"><i class="fas fa-search"></i>検索</button>
         </div>
     </form>
 </div>
 
 <c:if test="${not empty results}">
     <h2>Search Results</h2>
-    <div class="table-container">
-        <table>
-            <tr>
-                <th>Day of Week</th>
-                <th>Period</th>
-                <th>Course ID</th>
-                <th>Course Name</th>
-                <th>Instructors</th>
-                <th>Select</th>
-            </tr>
-            <c:forEach var="course" items="${results}">
-            <tr>
-                <td>${course.dayOfWeek.japanese}</td>
-                <td>${course.period}</td>
-                <td>${course.courseId}</td>
-                <td>${course.courseName}</td>
-                <td>
-                    <c:forEach var="instructor" items="${course.instructors}">
-                        ${instructor}<br>
-                    </c:forEach>
-                </td>
-                <td><input type="checkbox" name="selectedCourses" value="${course.courseId}"></td>
-            </tr>
-            </c:forEach>
-        </table>
-    </div>
+    <form action="EnrollmentServlet" method="post">
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Day of Week</th>
+                    <th>Period</th>
+                    <th>Course ID</th>
+                    <th>Course Name</th>
+                    <th>Instructors</th>
+                    <th>Select</th>
+                </tr>
+                <c:forEach var="course" items="${results}">
+                <tr>
+                    <td>${course.dayOfWeek.japanese}</td>
+                    <td>${course.period}</td>
+                    <td>${course.courseId}</td>
+                    <td>${course.courseName}</td>
+                    <td>
+                        <c:forEach var="instructor" items="${course.instructors}">
+                            ${instructor}<br>
+                        </c:forEach>
+                    </td>
+                    <td><input type="checkbox" name="selectedCourses" value="${course.courseId}"></td>
+                </tr>
+                </c:forEach>
+            </table>
+        </div>
+        <div class="fixed-button-container">
+            <button type="submit"><i class="fas fa-check"></i>登録</button>
+        </div>
+    </form>
 </c:if>
 
 <c:if test="${empty results}">
     <p>No results found.</p>
 </c:if>
 
-<div class="fixed-button-container">
-    <form action="EnrollmentServlet" method="post">
-        <button type="submit"><i class="fas fa-check"></i>登録</button>
-    </form>
-</div>
+
 </body>
 </html>

@@ -3,6 +3,7 @@ package jp.co.collasho.classroom.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import jp.co.collasho.classroom.entity.EnrollmentEntity;
 
 public class EnrollmentDao {
@@ -21,13 +22,18 @@ public class EnrollmentDao {
     /**
      * 履修の「登録」
      * 
-     * @param enrollment
+     * @param entity
      */
-    public void insertEnrollment(EnrollmentEntity enrollment) {
+    public void insertEnrollment(EnrollmentEntity entity) {
         String query =
                 "insert into Enrollments (student_id, course_id, enrollment_date) values (?, ?, ?);";
         try (PreparedStatement pStmt = connection.prepareStatement(query)) {
-            // TODO
+            pStmt.setString(1, entity.getStudentId());
+            pStmt.setString(2, entity.getCourseId());
+            pStmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+
+            pStmt.executeUpdate();
+
         } catch (SQLException e) {
             throw new RuntimeException("INSERTクエリの実行時に予期しないエラーが発生しました。", e);
         }

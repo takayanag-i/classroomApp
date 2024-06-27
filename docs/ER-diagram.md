@@ -1,3 +1,7 @@
+# ER図
+@version: 1.1.0
+
+
 ```mermaid
 erDiagram
     Students {
@@ -34,6 +38,6 @@ erDiagram
         
     Students ||--o{ Enrollments : enrolls
     Courses ||--o{ Enrollments : includes
-    TEACHERS ||--o| Courses : teaches
-    Courses ||--o| SYLLABUS : has
+    Courses ||--o{ Instructions : includes
+    Instructors ||--o{ Instructions : instructs
 ```

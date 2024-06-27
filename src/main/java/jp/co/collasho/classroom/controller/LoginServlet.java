@@ -11,8 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jp.co.collasho.classroom.dto.CourseDto;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
-import jp.co.collasho.classroom.exception.LoginError;
-import jp.co.collasho.classroom.exception.ValidationError;
+import jp.co.collasho.classroom.exception.LoginFailedException;
+import jp.co.collasho.classroom.exception.InvalidInputException;
 import jp.co.collasho.classroom.service.enrollment.DisplayDriver;
 import jp.co.collasho.classroom.service.login.LoginDriver;
 import jp.co.collasho.classroom.util.Validator;
@@ -53,9 +53,10 @@ public class LoginServlet extends HttpServlet {
         try {
             Validator.checkStudentId(studentId);
             Validator.checkPassword(password);
-        } catch (ValidationError e) {
+        } catch (InvalidInputException e) {
             req.setAttribute("errorMessage", e.getMessage());
             req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, res);
+            return;
         }
 
         // ログインユーザの情報を取得
@@ -65,9 +66,10 @@ public class LoginServlet extends HttpServlet {
 
             HttpSession session = req.getSession();
             session.setAttribute("loginStudent", loginStudent);
-        } catch (LoginError e) {
+        } catch (LoginFailedException e) {
             req.setAttribute("errorMessage", e.getMessage());
             req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, res);
+            return;
         }
 
         // 表示用時間割データを取得

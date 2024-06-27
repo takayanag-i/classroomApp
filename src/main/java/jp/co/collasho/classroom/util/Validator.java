@@ -1,24 +1,24 @@
 package jp.co.collasho.classroom.util;
 
-import jp.co.collasho.classroom.exception.ValidationError;
+import jp.co.collasho.classroom.exception.InvalidInputException;
 
 public class Validator {
-    public static void checkStudentId(String studentId) throws ValidationError {
+    public static void checkStudentId(String studentId) throws InvalidInputException {
         if (studentId == null || "".equals(studentId)) {
-            throw new ValidationError("IDを入力してください。");
+            throw new InvalidInputException("IDを入力してください。");
         }
         // その他のチェック 文字数など
     }
 
-    public static void checkName(String userId) throws ValidationError {
+    public static void checkName(String userId) throws InvalidInputException {
         // チェック
     }
 
-    public static void checkEmail(String email) throws ValidationError {
+    public static void checkEmail(String email) throws InvalidInputException {
         // チェック
     }
 
-    public static void checkPassword(String password) throws ValidationError {
+    public static void checkPassword(String password) throws InvalidInputException {
         // チェック
     }
 }

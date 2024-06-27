@@ -6,7 +6,7 @@ import jp.co.collasho.classroom.common.ConnectionManager;
 import jp.co.collasho.classroom.dao.StudentDao;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.entity.StudentEntity;
-import jp.co.collasho.classroom.exception.LoginError;
+import jp.co.collasho.classroom.exception.LoginFailedException;
 
 /**
  * ログインサービスのドライバ
@@ -15,7 +15,7 @@ public class LoginDriver {
     /** コネクションマネージャ */
     ConnectionManager connectionManager = new ConnectionManager();
 
-    public LoginStudentDto drive(String studentId, String password) throws LoginError {
+    public LoginStudentDto drive(String studentId, String password) throws LoginFailedException {
         try (Connection connection = this.connectionManager.getConnection()) {
             StudentDao studentDao = new StudentDao(connection);
 

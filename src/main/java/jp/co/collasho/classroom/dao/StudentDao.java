@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import jp.co.collasho.classroom.entity.StudentEntity;
-import jp.co.collasho.classroom.exception.LoginError;
+import jp.co.collasho.classroom.exception.LoginFailedException;
 
 public class StudentDao {
 
@@ -68,7 +68,8 @@ public class StudentDao {
         return allStudents;
     }
 
-    public StudentEntity getStudentEntity(String studentId, String password) throws LoginError {
+    public StudentEntity getStudentEntity(String studentId, String password)
+            throws LoginFailedException {
         String query = "SELECT * FROM Students WHERE student_id = ? AND password = ?";
 
         try (PreparedStatement pStmt = this.connection.prepareStatement(query)) {
@@ -83,7 +84,7 @@ public class StudentDao {
                 return new StudentEntity(studentId, name, email);
 
             } else {
-                throw new LoginError("ログインに失敗しました");
+                throw new LoginFailedException("ログインに失敗しました");
             }
 
         } catch (SQLException e) {

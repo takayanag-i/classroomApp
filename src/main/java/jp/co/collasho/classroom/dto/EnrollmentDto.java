@@ -13,16 +13,8 @@ public class EnrollmentDto implements Serializable {
 
     /**
      * コンストラクタ
-     * 
-     * @param studentId
-     * @param courseId
-     * @param enrollmentDate
      */
-    public EnrollmentDto(String studentId, String courseId, Timestamp enrollmentDate) {
-        this.studentId = studentId;
-        this.courseId = courseId;
-        this.enrollmentDate = enrollmentDate;
-    }
+    public EnrollmentDto() {}
 
     /*
      * ゲッタ・セッタ
