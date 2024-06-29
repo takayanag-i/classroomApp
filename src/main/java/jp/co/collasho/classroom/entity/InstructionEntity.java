@@ -1,27 +1,13 @@
 package jp.co.collasho.classroom.entity;
 
+/**
+ * InstructionテーブルのEntityクラス
+ */
 public class InstructionEntity {
     /** コースID */
     private String courseId;
     /** 教員名 */
     private String instructor;
-
-    /**
-     * コンストラクタ
-     */
-    public InstructionEntity() {}
-
-    /**
-     * コンストラクタ
-     * 
-     * @param courseId
-     * @param instructorId
-     * @param instructorName
-     */
-    public InstructionEntity(String courseId, String instructor) {
-        this.courseId = courseId;
-        this.instructor = instructor;
-    }
 
     /*
      * ゲッタ・セッタ

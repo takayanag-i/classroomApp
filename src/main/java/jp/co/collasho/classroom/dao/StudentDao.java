@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import jp.co.collasho.classroom.entity.StudentEntity;
-import jp.co.collasho.classroom.exception.LoginFailedException;
 
 public class StudentDao {
 
@@ -25,7 +24,7 @@ public class StudentDao {
 
 
     /**
-     * insert文の実行
+     * INSERT
      * 
      * @param student
      */
@@ -46,23 +45,22 @@ public class StudentDao {
     }
 
     /**
-     * SELECT
+     * SELECT（全レコード）
      * 
-     * @return 学生エンティティ（リスト：WHERE句なし）
+     * @return StudentEntityのリスト
      */
     public List<StudentEntity> select() {
         List<StudentEntity> allStudents = new ArrayList<>();
         String query = "SELECT * FROM Students;";
 
         try (PreparedStatement pStmt = this.conn.prepareStatement(query)) {
-            ResultSet resultSet = pStmt.executeQuery();
-            while (resultSet.next()) {
-                String studentId = resultSet.getString("student_id");
-                String name = resultSet.getString("name");
-                String email = resultSet.getString("email");
-                String password = resultSet.getString("password");
-
-                StudentEntity student = new StudentEntity(studentId, name, email, password);
+            ResultSet rs = pStmt.executeQuery();
+            while (rs.next()) {
+                StudentEntity student = new StudentEntity();
+                student.setStudentId(rs.getString("student_id"));
+                student.setName(rs.getString("name"));
+                student.setEmail(rs.getString("email"));
+                student.setPassword(rs.getString("password"));
 
                 allStudents.add(student);
             }
@@ -74,13 +72,12 @@ public class StudentDao {
     }
 
     /**
-     * SELECT
+     * SELECT（出席番号, パスワード指定）
      * 
-     * @param studentId
-     * @param password
-     * @return 学生エンティティ（単一：studentIdは主キー）
-     * @return null（該当値なし）
-     * @throws LoginFailedException
+     * @param studentId 出席番号 PK
+     * @param password パスワード
+     * @return StudentEntity
+     * @return null（該当値なしの場合）
      */
     public StudentEntity select(String studentId, String password) {
         String query = "SELECT * FROM Students WHERE student_id = ? AND password = ?";
@@ -88,13 +85,15 @@ public class StudentDao {
         try (PreparedStatement pStmt = this.conn.prepareStatement(query)) {
             pStmt.setString(1, studentId);
             pStmt.setString(2, password);
-            ResultSet resultSet = pStmt.executeQuery();
+            ResultSet rs = pStmt.executeQuery();
 
-            if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String email = resultSet.getString("email");
+            if (rs.next()) {
+                StudentEntity student = new StudentEntity();
+                student.setStudentId(studentId);
+                student.setName(rs.getString("name"));
+                student.setEmail(rs.getString("email"));
 
-                return new StudentEntity(studentId, name, email);
+                return student;
 
             } else {
                 return null;
@@ -104,6 +103,4 @@ public class StudentDao {
             throw new RuntimeException("SELECTクエリの実行に失敗してステートメントを解放しました。");
         }
     }
-
-    // TODO convert?
 }

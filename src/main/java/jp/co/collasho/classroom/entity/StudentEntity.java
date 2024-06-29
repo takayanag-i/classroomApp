@@ -1,43 +1,17 @@
 package jp.co.collasho.classroom.entity;
 
+/**
+ * StudentテーブルのEntityクラス
+ */
 public class StudentEntity {
+    /** 出席番号 */
     private String studentId;
+    /** 名前 */
     private String name;
+    /** メールアドレス */
     private String email;
+    /** パスワード */
     private String password;
-
-    /**
-     * コンストラクタ
-     */
-    public StudentEntity() {}
-
-    /**
-     * コンストラクタ
-     * 
-     * @param studentId
-     * @param name
-     * @param email
-     */
-    public StudentEntity(String studentId, String name, String email) {
-        this.studentId = studentId;
-        this.name = name;
-        this.email = email;
-    }
-
-    /**
-     * コンストラクタ
-     * 
-     * @param studentId
-     * @param name
-     * @param email
-     * @param password
-     */
-    public StudentEntity(String studentId, String name, String email, String password) {
-        this.studentId = studentId;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
 
     /*
      * ゲッタ・セッタ

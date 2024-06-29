@@ -3,7 +3,7 @@ package jp.co.collasho.classroom.entity;
 import java.sql.Timestamp;
 
 /**
- * 履修登録エンティティ
+ * EnrollmentテーブルのEntityクラス
  */
 public class EnrollmentEntity {
     /** 出席番号 */
@@ -12,24 +12,6 @@ public class EnrollmentEntity {
     private String courseId;
     /** 登録日時 */
     private Timestamp enrollmentDate;
-
-    /**
-     * コンストラクタ
-     */
-    public EnrollmentEntity() {}
-
-    /**
-     * コンストラクタ
-     * 
-     * @param studentId
-     * @param courseId
-     * @param enrollmentDate
-     */
-    public EnrollmentEntity(String studentId, String courseId, Timestamp enrollmentDate) {
-        this.studentId = studentId;
-        this.courseId = courseId;
-        this.enrollmentDate = enrollmentDate;
-    }
 
     /*
      * ゲッタ・セッタ
