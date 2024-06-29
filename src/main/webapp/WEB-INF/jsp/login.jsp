@@ -11,13 +11,13 @@
 </head>
 <body>
     <div class="login-container">
-        <h1>Login</h1>
+        <h2>ログイン</h2>
         <form action="LoginServlet" method="post">
             <input type="text" id="student_id" name="student_id" value="${studentId}" placeholder="出席番号" required>
             <input type="password" id="password" name="password" placeholder="パスワード" required>
-            <input type="submit" value="Login">
+            <input type="submit" value="GO">
         </form>
-        <a class="register-link" href="SignUpServlet">New student? Register here</a>
+        <a class="register-link" href="SignUpServlet">新規登録はこちら</a>
     </div>
     <p class="error_message">${errorMessage}</p>
 </body>

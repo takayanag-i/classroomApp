@@ -24,7 +24,7 @@
     .login-container input[type="submit"] {
         width: 100%;
         padding: 10px;
-        background-color: #4CAF50;
+        background-color: #223a70;
         color: white;
         border: none;
         border-radius: 3px;
@@ -32,13 +32,13 @@
     }
 
     .login-container input[type="submit"]:hover {
-        background-color: #45a049;
+        background-color: #19334d;
     }
 
     .login-container .register-link {
         margin-top: 10px;
         display: block;
-        color: #4CAF50;
+        color: #223a70;
         text-decoration: none;
     }
 
