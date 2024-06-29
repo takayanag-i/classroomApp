@@ -36,10 +36,12 @@ public class LoginDriver {
             }
 
             // ログイン成功
-            String name = student.getName();
-            String email = student.getEmail();
+            LoginStudentDto loginStudent = new LoginStudentDto();
+            loginStudent.setStudentId(studentId);
+            loginStudent.setName(student.getName());
+            loginStudent.setEmail(student.getEmail());
 
-            return new LoginStudentDto(studentId, name, email);
+            return loginStudent;
 
         } catch (SQLException e) {
             throw new RuntimeException("予期しないログインエラーが発生しました", e);

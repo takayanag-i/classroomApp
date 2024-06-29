@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import jp.co.collasho.classroom.common.DayOfWeek;
 
+/**
+ * 講座情報のDTOクラス
+ */
 public class CourseDto implements Serializable {
     /** 曜日 */
     private DayOfWeek dayOfWeek;
@@ -17,7 +20,7 @@ public class CourseDto implements Serializable {
     private List<String> instructors;
 
     /**
-     * コンストラクタ
+     * publicで引数のないコンストラクタ
      */
     public CourseDto() {}
 
@@ -63,6 +66,4 @@ public class CourseDto implements Serializable {
     public void setInstructors(List<String> instructors) {
         this.instructors = instructors;
     }
-
-
 }

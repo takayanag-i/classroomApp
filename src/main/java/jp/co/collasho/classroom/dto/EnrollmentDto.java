@@ -3,6 +3,9 @@ package jp.co.collasho.classroom.dto;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+/**
+ * 履修登録情報のDTOクラス
+ */
 public class EnrollmentDto implements Serializable {
     /** 出席番号 */
     private String studentId;
@@ -12,7 +15,7 @@ public class EnrollmentDto implements Serializable {
     private Timestamp enrollmentDate;
 
     /**
-     * コンストラクタ
+     * publicで引数のないコンストラクタ
      */
     public EnrollmentDto() {}
 
@@ -42,6 +45,4 @@ public class EnrollmentDto implements Serializable {
     public void setEnrollmentDate(Timestamp enrollmentDate) {
         this.enrollmentDate = enrollmentDate;
     }
-
-
 }

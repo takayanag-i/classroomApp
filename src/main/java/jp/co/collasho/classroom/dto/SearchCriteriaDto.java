@@ -1,11 +1,12 @@
 package jp.co.collasho.classroom.dto;
 
+import java.io.Serializable;
 import jp.co.collasho.classroom.common.DayOfWeek;
 
 /**
- * 検索条件オブジェクト
+ * 検索条件のDTOクラス
  */
-public class SearchCriteriaDto {
+public class SearchCriteriaDto implements Serializable {
     /** コースID */
     private String courseId;
     /** コース名 */
@@ -16,6 +17,11 @@ public class SearchCriteriaDto {
     private DayOfWeek dayOfWeek;
     /** 時限 */
     private String period;
+
+    /**
+     * publicで引数のないコンストラクタ
+     */
+    public SearchCriteriaDto() {}
 
     /*
      * ゲッタ・セッタ
@@ -59,6 +65,4 @@ public class SearchCriteriaDto {
     public void setPeriod(String period) {
         this.period = period;
     }
-
-
 }

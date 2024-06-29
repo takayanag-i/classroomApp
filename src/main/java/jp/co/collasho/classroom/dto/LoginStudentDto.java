@@ -2,29 +2,21 @@ package jp.co.collasho.classroom.dto;
 
 import java.io.Serializable;
 
+/**
+ * ログイン情報のDTOクラス
+ */
 public class LoginStudentDto implements Serializable {
+    /** 出席番号 */
     private String studentId;
+    /** 名前 */
     private String name;
+    /** メールアドレス */
     private String email;
 
     /**
-     * コンストラクタ
+     * publicで引数のないコンストラクタ
      */
     public LoginStudentDto() {}
-
-    /**
-     * コンストラクタ
-     * 
-     * @param studentId
-     * @param name
-     * @param email
-     * @param password
-     */
-    public LoginStudentDto(String studentId, String name, String email) {
-        this.studentId = studentId;
-        this.name = name;
-        this.email = email;
-    }
 
     /*
      * ゲッタ・セッタ
