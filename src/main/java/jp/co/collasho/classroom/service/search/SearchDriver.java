@@ -11,43 +11,47 @@ import jp.co.collasho.classroom.dto.CourseDto;
 import jp.co.collasho.classroom.dto.SearchCriteriaDto;
 import jp.co.collasho.classroom.entity.CourseEntity;
 import jp.co.collasho.classroom.entity.InstructionEntity;
-import jp.co.collasho.classroom.logic.InstructionLogic;
+import jp.co.collasho.classroom.logic.multipleInstructorsLogic;
 
+/**
+ * 講座検索処理のドライバ
+ */
 public class SearchDriver {
     /** コネクションマネージャ */
     ConnectionManager connectionManager = new ConnectionManager();
 
     /**
-     * 検索条件にもとづき講座エンティティのリストと講座-教員対応エンティティのリスト取得して，表示用の講座オブジェクトのリストを作成する
+     * 表示用の講座リストを取得する
      * 
      * @param criteria
      * @return 講座オブジェクトのリスト
      */
-    public List<CourseDto> drive(SearchCriteriaDto criteria) {
-        List<CourseDto> results = new ArrayList<>();
+    public List<CourseDto> getCourses(SearchCriteriaDto criteria) {
+        List<CourseDto> courseDtos = new ArrayList<>();
 
-        try (Connection connection = connectionManager.getConnection()) {
-            CourseDao enrollmentDao = new CourseDao(connection);
-            InstructionDao instructionDao = new InstructionDao(connection);
+        try (Connection conn = connectionManager.getConnection()) {
+            CourseDao enrollmentDao = new CourseDao(conn);
+            InstructionDao instructionDao = new InstructionDao(conn);
 
-            List<CourseEntity> courseEntities = enrollmentDao.getCoursesByCriteria(criteria);
-            List<InstructionEntity> instrucions =
-                    instructionDao.getInstructionsByCriteria(criteria);
+            // 講座エンティティ，講座-教員対応エンティティの取得
+            List<CourseEntity> courseEntities = enrollmentDao.select(criteria);
+            List<InstructionEntity> instrucionEntities = instructionDao.select(criteria);
 
-            InstructionLogic logic = new InstructionLogic(instrucions);
+            // 講座DTOの作成―複数教員に注意しながら―
+            multipleInstructorsLogic logic = new multipleInstructorsLogic(instrucionEntities);
 
             for (CourseEntity courseEntity : courseEntities) {
-                CourseDto courseDto = logic.getCourseDto(courseEntity);
+                CourseDto courseDto = logic.convertEntityToDto(courseEntity);
                 if (courseDto == null) {
                     continue;
                 }
-                results.add(courseDto);
+                courseDtos.add(courseDto);
             }
 
         } catch (SQLException e) {
             throw new RuntimeException("検索実行における予期しないエラーが発生しました。", e);
         }
 
-        return results;
+        return courseDtos;
     }
 }

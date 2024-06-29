@@ -15,15 +15,15 @@ import jp.co.collasho.classroom.entity.InstructionEntity;
  */
 public class InstructionDao {
     /** コネクション */
-    private Connection connection;
+    private Connection conn;
 
     /**
      * コンストラクタ
      * 
-     * @param connection コネクション
+     * @param conn コネクション
      */
-    public InstructionDao(Connection connection) {
-        this.connection = connection;
+    public InstructionDao(Connection conn) {
+        this.conn = conn;
     }
 
     /**
@@ -32,20 +32,20 @@ public class InstructionDao {
      * @param courses 講座リスト
      * @return 講座-教員対応エンティティのリスト
      */
-    public List<InstructionEntity> getInstructionsByCourses(List<CourseEntity> courses) {
+    public List<InstructionEntity> select(List<CourseEntity> courses) {
         List<InstructionEntity> instructions = new ArrayList<>();
 
         String query = this.getQueryWithInClause(courses);
 
-        try (PreparedStatement pStmt = connection.prepareStatement(query)) {
+        try (PreparedStatement pStmt = conn.prepareStatement(query)) {
             int i = 1;
             for (CourseEntity course : courses) {
                 pStmt.setString(i++, course.getCourseId());
             }
-            ResultSet resultSet = pStmt.executeQuery();
+            ResultSet rs = pStmt.executeQuery();
 
-            while (resultSet.next()) {
-                InstructionEntity instruction = this.getEntityFromResult(resultSet);
+            while (rs.next()) {
+                InstructionEntity instruction = this.getEntityFromResult(rs);
                 instructions.add(instruction);
             }
 
@@ -61,19 +61,19 @@ public class InstructionDao {
      * @param criteria
      * @return 講座-教員対応エンティティのリスト
      */
-    public List<InstructionEntity> getInstructionsByCriteria(SearchCriteriaDto criteria) {
+    public List<InstructionEntity> select(SearchCriteriaDto criteria) {
         List<InstructionEntity> instructions = new ArrayList<>();
 
         String query =
                 "select n.course_id, r.name from Instructions as n inner join Instructors as r on r.instructor_id = n.instructor_id where r.name like ?";
 
-        try (PreparedStatement pStmt = connection.prepareStatement(query)) {
+        try (PreparedStatement pStmt = conn.prepareStatement(query)) {
             pStmt.setString(1, "%" + criteria.getInstructorName() + "%");
 
-            ResultSet resultSet = pStmt.executeQuery();
+            ResultSet rs = pStmt.executeQuery();
 
-            while (resultSet.next()) {
-                InstructionEntity instruction = this.getEntityFromResult(resultSet);
+            while (rs.next()) {
+                InstructionEntity instruction = this.getEntityFromResult(rs);
                 instructions.add(instruction);
             }
 
@@ -87,15 +87,17 @@ public class InstructionDao {
     /**
      * ResultSetから講座-教員対応エンティティを生成
      * 
-     * @param resultSet java.sql.ResultSet
+     * @param rs java.sql.ResultSet
      * @return 講座-教員対応エンティティ
      * @throws SQLException
      */
-    private InstructionEntity getEntityFromResult(ResultSet resultSet) throws SQLException {
-        String courseId = resultSet.getString("course_id");
-        String instructor = resultSet.getString("name");
+    private InstructionEntity getEntityFromResult(ResultSet rs) throws SQLException {
+        InstructionEntity e = new InstructionEntity();
 
-        return new InstructionEntity(courseId, instructor);
+        e.setCourseId(rs.getString("course_id"));
+        e.setInstructor(rs.getString("name"));
+
+        return e;
     }
 
     /**

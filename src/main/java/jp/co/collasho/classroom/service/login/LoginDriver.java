@@ -15,11 +15,27 @@ public class LoginDriver {
     /** コネクションマネージャ */
     ConnectionManager connectionManager = new ConnectionManager();
 
-    public LoginStudentDto drive(String studentId, String password) throws LoginFailedException {
+    /**
+     * ログイン処理を実行する
+     * 
+     * @param studentId 出席番号
+     * @param password パスワード
+     * @return ログインする学生のエンティティ
+     * @throws LoginFailedException ID・passでログインできる学生がいない場合
+     */
+    public LoginStudentDto getStudentToLogin(String studentId, String password)
+            throws LoginFailedException {
         try (Connection connection = this.connectionManager.getConnection()) {
             StudentDao studentDao = new StudentDao(connection);
 
-            StudentEntity student = studentDao.getStudentEntity(studentId, password);
+            StudentEntity student = studentDao.select(studentId, password);
+
+            if (student == null) {
+                // ログイン失敗
+                throw new LoginFailedException("ログインに失敗しました。");
+            }
+
+            // ログイン成功
             String name = student.getName();
             String email = student.getEmail();
 

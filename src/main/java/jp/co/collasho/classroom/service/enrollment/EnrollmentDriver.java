@@ -19,7 +19,7 @@ public class EnrollmentDriver {
 
             for (EnrollmentDto dto : dtos) {
                 EnrollmentEntity entity = this.convertEntityToDto(dto);
-                enrollmentDao.insertEnrollment(entity);
+                enrollmentDao.insert(entity);
             }
 
             this.connectionManager.commit();

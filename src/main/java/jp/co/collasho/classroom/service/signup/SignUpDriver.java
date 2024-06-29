@@ -29,7 +29,7 @@ public class SignUpDriver {
 
             // 重複ユーザチェック
             StudentDao studentDao = new StudentDao(connection);
-            List<StudentEntity> allStudents = studentDao.getAll();
+            List<StudentEntity> allStudents = studentDao.select();
             this.CheckIdAndEmail(student, allStudents);
 
             // インサート

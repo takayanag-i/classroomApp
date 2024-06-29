@@ -14,15 +14,15 @@ import jp.co.collasho.classroom.entity.CourseEntity;
  */
 public class CourseDao {
     /** コネクション */
-    private Connection connection;
+    private Connection conn;
 
     /**
      * コンストラクタ
      * 
-     * @param connection コネクション
+     * @param conn コネクション
      */
-    public CourseDao(Connection connection) {
-        this.connection = connection;
+    public CourseDao(Connection conn) {
+        this.conn = conn;
     }
 
     /**
@@ -31,17 +31,17 @@ public class CourseDao {
      * @param studentId 出席番号
      * @return 登録講座エンティティのリスト
      */
-    public List<CourseEntity> getCoursesByStudenrId(String studentId) {
+    public List<CourseEntity> select(String studentId) {
         List<CourseEntity> courses = new ArrayList<>();
         String query =
                 "select e.course_id, c.course_name, c.day_of_week, c.period from Enrollments as e inner join Courses as c on c.course_id = e.course_id where e.student_id = ? ;";
 
-        try (PreparedStatement pStmt = connection.prepareStatement(query)) {
+        try (PreparedStatement pStmt = conn.prepareStatement(query)) {
             pStmt.setString(1, studentId);
-            ResultSet resultSet = pStmt.executeQuery();
+            ResultSet rs = pStmt.executeQuery();
 
-            while (resultSet.next()) {
-                courses.add(this.getEntityFromReslut(resultSet));
+            while (rs.next()) {
+                courses.add(this.getEntityFromReslut(rs));
             }
 
         } catch (SQLException e) {
@@ -56,21 +56,21 @@ public class CourseDao {
      * @param criteria 検索条件オブジェクト
      * @return 講座リスト
      */
-    public List<CourseEntity> getCoursesByCriteria(SearchCriteriaDto criteria) {
+    public List<CourseEntity> select(SearchCriteriaDto criteria) {
         List<CourseEntity> courses = new ArrayList<>();
 
         String query =
                 "select course_id, course_name, day_of_week, period from Courses where course_id like ? and course_name like ? and day_of_week like ? and period like ?;";
 
-        try (PreparedStatement pStmt = connection.prepareStatement(query)) {
+        try (PreparedStatement pStmt = conn.prepareStatement(query)) {
             pStmt.setString(1, "%" + criteria.getCourseId() + "%");
             pStmt.setString(2, "%" + criteria.getCourseName() + "%");
             pStmt.setString(3, "%" + criteria.getDayOfWeek().getAbbreviation() + "%");
             pStmt.setString(4, "%" + criteria.getPeriod() + "%");
-            ResultSet resultSet = pStmt.executeQuery();
+            ResultSet rs = pStmt.executeQuery();
 
-            while (resultSet.next()) {
-                courses.add(this.getEntityFromReslut(resultSet));
+            while (rs.next()) {
+                courses.add(this.getEntityFromReslut(rs));
             }
 
         } catch (SQLException e) {
@@ -82,16 +82,18 @@ public class CourseDao {
     /**
      * ResultSetから講座エンティティを生成
      * 
-     * @param resultSet java.sql.ResultSet
+     * @param rs java.sql.ResultSet
      * @return 講座エンティティ
      * @throws SQLException
      */
-    private CourseEntity getEntityFromReslut(ResultSet resultSet) throws SQLException {
-        String courseId = resultSet.getString("course_id");
-        String courseName = resultSet.getString("course_name");
-        String dayOfWeekString = resultSet.getString("day_of_week");
-        String period = resultSet.getString("period");
+    private CourseEntity getEntityFromReslut(ResultSet rs) throws SQLException {
+        CourseEntity e = new CourseEntity();
 
-        return new CourseEntity(courseId, courseName, dayOfWeekString, period);
+        e.setCourseId(rs.getString("course_id"));
+        e.setCourseName(rs.getString("course_name"));
+        e.setDayOfWeekString(rs.getString("day_of_week"));
+        e.setPeriod(rs.getString("period"));
+
+        return e;
     }
 }

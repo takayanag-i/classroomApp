@@ -8,28 +8,28 @@ import jp.co.collasho.classroom.entity.EnrollmentEntity;
 
 public class EnrollmentDao {
     /** コネクション */
-    Connection connection;
+    Connection conn;
 
     /**
      * コンストラクタ
      * 
-     * @param connection
+     * @param conn
      */
-    public EnrollmentDao(Connection connection) {
-        this.connection = connection;
+    public EnrollmentDao(Connection conn) {
+        this.conn = conn;
     }
 
     /**
      * 履修の「登録」
      * 
-     * @param entity
+     * @param enrollment
      */
-    public void insertEnrollment(EnrollmentEntity entity) {
+    public void insert(EnrollmentEntity enrollment) {
         String query =
                 "insert into Enrollments (student_id, course_id, enrollment_date) values (?, ?, ?);";
-        try (PreparedStatement pStmt = connection.prepareStatement(query)) {
-            pStmt.setString(1, entity.getStudentId());
-            pStmt.setString(2, entity.getCourseId());
+        try (PreparedStatement pStmt = conn.prepareStatement(query)) {
+            pStmt.setString(1, enrollment.getStudentId());
+            pStmt.setString(2, enrollment.getCourseId());
             pStmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
 
             pStmt.executeUpdate();
@@ -46,7 +46,7 @@ public class EnrollmentDao {
      * 
      * @param courseId
      */
-    public void deleteEnrollment(String courseId) {
+    public void delete(String courseId) {
         // TODO
     }
 

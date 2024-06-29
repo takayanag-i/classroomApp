@@ -10,7 +10,7 @@ import jp.co.collasho.classroom.dao.InstructionDao;
 import jp.co.collasho.classroom.dto.CourseDto;
 import jp.co.collasho.classroom.entity.CourseEntity;
 import jp.co.collasho.classroom.entity.InstructionEntity;
-import jp.co.collasho.classroom.logic.InstructionLogic;
+import jp.co.collasho.classroom.logic.multipleInstructorsLogic;
 
 /**
  * 登録講座一覧を表示する処理のドライバ
@@ -25,27 +25,29 @@ public class DisplayDriver {
      * @param studentId 対象とする学生ID
      * @return 対象とする学生が登録している講座のDTOのリスト
      */
-    public List<CourseDto> drive(String studentId) {
-        List<CourseDto> couseDtos = new ArrayList<>();
+    public List<CourseDto> getCourses(String studentId) {
+        List<CourseDto> courseDtos = new ArrayList<>();
 
-        try (Connection connection = this.connectionManager.getConnection()) {
-            CourseDao enrollmentDao = new CourseDao(connection);
-            InstructionDao instructionDao = new InstructionDao(connection);
+        try (Connection conn = this.connectionManager.getConnection()) {
+            CourseDao courseDao = new CourseDao(conn);
+            InstructionDao instructionDao = new InstructionDao(conn);
 
-            List<CourseEntity> courses = enrollmentDao.getCoursesByStudenrId(studentId);
-            List<InstructionEntity> instrucions = instructionDao.getInstructionsByCourses(courses);
+            // 講座エンティティ，講座-教員対応エンティティの取得
+            List<CourseEntity> courseEntities = courseDao.select(studentId);
+            List<InstructionEntity> instrucionEntities = instructionDao.select(courseEntities);
 
-            InstructionLogic logic = new InstructionLogic(instrucions);
+            // 講座DTOの作成―複数教員に注意しながら―
+            multipleInstructorsLogic logic = new multipleInstructorsLogic(instrucionEntities);
 
-            for (CourseEntity courseEntity : courses) {
-                CourseDto courseDto = logic.getCourseDto(courseEntity);
-                couseDtos.add(courseDto);
+            for (CourseEntity courseEntity : courseEntities) {
+                CourseDto courseDto = logic.convertEntityToDto(courseEntity);
+                courseDtos.add(courseDto);
             }
 
         } catch (SQLException e) {
             throw new RuntimeException("履修登録状況の表示に関して予期しないエラーが発生しました。", e);
         }
 
-        return couseDtos;
+        return courseDtos;
     }
 }

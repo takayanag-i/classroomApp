@@ -12,15 +12,15 @@ import jp.co.collasho.classroom.exception.LoginFailedException;
 public class StudentDao {
 
     /** コネクション */
-    private Connection connection;
+    private Connection conn;
 
     /**
      * コンストラクタ
      * 
-     * @param connection
+     * @param conn
      */
-    public StudentDao(Connection connection) {
-        this.connection = connection;
+    public StudentDao(Connection conn) {
+        this.conn = conn;
     }
 
 
@@ -34,7 +34,7 @@ public class StudentDao {
         String query =
                 "INSERT INTO Students (student_id, name, email, password) VALUES (?, ?, ?, ?);";
 
-        try (PreparedStatement pStmt = this.connection.prepareStatement(query)) {
+        try (PreparedStatement pStmt = this.conn.prepareStatement(query)) {
             pStmt.setString(1, student.getStudentId());
             pStmt.setString(2, student.getName());
             pStmt.setString(3, student.getEmail());
@@ -45,11 +45,16 @@ public class StudentDao {
         }
     }
 
-    public List<StudentEntity> getAll() {
+    /**
+     * SELECT
+     * 
+     * @return 学生エンティティ（リスト：WHERE句なし）
+     */
+    public List<StudentEntity> select() {
         List<StudentEntity> allStudents = new ArrayList<>();
         String query = "SELECT * FROM Students;";
 
-        try (PreparedStatement pStmt = this.connection.prepareStatement(query)) {
+        try (PreparedStatement pStmt = this.conn.prepareStatement(query)) {
             ResultSet resultSet = pStmt.executeQuery();
             while (resultSet.next()) {
                 String studentId = resultSet.getString("student_id");
@@ -68,11 +73,19 @@ public class StudentDao {
         return allStudents;
     }
 
-    public StudentEntity getStudentEntity(String studentId, String password)
-            throws LoginFailedException {
+    /**
+     * SELECT
+     * 
+     * @param studentId
+     * @param password
+     * @return 学生エンティティ（単一：studentIdは主キー）
+     * @return null（該当値なし）
+     * @throws LoginFailedException
+     */
+    public StudentEntity select(String studentId, String password) {
         String query = "SELECT * FROM Students WHERE student_id = ? AND password = ?";
 
-        try (PreparedStatement pStmt = this.connection.prepareStatement(query)) {
+        try (PreparedStatement pStmt = this.conn.prepareStatement(query)) {
             pStmt.setString(1, studentId);
             pStmt.setString(2, password);
             ResultSet resultSet = pStmt.executeQuery();
@@ -84,11 +97,13 @@ public class StudentDao {
                 return new StudentEntity(studentId, name, email);
 
             } else {
-                throw new LoginFailedException("ログインに失敗しました");
+                return null;
             }
 
         } catch (SQLException e) {
             throw new RuntimeException("SELECTクエリの実行に失敗してステートメントを解放しました。");
         }
     }
+
+    // TODO convert?
 }

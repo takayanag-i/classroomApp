@@ -59,7 +59,7 @@ public class SearchServlet extends HttpServlet {
 
         // 検索の実行
         SearchDriver driver = new SearchDriver();
-        List<CourseDto> results = driver.drive(criteria);
+        List<CourseDto> results = driver.getCourses(criteria);
 
         // 結果を格納してフォワード
         req.setAttribute("results", results);

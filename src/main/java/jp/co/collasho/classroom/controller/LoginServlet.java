@@ -62,7 +62,7 @@ public class LoginServlet extends HttpServlet {
         // ログインユーザの情報を取得
         LoginDriver loginDriver = new LoginDriver();
         try {
-            LoginStudentDto loginStudent = loginDriver.drive(studentId, password);
+            LoginStudentDto loginStudent = loginDriver.getStudentToLogin(studentId, password);
 
             HttpSession session = req.getSession();
             session.setAttribute("loginStudent", loginStudent);
@@ -74,7 +74,7 @@ public class LoginServlet extends HttpServlet {
 
         // 表示用時間割データを取得
         DisplayDriver displayDriver = new DisplayDriver();
-        List<CourseDto> enrollments = displayDriver.drive(studentId);
+        List<CourseDto> enrollments = displayDriver.getCourses(studentId);
         req.setAttribute("enrollments", enrollments);
         req.getRequestDispatcher("WEB-INF/jsp/enrollment.jsp").forward(req, res);
     }
