@@ -53,7 +53,7 @@ public enum DayOfWeek {
      * 漢字→インスタンス
      * 
      * @param japanese 漢字
-     * @return
+     * @return 曜日型
      */
     public static DayOfWeek fromJapanese(String japanese) {
         for (DayOfWeek day : DayOfWeek.values()) {

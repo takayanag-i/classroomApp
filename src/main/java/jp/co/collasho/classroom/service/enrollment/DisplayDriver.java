@@ -23,7 +23,7 @@ public class DisplayDriver {
      * 表示用の講座リストを取得する
      * 
      * @param studentId 対象とする学生ID
-     * @return 対象とする学生が登録している講座のDTOのリスト
+     * @return 学生が登録している講座のDTOのリスト
      */
     public List<CourseDto> getCourses(String studentId) {
         List<CourseDto> courseDtos = new ArrayList<>();
@@ -38,7 +38,6 @@ public class DisplayDriver {
 
             // 講座DTOの作成―複数教員に注意しながら―
             multipleInstructorsLogic logic = new multipleInstructorsLogic(instrucionEntities);
-
             for (CourseEntity courseEntity : courseEntities) {
                 CourseDto courseDto = logic.convertEntityToDto(courseEntity);
                 courseDtos.add(courseDto);

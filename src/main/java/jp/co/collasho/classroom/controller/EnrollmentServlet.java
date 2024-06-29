@@ -54,6 +54,6 @@ public class EnrollmentServlet extends HttpServlet {
 
         // 履修登録の実行
         EnrollmentDriver driver = new EnrollmentDriver();
-        driver.drive(enrollments);
+        driver.enroll(enrollments);
     }
 }

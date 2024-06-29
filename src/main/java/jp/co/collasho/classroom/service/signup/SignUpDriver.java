@@ -24,11 +24,11 @@ public class SignUpDriver {
      */
     public void drive(StudentDto studentDto) throws SignUpFailedException {
 
-        try (Connection connection = this.connectionManager.getConnection()) {
+        try (Connection conn = this.connectionManager.getConnection()) {
             StudentEntity student = this.convertDtoToEntity(studentDto);
 
             // 重複ユーザチェック
-            StudentDao studentDao = new StudentDao(connection);
+            StudentDao studentDao = new StudentDao(conn);
             List<StudentEntity> allStudents = studentDao.select();
             this.CheckIdAndEmail(student, allStudents);
 
@@ -52,7 +52,6 @@ public class SignUpDriver {
         return entity;
     }
 
-    // TODO boolean
     private void CheckIdAndEmail(StudentEntity candidate, List<StudentEntity> allStudents)
             throws SignUpFailedException {
         for (StudentEntity student : allStudents) {

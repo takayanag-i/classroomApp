@@ -25,8 +25,8 @@ public class LoginDriver {
      */
     public LoginStudentDto getStudentToLogin(String studentId, String password)
             throws LoginFailedException {
-        try (Connection connection = this.connectionManager.getConnection()) {
-            StudentDao studentDao = new StudentDao(connection);
+        try (Connection conn = this.connectionManager.getConnection()) {
+            StudentDao studentDao = new StudentDao(conn);
 
             StudentEntity student = studentDao.select(studentId, password);
 

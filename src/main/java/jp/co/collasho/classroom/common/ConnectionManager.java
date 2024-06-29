@@ -4,9 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * コネクションマネージャクラス
+ */
 public class ConnectionManager {
     /** コネクション */
-    private Connection connection;
+    private Connection conn;
     /** JDBCURL */
     private String jdbcUrl = "jdbc:mysql://localhost:13306/training_db";
     /** ユーザ名 */
@@ -15,25 +18,18 @@ public class ConnectionManager {
     private String password = "password";
 
     /**
-     * コンストラクタ
-     */
-    public ConnectionManager() {
-
-    }
-
-    /**
      * データベース接続
      * 
+     * @return コネクション
      * @throws RuntimeException
      * @throws ClassNotFoundException
      */
     public Connection getConnection() throws RuntimeException {
-        if (this.connection == null) {
+        if (this.conn == null) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                this.connection =
-                        DriverManager.getConnection(this.jdbcUrl, this.user, this.password);
-                this.connection.setAutoCommit(false);
+                this.conn = DriverManager.getConnection(this.jdbcUrl, this.user, this.password);
+                this.conn.setAutoCommit(false);
                 System.out.println("データベースに接続しました。");
             } catch (SQLException e) {
                 throw new RuntimeException("データベースの接続に失敗しました。", e);
@@ -41,7 +37,7 @@ public class ConnectionManager {
                 throw new RuntimeException("ドライバが見つからないためデータベースの接続に失敗しました。");
             }
         }
-        return this.connection;
+        return this.conn;
     }
 
     /**
@@ -51,13 +47,13 @@ public class ConnectionManager {
      */
     public void closeConnection() throws RuntimeException {
         try {
-            if (this.connection != null) {
-                this.connection.close();
+            if (this.conn != null) {
+                this.conn.close();
             }
         } catch (SQLException e) {
             throw new RuntimeException("データベースの切断に失敗しました。", e);
         } finally {
-            this.connection = null;
+            this.conn = null;
         }
     }
 
@@ -68,8 +64,8 @@ public class ConnectionManager {
      */
     public void commit() throws RuntimeException {
         try {
-            if (this.connection != null) {
-                this.connection.commit();
+            if (this.conn != null) {
+                this.conn.commit();
             }
         } catch (SQLException e) {
             throw new RuntimeException("トランザクションのコミットに失敗しました。", e);
@@ -83,8 +79,8 @@ public class ConnectionManager {
      */
     public void rollback() throws RuntimeException {
         try {
-            if (this.connection != null) {
-                this.connection.rollback();
+            if (this.conn != null) {
+                this.conn.rollback();
             }
         } catch (SQLException e) {
             throw new RuntimeException("トランザクションのロールバックに失敗しました。", e);

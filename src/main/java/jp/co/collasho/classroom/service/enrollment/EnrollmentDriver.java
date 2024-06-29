@@ -13,9 +13,9 @@ public class EnrollmentDriver {
     /** コネクションマネージャ */
     ConnectionManager connectionManager = new ConnectionManager();
 
-    public void drive(List<EnrollmentDto> dtos) {
-        try (Connection connection = this.connectionManager.getConnection()) {
-            EnrollmentDao enrollmentDao = new EnrollmentDao(connection);
+    public void enroll(List<EnrollmentDto> dtos) {
+        try (Connection conn = this.connectionManager.getConnection()) {
+            EnrollmentDao enrollmentDao = new EnrollmentDao(conn);
 
             for (EnrollmentDto dto : dtos) {
                 EnrollmentEntity entity = this.convertEntityToDto(dto);

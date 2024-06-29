@@ -39,7 +39,6 @@ public class SearchDriver {
 
             // 講座DTOの作成―複数教員に注意しながら―
             multipleInstructorsLogic logic = new multipleInstructorsLogic(instrucionEntities);
-
             for (CourseEntity courseEntity : courseEntities) {
                 CourseDto courseDto = logic.convertEntityToDto(courseEntity);
                 if (courseDto == null) {
