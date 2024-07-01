@@ -1,3 +1,4 @@
+    /* ログインコンテナ */
     .login-container {
         background-color: #fff;
         padding: 20px;
@@ -8,10 +9,7 @@
         margin: 0 auto;
     }
 
-    .login-container h1 {
-        margin-bottom: 20px;
-    }
-
+    /* 入力欄 */
     .login-container input[type="text"],
     .login-container input[type="password"] {
         width: 90%;
@@ -21,6 +19,7 @@
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     }
 
+    /* GOボタン */
     .login-container input[type="submit"] {
         width: 100%;
         padding: 10px;
@@ -35,6 +34,7 @@
         background-color: #19334d;
     }
 
+    /* 新規登録リンク */
     .login-container .register-link {
         margin-top: 10px;
         display: block;
@@ -46,6 +46,7 @@
         text-decoration: underline;
     }
 
+    /* エラーメッセージ */
     .error_message {
         width: 100%;
         text-align: center;

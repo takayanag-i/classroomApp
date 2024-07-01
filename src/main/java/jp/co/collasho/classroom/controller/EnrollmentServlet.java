@@ -3,9 +3,7 @@ package jp.co.collasho.classroom.controller;
 import jakarta.servlet.ServletException;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-// Jakarta Servlet 5.0 API ~
+// Jakarta Servlet 6.0 API ~
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,25 +33,21 @@ public class EnrollmentServlet extends HttpServlet {
         String studentId = loginStudent.getStudentId();
 
         // パラメタの取得
-        String[] courseIds = req.getParameterValues("selectedCourses");
+        String courseId = req.getParameter("selectedCourse");
 
         // 現在日時の取得
         Timestamp now = new Timestamp(System.currentTimeMillis());
 
-        // DTOリストの作成
-        List<EnrollmentDto> enrollments = new ArrayList<>();
+        // DTOの作成
 
-        for (String courseId : courseIds) {
-            EnrollmentDto enrollment = new EnrollmentDto();
-            enrollment.setStudentId(studentId);
-            enrollment.setCourseId(courseId);
-            enrollment.setEnrollmentDate(now);
-
-            enrollments.add(enrollment);
-        }
+        EnrollmentDto enrollment = new EnrollmentDto();
+        enrollment.setStudentId(studentId);
+        enrollment.setCourseId(courseId);
+        enrollment.setEnrollmentDate(now);
 
         // 履修登録の実行
         EnrollmentDriver driver = new EnrollmentDriver();
-        driver.enroll(enrollments);
+        driver.enroll(enrollment);
+        // TODO forward
     }
 }

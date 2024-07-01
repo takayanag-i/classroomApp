@@ -8,8 +8,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jp.co.collasho.classroom.common.DayOfWeek;
 import jp.co.collasho.classroom.dto.CourseDto;
+import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.dto.SearchCriteriaDto;
 import jp.co.collasho.classroom.service.search.SearchDriver;
 
@@ -27,7 +29,16 @@ public class SearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        req.getRequestDispatcher("WEB-INF/jsp/search.jsp").forward(req, res);
+        HttpSession session = req.getSession();
+        LoginStudentDto loginStudent = (LoginStudentDto) session.getAttribute("loginStudent");
+        String forwardPath;
+        if (loginStudent == null) {
+            forwardPath = "WEB-INF/jsp/login.jsp";
+        } else {
+            forwardPath = "WEB-INF/jsp/search.jsp";
+        }
+
+        req.getRequestDispatcher(forwardPath).forward(req, res);
     }
 
     /**

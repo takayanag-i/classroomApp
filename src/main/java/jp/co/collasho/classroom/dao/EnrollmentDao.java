@@ -40,24 +40,22 @@ public class EnrollmentDao {
     }
 
     /**
-     * 履修の「削除」
+     * 履修の「抹消」
      * 
-     * 登録期間中は削除することができる
+     * 登録期間中は抹消することができる
      * 
      * @param courseId
      */
-    public void delete(String courseId) {
-        // TODO
-    }
+    public void delete(String studentId, String courseId) {
+        String query = "delete from Enrollments where student_id = ? and course_id = ?";
+        try (PreparedStatement pStmt = conn.prepareStatement(query)) {
+            pStmt.setString(1, studentId);
+            pStmt.setString(2, courseId);
 
-    /**
-     * 履修の「取消」
-     * 
-     * 登録期間後，1週間だけ実行できる
-     * 
-     * @param courseId
-     */
-    public void updateCancelFlug(String courseId) {
-        // TODO
+            pStmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("DELETEクエリの実行時に予期しないエラーが発生しました。", e);
+        }
     }
 }

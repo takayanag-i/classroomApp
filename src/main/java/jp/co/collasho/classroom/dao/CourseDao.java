@@ -62,10 +62,11 @@ public class CourseDao {
         String query =
                 "select course_id, course_name, day_of_week, period from Courses where course_id like ? and course_name like ? and day_of_week like ? and period like ?;";
 
+        // TODO order by
         try (PreparedStatement pStmt = conn.prepareStatement(query)) {
             pStmt.setString(1, "%" + criteria.getCourseId() + "%");
             pStmt.setString(2, "%" + criteria.getCourseName() + "%");
-            pStmt.setString(3, "%" + criteria.getDayOfWeek().getAbbreviation() + "%");
+            pStmt.setString(3, "%" + criteria.getDayOfWeek().getNum() + "%");
             pStmt.setString(4, "%" + criteria.getPeriod() + "%");
             ResultSet rs = pStmt.executeQuery();
 

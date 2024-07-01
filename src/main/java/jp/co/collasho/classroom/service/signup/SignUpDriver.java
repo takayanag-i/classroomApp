@@ -25,15 +25,15 @@ public class SignUpDriver {
     public void drive(StudentDto studentDto) throws SignUpFailedException {
 
         try (Connection conn = this.connectionManager.getConnection()) {
-            StudentEntity student = this.convertDtoToEntity(studentDto);
+            StudentDao studentDao = new StudentDao(conn);
+            StudentEntity studentEntity = this.convertDtoToEntity(studentDto);
 
             // 重複ユーザチェック
-            StudentDao studentDao = new StudentDao(conn);
-            List<StudentEntity> allStudents = studentDao.select();
-            this.CheckIdAndEmail(student, allStudents);
+            List<StudentEntity> allStudentEntities = studentDao.select();
+            this.CheckIdAndEmail(studentEntity, allStudentEntities);
 
             // インサート
-            studentDao.insert(student);
+            studentDao.insert(studentEntity);
             this.connectionManager.commit();
         } catch (SQLException e) {
             connectionManager.rollback();
@@ -41,15 +41,15 @@ public class SignUpDriver {
         }
     }
 
-    private StudentEntity convertDtoToEntity(StudentDto dto) {
-        StudentEntity entity = new StudentEntity();
+    private StudentEntity convertDtoToEntity(StudentDto d) {
+        StudentEntity e = new StudentEntity();
 
-        entity.setStudentId(dto.getStudentId());
-        entity.setName(dto.getName());
-        entity.setEmail(dto.getEmail());
-        entity.setPassword(dto.getPassword());
+        e.setStudentId(d.getStudentId());
+        e.setName(d.getName());
+        e.setEmail(d.getEmail());
+        e.setPassword(d.getPassword());
 
-        return entity;
+        return e;
     }
 
     private void CheckIdAndEmail(StudentEntity candidate, List<StudentEntity> allStudents)

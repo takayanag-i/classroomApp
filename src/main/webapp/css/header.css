@@ -1,0 +1,48 @@
+    /*
+    * ヘッダー
+    * 高さ100 pxで上部に固定
+    */
+    header {
+        width: 100%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        height: 75px;
+        position: fixed;
+        top: 0;
+        background-color: #fff;
+    }
+
+    /* flex-container */
+    #header-wrapper {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        align-items: center;
+    }
+
+    /* ページタイトル */
+    #header-wrapper h1 {
+        width: 50%;
+        margin: 0;
+    }
+
+    /* ナビゲーション & flex-container */
+    #header-wrapper nav {
+        width: 50%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        height: 100%;
+        align-items: center;
+    }
+
+    /* ◯◯さん，ホームへ */
+    #header-wrapper nav div {
+        min-width: 30%;
+    }
+
+    /* 左にautoの余白を設定 */
+    #header-wrapper nav>div:first-child {
+        margin-left: auto;
+    }

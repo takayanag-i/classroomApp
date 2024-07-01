@@ -1,83 +1,87 @@
-/* リセットCSS for テーブル */
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-}
+    /* リセット */
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
 
-th,
-td {
-    margin: 0;
-    padding: 0;
-    border: 0;
-}
+    th,
+    td {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
 
-/* メインスタイル */
-body {
-    font-family: 'Noto Sans', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    /* テーブル */
+    table {
+        width: 100%;
+        max-width: 1000px;
+        margin: 20px auto;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        table-layout: fixed;
+        border: 0;
+        border-collapse: separate;
+        border-spacing: 10px;
+    }
 
-h2 {
-    margin: 20px 0;
-    font-size: 2.5em;
-    font-weight: 700;
-}
+    th,
+    td {
+        border: 0;
+    }
 
-table {
-    width: 90%;
-    max-width: 1000px;
-    margin: 20px auto;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    table-layout: fixed;
-}
+    /* テーブルヘッダ（曜日）*/
+    th {
+        padding: 0;
+        background-color: #223a70;
+        color: #fff;
+        text-align: center;
+        border-radius: 10px;
+    }
 
-th,
-td {
-    padding: 15px;
-    text-align: left;
-    border: 1px solid #ccc;
-}
+    /* セル */
+    td {
+        padding: 15px;
+        text-align: left;
+        background-color: #223a7023;
+        border-radius: 5px;
+    }
 
-th:first-child,
-td:first-child {
-    width: 5%;
+    .empty {
+        background-color: #fff;
+    }
+
+    td:hover {
+        background-color: #dfe9f3;
+    }
+
     /* 時限の列を狭くする */
-    text-align: center;
     /* 時限のテキストを中央揃え */
-}
+    th:first-child,
+    td:first-child {
+        width: 5%;
+        text-align: center;
+        font-weight: bold;
+    }
 
-th:not(:first-child),
-td:not(:first-child) {
-    width: 19%;
     /* 曜日の列を均等に割り当てる */
-}
+    /* マウスポインタをクリック可能に見せる */
+    th:not(:first-child),
+    td:not(:first-child) {
+        width: 19%;
+        cursor: pointer;
+    }
 
-th {
-    text-transform: uppercase;
-    background-color: #34495e;
-    color: #fff;
-}
+    /* 角を削除 */
+    thead tr:first-child {
+        background-color: #fff;
+    }
 
-td {
-    background-color: #fff;
-    transition: background-color 0.3s ease;
-}
+    /* 講座名 */
+    .course-name {
+        font-weight: bold;
+        color: #34495e;
+    }
 
-td:hover {
-    background-color: #dfe9f3;
-}
-
-.course-name {
-    font-weight: bold;
-    color: #34495e;
-}
-
-.instructor-name {
-    color: #555;
-}
+    /* 教員名 */
+    .instructor-name {
+        color: #555;
+    }
