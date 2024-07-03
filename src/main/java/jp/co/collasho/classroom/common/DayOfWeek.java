@@ -40,7 +40,7 @@ public enum DayOfWeek {
      * @param num 番号
      * @return 曜日型
      */
-    public static DayOfWeek fromAbbreviation(String num) {
+    public static DayOfWeek fromNum(String num) {
         for (DayOfWeek day : DayOfWeek.values()) {
             if (day.getNum().equals(num)) {
                 return day;

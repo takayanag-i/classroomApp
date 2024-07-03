@@ -111,4 +111,6 @@ th {
 .error-message {
     width: 100%;
     color: red;
+    font-weight: bold;
+    background-color: yellow;
 }

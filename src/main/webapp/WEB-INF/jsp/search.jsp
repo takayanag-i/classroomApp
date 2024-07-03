@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Search Courses</title>
+    <title>時間割アプリ-search-</title>
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/search.css">
@@ -24,25 +24,25 @@
                     <div class="form-row">
                         <div class="col">
                             <select id="day_of_week" name="day_of_week">
-                                <option value="">曜日</option>
-                                <option value="1">月</option>
-                                <option value="2">火</option>
-                                <option value="3">水</option>
-                                <option value="4">木</option>
-                                <option value="5">金</option>
+                                <option value="" ${criteria.dayOfWeek.num == "" ? "selected" : ""}>曜日</option>
+                                <option value="1" ${criteria.dayOfWeek.num == "1" ? "selected" : ""}>月</option>
+                                <option value="2" ${criteria.dayOfWeek.num == "2" ? "selected" : ""}>火</option>
+                                <option value="3" ${criteria.dayOfWeek.num == "3" ? "selected" : ""}>水</option>
+                                <option value="4" ${criteria.dayOfWeek.num == "4" ? "selected" : ""}>木</option>
+                                <option value="5" ${criteria.dayOfWeek.num == "5" ? "selected" : ""}>金</option>
                             </select>
                         </div>
                         <div class="col">
-                            <input type="text" id="period" name="period" placeholder="時限">
+                            <input type="text" id="period" name="period" placeholder="時限" value="${criteria.period}">
                         </div>
                         <div class="col">
-                            <input type="text" id="course_id" name="course_id" placeholder="講座コード">
+                            <input type="text" id="course_id" name="course_id" placeholder="講座コード" value="${criteria.courseId}">
                         </div>
                         <div class="col">
-                            <input type="text" id="course_name" name="course_name" placeholder="講座名">
+                            <input type="text" id="course_name" name="course_name" placeholder="講座名" value="${criteria.courseName}">
                         </div>
                         <div class="col">
-                            <input type="text" id="instructor_name" name="instructor_name" placeholder="担当教員名">
+                            <input type="text" id="instructor_name" name="instructor_name" placeholder="担当教員名" value="${criteria.instructorName}">
                         </div>
                         <div class="col-full">
                             <button type="submit" class="btn">
@@ -58,7 +58,7 @@
             <c:if test="${not empty results}">
                 <form action="EnrollmentServlet" method="post">
                     <div class="results-sub-container">
-                        <p>表の部分はスクロールできます。1つ選択して登録してください。</p>
+                        <p>結果が多いときは表をスクロールできます。1つ選択して登録してください。</p>
                         <button type="submit" class="btn"><i class="fas fa-check"></i>登録</button>
                     </div>
                     <div class="table-container scrollable-container">
@@ -91,7 +91,7 @@
             </c:if>
 
             <c:if test="${empty results}">
-                <p>No results found.</p>
+                <p>結果はありません。</p>
             </c:if>
         </div>
     </div>

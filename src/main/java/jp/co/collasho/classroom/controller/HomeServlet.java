@@ -18,7 +18,7 @@ import jp.co.collasho.classroom.service.enrollment.DisplayDriver;
 public class HomeServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res)
+    protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
         // セッション情報の取得

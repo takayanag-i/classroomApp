@@ -78,9 +78,8 @@ public class CourseDao {
         List<CourseEntity> courses = new ArrayList<>();
 
         String query =
-                "select course_id, course_name, day_of_week, period from Courses where course_id like ? and course_name like ? and day_of_week like ? and period like ?;";
+                "select course_id, course_name, day_of_week, period from Courses where course_id like ? and course_name like ? and day_of_week like ? and period like ? order by day_of_week asc, period asc;";
 
-        // TODO order by
         try (PreparedStatement pStmt = conn.prepareStatement(query)) {
             pStmt.setString(1, "%" + criteria.getCourseId() + "%");
             pStmt.setString(2, "%" + criteria.getCourseName() + "%");

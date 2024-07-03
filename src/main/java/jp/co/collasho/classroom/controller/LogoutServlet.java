@@ -9,14 +9,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
-import jp.co.collasho.classroom.service.delete.DeleteDriver;
 
 
-@WebServlet("/DeleteServlet")
-public class DeleteServlet extends HttpServlet {
+@WebServlet("/LogoutServlet")
+public class LogoutServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res)
+    protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
         // セッション情報の取得
@@ -28,16 +27,8 @@ public class DeleteServlet extends HttpServlet {
             return;
         }
 
-        String studentId = loginStudent.getStudentId();
+        session.invalidate();
 
-        // パラメタの取得
-        String courseId = req.getParameter("course_id");
-
-        // TODO チェック
-
-        // 履修抹消の実行
-        DeleteDriver driver = new DeleteDriver();
-        driver.deleteEnrollment(studentId, courseId);
-        req.getRequestDispatcher("HomeServlet").forward(req, res);
+        req.getRequestDispatcher("LoginServlet").forward(req, res);
     }
 }

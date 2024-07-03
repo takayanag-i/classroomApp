@@ -11,51 +11,44 @@ import jp.co.collasho.classroom.entity.CourseEntity;
 import jp.co.collasho.classroom.entity.InstructionEntity;
 
 /**
- * 複数教員情報をもつ講座DTOを作成するクラス
+ * 複数教員情報をもつ講座DTOを作成するためのクラス
  */
 public class multipleInstructorsLogic {
-
-    /** 講座・教員対応エンティティ */
-    List<InstructionEntity> instructions;
-
-    /** コンストラクタ */
-    public multipleInstructorsLogic(List<InstructionEntity> instructions) {
-        this.instructions = instructions;
-    }
 
     /**
      * 表示用の講座オブジェクトを取得する
      * 
-     * @param e 講座エンティティ（教員情報なし）
+     * @param courseEntity 講座エンティティ（教員情報なし）
      * @return 講座オブジェクト
      * @return null 過剰の講座エンティティに対してはnullを返却する
      */
-    public CourseDto convertEntityToDto(CourseEntity e) {
-        Map<String, List<String>> instructionMap = this.getInstructionMap();
-        List<String> instructors = instructionMap.get(e.getCourseId());
+    public CourseDto merge(CourseEntity courseEntity, List<InstructionEntity> instructionEntities) {
+        Map<String, List<String>> instructionMap = this.getInstructionMap(instructionEntities);
+        List<String> instructors = instructionMap.get(courseEntity.getCourseId());
 
         if (instructors == null) {
             // 教員名で検索があった場合などは
-            // 講座エンティティの数 > 講座・教員対応エンティティの数
+            // 講座エンティティの数 > 講座・教員対応エンティティの数なので
             return null;
         }
 
         CourseDto d = new CourseDto();
-        d.setDayOfWeek(DayOfWeek.fromAbbreviation(e.getDayOfWeekNum()));
-        d.setPeriod(e.getPeriod());
-        d.setCourseId(e.getCourseId());
-        d.setCourseName(e.getCourseName());
+        d.setDayOfWeek(DayOfWeek.fromNum(courseEntity.getDayOfWeekNum()));
+        d.setPeriod(courseEntity.getPeriod());
+        d.setCourseId(courseEntity.getCourseId());
+        d.setCourseName(courseEntity.getCourseName());
         d.setInstructors(instructors);
 
         return d;
     }
 
-    private Map<String, List<String>> getInstructionMap() {
+    private Map<String, List<String>> getInstructionMap(
+            List<InstructionEntity> instructionEntities) {
         Map<String, List<String>> instructionMap = new HashMap<>();
 
-        for (InstructionEntity instruction : instructions) {
-            String courseId = instruction.getCourseId();
-            String instructor = instruction.getInstructor();
+        for (InstructionEntity instructionEntity : instructionEntities) {
+            String courseId = instructionEntity.getCourseId();
+            String instructor = instructionEntity.getInstructor();
 
             // 新しいコースIdが来たらkeyにして，valueとして新しいArrayListをnewする
             instructionMap.computeIfAbsent(courseId, k -> new ArrayList<>());

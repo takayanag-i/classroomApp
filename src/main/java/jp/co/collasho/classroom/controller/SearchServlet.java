@@ -58,14 +58,14 @@ public class SearchServlet extends HttpServlet {
         String dayOfWeek = req.getParameter("day_of_week");
         String period = req.getParameter("period");
 
-        // TODO バリデーション
+        // TODO バリデーション 特にnullじゃないか
 
         // 検索条件オブジェクトの生成
         SearchCriteriaDto criteria = new SearchCriteriaDto();
         criteria.setCourseId(courseId);
         criteria.setCourseName(courseName);
         criteria.setInstructorName(instructorName);
-        criteria.setDayOfWeek(DayOfWeek.fromAbbreviation(dayOfWeek));
+        criteria.setDayOfWeek(DayOfWeek.fromNum(dayOfWeek));
         criteria.setPeriod(period);
 
         // 検索の実行
@@ -74,8 +74,8 @@ public class SearchServlet extends HttpServlet {
 
         // 結果を格納してフォワード
         req.setAttribute("results", results);
+        req.setAttribute("criteria", criteria);
         req.getRequestDispatcher("WEB-INF/jsp/search.jsp").forward(req, res);
-
     }
 }
 

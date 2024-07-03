@@ -37,9 +37,9 @@ public class DisplayDriver {
             List<InstructionEntity> instrucionEntities = instructionDao.select(courseEntities);
 
             // 講座DTOの作成―複数教員に注意しながら―
-            multipleInstructorsLogic logic = new multipleInstructorsLogic(instrucionEntities);
+            multipleInstructorsLogic logic = new multipleInstructorsLogic();
             for (CourseEntity courseEntity : courseEntities) {
-                CourseDto courseDto = logic.convertEntityToDto(courseEntity);
+                CourseDto courseDto = logic.merge(courseEntity, instrucionEntities);
                 courseDtos.add(courseDto);
             }
 

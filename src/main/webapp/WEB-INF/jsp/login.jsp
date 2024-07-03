@@ -13,7 +13,7 @@
 <body>
     <header>
     <div id="header-wrapper">
-        <h1>時間割アプリ</h1>
+        <h1><a href="HomeServlet">時間割アプリ</a></h1>
         <nav>
             <div></div>
             <div></div>

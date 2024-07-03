@@ -5,7 +5,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Enrollment</title>
+    <title>時間割アプリ</title>
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/enrollment.css">
@@ -48,9 +48,12 @@
                                     </c:if>
                                 </c:forEach>
                                 <c:if test="${is_empty}">
-                                    <form action="AddEnrollServlet" method="post">
+                                    <form action="SearchServlet" method="post">
                                         <input type="hidden" name="day_of_week" value="${day}">
                                         <input type="hidden" name="period" value="${period}">
+                                        <input type="hidden" name="course_id" value="">
+                                        <input type="hidden" name="course_name" value="">
+                                        <input type="hidden" name="instructor_name" value="">
                                     </form>
                                 </c:if>
                             </td>

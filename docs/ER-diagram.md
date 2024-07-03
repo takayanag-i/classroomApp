@@ -32,8 +32,8 @@ erDiagram
     }
 
     Instructions {
-        string course_id FK
-        string instructor_id FK
+        string course_id PK,FK
+        string instructor_id PK,FK
     }
         
     Students ||--o{ Enrollments : enrolls

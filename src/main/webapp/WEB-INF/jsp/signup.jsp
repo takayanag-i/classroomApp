@@ -5,7 +5,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>時間割アプリ</title>
+    <title>時間割アプリ-signup-</title>
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/signup.css">
@@ -13,7 +13,7 @@
 <body>
     <header>
     <div id="header-wrapper">
-        <h1>This is the header</h1>
+        <h1><a href="HomeServlet">時間割アプリ</a></h1>
         <nav>
             <div></div>
             <div></div>
