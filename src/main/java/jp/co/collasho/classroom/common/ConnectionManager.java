@@ -21,10 +21,8 @@ public class ConnectionManager {
      * データベース接続
      * 
      * @return コネクション
-     * @throws RuntimeException
-     * @throws ClassNotFoundException
      */
-    public Connection getConnection() throws RuntimeException {
+    public Connection getConnection() {
         if (this.conn == null) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
@@ -42,10 +40,8 @@ public class ConnectionManager {
 
     /**
      * データベース切断
-     * 
-     * @throws RuntimeException
      */
-    public void closeConnection() throws RuntimeException {
+    public void closeConnection() {
         try {
             if (this.conn != null) {
                 this.conn.close();
@@ -59,10 +55,8 @@ public class ConnectionManager {
 
     /**
      * コミット
-     * 
-     * @throws RuntimeException
      */
-    public void commit() throws RuntimeException {
+    public void commit() {
         try {
             if (this.conn != null) {
                 this.conn.commit();
@@ -74,10 +68,8 @@ public class ConnectionManager {
 
     /**
      * ロールバック
-     * 
-     * @throws RuntimeException
      */
-    public void rollback() throws RuntimeException {
+    public void rollback() {
         try {
             if (this.conn != null) {
                 this.conn.rollback();

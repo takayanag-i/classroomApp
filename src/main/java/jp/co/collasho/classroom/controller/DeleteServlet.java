@@ -38,5 +38,6 @@ public class DeleteServlet extends HttpServlet {
         // 履修抹消の実行
         DeleteDriver driver = new DeleteDriver();
         driver.deleteEnrollment(studentId, courseId);
+        req.getRequestDispatcher("HomeServlet").forward(req, res);
     }
 }

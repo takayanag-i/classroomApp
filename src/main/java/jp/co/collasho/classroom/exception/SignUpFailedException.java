@@ -2,8 +2,6 @@ package jp.co.collasho.classroom.exception;
 
 
 public class SignUpFailedException extends Exception {
-
-
     /**
      * メッセージ付きコンストラクタ
      * 

@@ -8,8 +8,8 @@ public class CourseEntity {
     private String courseId;
     /** コース名 */
     private String courseName;
-    /** 曜日略称 */
-    private String dayOfWeekString;
+    /** 曜日番号 */
+    private String dayOfWeekNum;
     /** 時限 */
     private String period;
 
@@ -32,12 +32,12 @@ public class CourseEntity {
         this.courseName = courseName;
     }
 
-    public String getDayOfWeekString() {
-        return dayOfWeekString;
+    public String getDayOfWeekNum() {
+        return dayOfWeekNum;
     }
 
-    public void setDayOfWeekString(String dayOfWeekString) {
-        this.dayOfWeekString = dayOfWeekString;
+    public void setDayOfWeekNum(String dayOfWeekNum) {
+        this.dayOfWeekNum = dayOfWeekNum;
     }
 
     public String getPeriod() {

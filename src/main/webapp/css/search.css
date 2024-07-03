@@ -1,3 +1,7 @@
+p {
+    margin: 0;
+}
+
 /* コンテナ */
 .container {
     display: flex;
@@ -9,6 +13,12 @@
 .sub-container {
     max-width: 300px;
     margin-right: 20px;
+}
+
+.results-sub-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
 }
 
 /* 検索ウィジェットのコンテナ */
@@ -44,6 +54,7 @@
     border: none;
     cursor: pointer;
     border-radius: 4px;
+    height: 40px;
 }
 
 .btn:hover {
@@ -64,6 +75,7 @@
     max-width: 1000px;
     width: 100%;
     overflow-x: auto;
+    margin-top: 30px;
 }
 
 /* スクロール部分のコンテナ */
@@ -78,6 +90,7 @@ table {
     border-collapse: collapse;
 }
 
+/* テーブル */
 table,
 th,
 td {
@@ -94,13 +107,8 @@ th {
     background-color: #f2f2f2;
 }
 
-.fixed-button-container {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-}
-
-.fixed-button-container button {
-    padding: 20px 30px;
-    font-size: 18px;
+/* エラーメッセージ */
+.error-message {
+    width: 100%;
+    color: red;
 }

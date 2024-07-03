@@ -41,7 +41,7 @@ public class multipleInstructorsLogic {
         }
 
         CourseDto d = new CourseDto();
-        d.setDayOfWeek(DayOfWeek.fromAbbreviation(e.getDayOfWeekString()));
+        d.setDayOfWeek(DayOfWeek.fromAbbreviation(e.getDayOfWeekNum()));
         d.setPeriod(e.getPeriod());
         d.setCourseId(e.getCourseId());
         d.setCourseName(e.getCourseName());

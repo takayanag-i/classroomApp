@@ -9,21 +9,26 @@ import jp.co.collasho.classroom.dao.EnrollmentDao;
 import jp.co.collasho.classroom.dto.EnrollmentDto;
 import jp.co.collasho.classroom.entity.CourseEntity;
 import jp.co.collasho.classroom.entity.EnrollmentEntity;
+import jp.co.collasho.classroom.exception.InValidEnrollmentException;
 
 public class EnrollmentDriver {
 
     /** コネクションマネージャ */
     ConnectionManager connectionManager = new ConnectionManager();
 
-    public void enroll(EnrollmentDto enrollment) {
+    public void enroll(EnrollmentDto enrollment) throws InValidEnrollmentException {
         try (Connection conn = this.connectionManager.getConnection()) {
             EnrollmentDao enrollmentDao = new EnrollmentDao(conn);
             CourseDao courseDao = new CourseDao(conn);
             EnrollmentEntity entity = this.convert(enrollment);
 
             // 重複チェック
-            List<CourseEntity> enrolledCourses = courseDao.select(enrollment.getStudentId());
-
+            CourseEntity targetCourse = courseDao.selectByCourseId(enrollment.getCourseId());
+            List<CourseEntity> enrolledCourses =
+                    courseDao.selectByStudentId(enrollment.getStudentId());
+            if (!this.isValidEnrollment(targetCourse, enrolledCourses)) {
+                throw new InValidEnrollmentException("曜日・時限が重複しています。");
+            }
 
             // インサート
             enrollmentDao.insert(entity);
@@ -37,6 +42,7 @@ public class EnrollmentDriver {
 
 
     /**
+     * Enrollmentの変換 (DTO→Entity)
      * 
      * @param d EnrollmentDTO
      * @return EnrollmentEntity
@@ -51,12 +57,16 @@ public class EnrollmentDriver {
         return e;
     }
 
-    private boolean isValidEnrollment(EnrollmentDto d, List<CourseEntity> courses) {
+    private boolean isValidEnrollment(CourseEntity target, List<CourseEntity> courses) {
 
         for (CourseEntity course : courses) {
-            String dayOfweekString = course.getDayOfWeekString();
-        }
+            String day = course.getDayOfWeekNum();
+            String period = course.getPeriod();
 
-        return false;
+            if (day.equals(target.getDayOfWeekNum()) && period.equals(target.getPeriod())) {
+                return false;
+            }
+        }
+        return true;
     }
 }

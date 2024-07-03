@@ -33,7 +33,7 @@ public class DisplayDriver {
             InstructionDao instructionDao = new InstructionDao(conn);
 
             // 講座エンティティ，講座-教員対応エンティティの取得
-            List<CourseEntity> courseEntities = courseDao.select(studentId);
+            List<CourseEntity> courseEntities = courseDao.selectByStudentId(studentId);
             List<InstructionEntity> instrucionEntities = instructionDao.select(courseEntities);
 
             // 講座DTOの作成―複数教員に注意しながら―

@@ -15,6 +15,7 @@
 <body>
 <%@ include file="header.jsp" %>
 <main>
+    <p class="error-message">${errorMessage}</p>
     <div class="container">
         <div class="sub-container">
             <h2>講座検索</h2>
@@ -24,11 +25,11 @@
                         <div class="col">
                             <select id="day_of_week" name="day_of_week">
                                 <option value="">曜日</option>
-                                <option value="Mon">月</option>
-                                <option value="Tue">火</option>
-                                <option value="Wed">水</option>
-                                <option value="Thu">木</option>
-                                <option value="Fri">金</option>
+                                <option value="1">月</option>
+                                <option value="2">火</option>
+                                <option value="3">水</option>
+                                <option value="4">木</option>
+                                <option value="5">金</option>
                             </select>
                         </div>
                         <div class="col">
@@ -54,10 +55,12 @@
         </div>
 
         <div class="results-container">
-            <h2>検索結果</h2>
             <c:if test="${not empty results}">
                 <form action="EnrollmentServlet" method="post">
+                    <div class="results-sub-container">
+                        <p>表の部分はスクロールできます。1つ選択して登録してください。</p>
                         <button type="submit" class="btn"><i class="fas fa-check"></i>登録</button>
+                    </div>
                     <div class="table-container scrollable-container">
                         <table>
                             <tr>

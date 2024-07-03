@@ -1,9 +1,6 @@
 #!/bin/bash
 
-# プロジェクトディレクトリを設定
-PROJECT_DIR="/Users/r/Documents/DIP24/sukiserv/classroom"
-TOMCAT_DIR="/Users/r/apache-tomcat-10.1.24"
-WAR_FILE="$PROJECT_DIR/target/classroom.war"
+WAR_FILE="./target/classroom.war"
 
 # コマンドライン引数を受け取る
 DEBUG_MODE=false
@@ -24,29 +21,26 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# プロジェクトディレクトリに移動
-cd "$PROJECT_DIR"
-
 # Mavenプロジェクトのビルド
 echo "Mavenプロジェクトをビルド中..."
-mvn clean install
+mvn clean package
 
 # Tomcatサーバーの停止
 echo "Tomcatサーバーを停止中..."
-$TOMCAT_DIR/bin/shutdown.sh
+$CATALINA_HOME/bin/shutdown.sh
 
 # 新しいWARファイルのコピー
 echo "新しいWARファイルをTomcatのwebappsディレクトリにコピー中..."
-cp "$WAR_FILE" "$TOMCAT_DIR/webapps/"
+cp "$WAR_FILE" "$CATALINA_HOME/webapps/"
 
 # Tomcatサーバーの起動
 if [ "$DEBUG_MODE" = true ]; then
   echo "Tomcatサーバーをデバッグモードで起動中..."
   export JPDA_OPTS="-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n"
-  $TOMCAT_DIR/bin/catalina.sh jpda start
+  $CATALINA_HOME/bin/catalina.sh jpda start
 else
   echo "Tomcatサーバーを起動中..."
-  $TOMCAT_DIR/bin/startup.sh
+  $CATALINA_HOME/bin/startup.sh
 fi
 
 # ブラウザでURLを開く

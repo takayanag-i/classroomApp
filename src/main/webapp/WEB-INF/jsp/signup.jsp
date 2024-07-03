@@ -28,7 +28,7 @@
                 <li>出席番号は4桁の半角数字です。ただし，1401, 1402, 1403は使えません。</li>
                 <li>パスワードは8文字以上で，半角英数字または半角記号から構成してください。</li>
             </ul>
-            <p class="error_message">${errorMessage}</p>
+            <p class="error-message">${errorMessage}</p>
         </div>
         <div class="signup-container">
             <form action="SignUpServlet" method="post">

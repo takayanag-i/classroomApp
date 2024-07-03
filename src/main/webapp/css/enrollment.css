@@ -43,6 +43,7 @@
         text-align: left;
         background-color: #223a7023;
         border-radius: 5px;
+        vertical-align: top;
     }
 
     .empty {

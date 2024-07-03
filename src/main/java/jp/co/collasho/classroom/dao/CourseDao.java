@@ -25,13 +25,31 @@ public class CourseDao {
         this.conn = conn;
     }
 
+    public CourseEntity selectByCourseId(String courseId) {
+        String query = "select * from Courses where course_id = ?";
+
+        try (PreparedStatement pStmt = conn.prepareStatement(query)) {
+            pStmt.setString(1, courseId);
+            ResultSet rs = pStmt.executeQuery();
+
+            if (rs.next()) {
+                return this.getEntityFromReslut(rs);
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("SELECTクエリの実行に失敗してステートメントを解放しました。", e);
+        }
+    }
+
     /**
      * 出席番号から登録講座リストを取得する
      * 
      * @param studentId 出席番号
      * @return 登録講座エンティティのリスト
      */
-    public List<CourseEntity> select(String studentId) {
+    public List<CourseEntity> selectByStudentId(String studentId) {
         List<CourseEntity> courses = new ArrayList<>();
         String query =
                 "select e.course_id, c.course_name, c.day_of_week, c.period from Enrollments as e inner join Courses as c on c.course_id = e.course_id where e.student_id = ? ;";
@@ -56,7 +74,7 @@ public class CourseDao {
      * @param criteria 検索条件オブジェクト
      * @return 講座リスト
      */
-    public List<CourseEntity> select(SearchCriteriaDto criteria) {
+    public List<CourseEntity> selectByCriteria(SearchCriteriaDto criteria) {
         List<CourseEntity> courses = new ArrayList<>();
 
         String query =
@@ -92,7 +110,7 @@ public class CourseDao {
 
         e.setCourseId(rs.getString("course_id"));
         e.setCourseName(rs.getString("course_name"));
-        e.setDayOfWeekString(rs.getString("day_of_week"));
+        e.setDayOfWeekNum(rs.getString("day_of_week"));
         e.setPeriod(rs.getString("period"));
 
         return e;

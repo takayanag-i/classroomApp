@@ -13,7 +13,7 @@
 <body>
     <header>
     <div id="header-wrapper">
-        <h1>This is the header</h1>
+        <h1>時間割アプリ</h1>
         <nav>
             <div></div>
             <div></div>
@@ -31,6 +31,6 @@
             <a class="register-link" href="SignUpServlet">新規登録はこちら</a>
         </div>
     </main>
-    <p class="error_message">${errorMessage}</p>
+    <p class="error-message">${errorMessage}</p>
 </body>
 </html>

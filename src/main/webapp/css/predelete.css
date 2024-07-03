@@ -1,3 +1,29 @@
+.container {
+    display: flex;
+    margin-top: 30px;
+}
+
+p {
+    margin: 0;
+}
+
+.button-container {
+    display: flex;
+    width: 150px;
+    justify-content: space-around;
+    margin-left: 20px;
+}
+
+.table-container {
+    margin-top: 30px;
+}
+
 .btn-delete {
+    /* 削除ボタンの色を上書き*/
     background-color: #F16682;
+}
+
+th,
+td {
+    padding: 2px 5px;
 }
