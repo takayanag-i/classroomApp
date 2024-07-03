@@ -2,16 +2,16 @@ package jp.co.collasho.classroom.controller;
 
 import jakarta.servlet.ServletException;
 import java.io.IOException;
-// Jakarta Servlet 5.0 API ~
+// Jakarta Servlet 6.0 API ~
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jp.co.collasho.classroom.common.Validator;
 import jp.co.collasho.classroom.dto.StudentDto;
 import jp.co.collasho.classroom.exception.SignUpFailedException;
 import jp.co.collasho.classroom.exception.InvalidInputException;
 import jp.co.collasho.classroom.service.signup.SignUpDriver;
-import jp.co.collasho.classroom.util.Validator;
 
 /**
  * ユーザ登録処理のコントローラ

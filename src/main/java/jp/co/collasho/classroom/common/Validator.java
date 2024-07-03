@@ -1,4 +1,4 @@
-package jp.co.collasho.classroom.util;
+package jp.co.collasho.classroom.common;
 
 import jp.co.collasho.classroom.exception.InvalidInputException;
 

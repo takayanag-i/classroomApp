@@ -3,19 +3,19 @@ package jp.co.collasho.classroom.controller;
 import jakarta.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
-// Jakarta Servlet 5.0 API ~
+// Jakarta Servlet 6.0 API ~
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jp.co.collasho.classroom.common.Validator;
 import jp.co.collasho.classroom.dto.CourseDto;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.exception.LoginFailedException;
 import jp.co.collasho.classroom.exception.InvalidInputException;
 import jp.co.collasho.classroom.service.enrollment.DisplayDriver;
 import jp.co.collasho.classroom.service.login.LoginDriver;
-import jp.co.collasho.classroom.util.Validator;
 
 /**
  * ログイン処理のコントローラ

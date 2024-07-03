@@ -12,8 +12,8 @@ services:
     container_name: "mysql"
     hostname: "mysql"
     build:
-      context: "."
-      dockerfile: "./mysql/Dockerfile"
+      context: .
+      dockerfile: ./mysql/Dockerfile
     volumes:
       - ./mysql/conf.d/:/etc/mysql/conf.d/
       - ./mysql/init.d/:/docker-entrypoint-initdb.d
