@@ -26,18 +26,18 @@ public class StudentDao {
     /**
      * INSERT
      * 
-     * @param student
+     * @param entity 学生エンティティ
      */
-    public void insert(StudentEntity student) {
+    public void insert(StudentEntity entity) {
 
         String query =
                 "INSERT INTO Students (student_id, name, email, password) VALUES (?, ?, ?, ?);";
 
         try (PreparedStatement pStmt = this.conn.prepareStatement(query)) {
-            pStmt.setString(1, student.getStudentId());
-            pStmt.setString(2, student.getName());
-            pStmt.setString(3, student.getEmail());
-            pStmt.setString(4, student.getPassword());
+            pStmt.setString(1, entity.getStudentId());
+            pStmt.setString(2, entity.getName());
+            pStmt.setString(3, entity.getEmail());
+            pStmt.setString(4, entity.getPassword());
             pStmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("INSERTクエリの実行に失敗してステートメントを解放しました。", e);
@@ -45,34 +45,34 @@ public class StudentDao {
     }
 
     /**
-     * SELECT（全レコード）
+     * 全レコード取得する
      * 
-     * @return StudentEntityのリスト
+     * @return 学生Entityのリスト
      */
     public List<StudentEntity> select() {
-        List<StudentEntity> allStudents = new ArrayList<>();
+        List<StudentEntity> allEntities = new ArrayList<>();
         String query = "SELECT * FROM Students;";
 
         try (PreparedStatement pStmt = this.conn.prepareStatement(query)) {
             ResultSet rs = pStmt.executeQuery();
             while (rs.next()) {
-                StudentEntity student = new StudentEntity();
-                student.setStudentId(rs.getString("student_id"));
-                student.setName(rs.getString("name"));
-                student.setEmail(rs.getString("email"));
-                student.setPassword(rs.getString("password"));
+                StudentEntity entity = new StudentEntity();
+                entity.setStudentId(rs.getString("student_id"));
+                entity.setName(rs.getString("name"));
+                entity.setEmail(rs.getString("email"));
+                entity.setPassword(rs.getString("password"));
 
-                allStudents.add(student);
+                allEntities.add(entity);
             }
         } catch (SQLException e) {
             throw new RuntimeException("SELECTクエリの実行に失敗してステートメントを解放しました。");
         }
 
-        return allStudents;
+        return allEntities;
     }
 
     /**
-     * SELECT（出席番号, パスワード指定）
+     * 出席番号, パスワードを指定して取得する
      * 
      * @param studentId 出席番号 PK
      * @param password パスワード
@@ -88,12 +88,12 @@ public class StudentDao {
             ResultSet rs = pStmt.executeQuery();
 
             if (rs.next()) {
-                StudentEntity student = new StudentEntity();
-                student.setStudentId(studentId);
-                student.setName(rs.getString("name"));
-                student.setEmail(rs.getString("email"));
+                StudentEntity entity = new StudentEntity();
+                entity.setStudentId(studentId);
+                entity.setName(rs.getString("name"));
+                entity.setEmail(rs.getString("email"));
 
-                return student;
+                return entity;
 
             } else {
                 return null;

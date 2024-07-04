@@ -13,10 +13,18 @@ import jp.co.collasho.classroom.dto.CourseDto;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.service.enrollment.DisplayDriver;
 
-
+/**
+ * ホームへ戻る処理のコントローラ
+ */
 @WebServlet("/HomeServlet")
 public class HomeServlet extends HttpServlet {
 
+    /**
+     * doPost ホームへ戻る
+     * 
+     * @param req リクエスト
+     * @param res レスポンス
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
@@ -33,9 +41,9 @@ public class HomeServlet extends HttpServlet {
         String studentId = loginStudent.getStudentId();
 
         // 表示用時間割データを取得
-        DisplayDriver displayDriver = new DisplayDriver();
-        List<CourseDto> enrollments = displayDriver.getCourses(studentId);
-        req.setAttribute("enrollments", enrollments);
+        DisplayDriver driver = new DisplayDriver();
+        List<CourseDto> dtos = driver.getCourses(studentId);
+        req.setAttribute("enrollments", dtos);
         req.getRequestDispatcher("WEB-INF/jsp/enrollment.jsp").forward(req, res);
     }
 }

@@ -14,6 +14,9 @@ public class DeleteDriver {
 
     /**
      * 履修登録を抹消する
+     * 
+     * @param studentId 出席番号
+     * @param courseId 講座コード
      */
     public void deleteEnrollment(String studentId, String courseId) {
         try (Connection conn = this.connectionManager.getConnection()) {

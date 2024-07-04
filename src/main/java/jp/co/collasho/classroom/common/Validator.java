@@ -2,8 +2,16 @@ package jp.co.collasho.classroom.common;
 
 import jp.co.collasho.classroom.exception.InvalidInputException;
 
+/**
+ * バリデータクラス
+ */
 public class Validator {
-    // 出席番号のバリデーション
+    /**
+     * 出席番号のバリデーションチェック
+     * 
+     * @param studentId 出席番号
+     * @throws InvalidInputException 不正な入力があったときにスローされる例外
+     */
     public static void checkStudentId(String studentId) throws InvalidInputException {
         if (studentId == null || "".equals(studentId)) {
             throw new InvalidInputException("IDを入力してください。");
@@ -13,7 +21,12 @@ public class Validator {
         }
     }
 
-    // 名前のバリデーション
+    /**
+     * 名前のバリデーションチェック
+     * 
+     * @param name 名前
+     * @throws InvalidInputException 不正な入力があったときにスローされる例外
+     */
     public static void checkName(String name) throws InvalidInputException {
         if (name == null || "".equals(name)) {
             throw new InvalidInputException("名前を入力してください。");
@@ -23,7 +36,12 @@ public class Validator {
         }
     }
 
-    // メールアドレスのバリデーション
+    /**
+     * メールアドレスのバリデーションチェック
+     * 
+     * @param email メールアドレス
+     * @throws InvalidInputException 不正な入力があったときにスローされる例外
+     */
     public static void checkEmail(String email) throws InvalidInputException {
         if (email == null || "".equals(email)) {
             throw new InvalidInputException("メールアドレスを入力してください。");
@@ -36,7 +54,12 @@ public class Validator {
         }
     }
 
-    // パスワードのバリデーション
+    /**
+     * パスワードのバリデーションチェック
+     * 
+     * @param password パスワード
+     * @throws InvalidInputException 不正な入力があったときにスローされる例外
+     */
     public static void checkPassword(String password) throws InvalidInputException {
         if (password == null || "".equals(password)) {
             throw new InvalidInputException("パスワードを入力してください。");
@@ -49,20 +72,30 @@ public class Validator {
         }
     }
 
-    // 曜日のバリデーション
-    public static void checkDay(String day) throws InvalidInputException {
-        if ("".equals(day)) {
+    /**
+     * 曜日のバリデーションチェック
+     * 
+     * @param dayOfWeek 曜日番号
+     * @throws InvalidInputException 不正な入力があったときにスローされる例外
+     */
+    public static void checkDayOfWeek(String dayOfWeek) throws InvalidInputException {
+        if ("".equals(dayOfWeek)) {
             return;
         }
-        if (day == null) {
+        if (dayOfWeek == null) {
             throw new RuntimeException("曜日の入力で予期しないnullが発生しました。");
         }
-        if (!day.matches("[1-5]")) {
+        if (!dayOfWeek.matches("[1-5]")) {
             throw new InvalidInputException("曜日は1から5の半角数字で入力してください。");
         }
     }
 
-    // 時限のバリデーション
+    /**
+     * 時限のバリデーションチェック
+     * 
+     * @param period 時限
+     * @throws InvalidInputException 不正な入力があったときにスローされる例外
+     */
     public static void checkPeriod(String period) throws InvalidInputException {
         if ("".equals(period)) {
             return;
@@ -75,7 +108,12 @@ public class Validator {
         }
     }
 
-    // 講座コードのバリデーション
+    /**
+     * 講座IDのバリデーションチェック
+     * 
+     * @param courseId 講座ID
+     * @throws InvalidInputException 不正な入力があったときにスローされる例外
+     */
     public static void checkCourseId(String courseId) throws InvalidInputException {
         if ("".equals(courseId)) {
             return;
@@ -88,7 +126,12 @@ public class Validator {
         }
     }
 
-    // 講座名のバリデーション
+    /**
+     * 講座名のバリデーションチェック
+     * 
+     * @param courseName 講座名
+     * @throws InvalidInputException 不正な入力があったときにスローされる例外
+     */
     public static void checkCourseName(String courseName) throws InvalidInputException {
         if ("".equals(courseName)) {
             return;
@@ -101,7 +144,12 @@ public class Validator {
         }
     }
 
-    // 担当教員名のバリデーション
+    /**
+     * 担当教員名のバリデーションチェック
+     * 
+     * @param instructorName 担当教員名
+     * @throws InvalidInputException 不正な入力があったときにスローされる例外
+     */
     public static void checkInstructorName(String instructorName) throws InvalidInputException {
         if ("".equals(instructorName)) {
             return;

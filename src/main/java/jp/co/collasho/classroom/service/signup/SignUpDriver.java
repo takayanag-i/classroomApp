@@ -19,21 +19,21 @@ public class SignUpDriver {
     /**
      * ユーザ登録を実行する
      * 
-     * @param studentEntity
-     * @throws SignUpFailedException
+     * @param dto 学生DTO
+     * @throws SignUpFailedException 新規学生登録に失敗したときにスローされる例外
      */
-    public void drive(StudentDto studentDto) throws SignUpFailedException {
+    public void drive(StudentDto dto) throws SignUpFailedException {
 
         try (Connection conn = this.connectionManager.getConnection()) {
             StudentDao studentDao = new StudentDao(conn);
-            StudentEntity studentEntity = this.convertDtoToEntity(studentDto);
+            StudentEntity entity = this.convertDtoToEntity(dto);
 
             // 重複ユーザチェック
-            List<StudentEntity> allStudentEntities = studentDao.select();
-            this.CheckIdAndEmail(studentEntity, allStudentEntities);
+            List<StudentEntity> allEntities = studentDao.select();
+            this.CheckIdAndEmail(entity, allEntities);
 
             // インサート
-            studentDao.insert(studentEntity);
+            studentDao.insert(entity);
             this.connectionManager.commit();
         } catch (SQLException e) {
             connectionManager.rollback();
@@ -41,23 +41,36 @@ public class SignUpDriver {
         }
     }
 
-    private StudentEntity convertDtoToEntity(StudentDto d) {
-        StudentEntity e = new StudentEntity();
+    /**
+     * Enrollmentの変換 (DTO→Entity)
+     * 
+     * @param dto 学生DTO
+     * @return 学生エンティティ
+     */
+    private StudentEntity convertDtoToEntity(StudentDto dto) {
+        StudentEntity entity = new StudentEntity();
 
-        e.setStudentId(d.getStudentId());
-        e.setName(d.getName());
-        e.setEmail(d.getEmail());
-        e.setPassword(d.getPassword());
+        entity.setStudentId(dto.getStudentId());
+        entity.setName(dto.getName());
+        entity.setEmail(dto.getEmail());
+        entity.setPassword(dto.getPassword());
 
-        return e;
+        return entity;
     }
 
-    private void CheckIdAndEmail(StudentEntity candidate, List<StudentEntity> allStudents)
+    /**
+     * 重複するIDとメールアドレスをチェックする
+     * 
+     * @param target チェックされる学生エンティティ
+     * @param entities 登録されている全学生エンティティ
+     * @throws SignUpFailedException 新規登録に失敗したときにスローされる例外
+     */
+    private void CheckIdAndEmail(StudentEntity target, List<StudentEntity> entities)
             throws SignUpFailedException {
-        for (StudentEntity student : allStudents) {
-            if (candidate.getStudentId().equals(student.getStudentId())) {
+        for (StudentEntity entity : entities) {
+            if (target.getStudentId().equals(entity.getStudentId())) {
                 throw new SignUpFailedException("重複するIDです");
-            } else if (candidate.getEmail().equals(student.getEmail())) {
+            } else if (target.getEmail().equals(entity.getEmail())) {
                 throw new SignUpFailedException("重複するメールアドレスです");
             }
         }

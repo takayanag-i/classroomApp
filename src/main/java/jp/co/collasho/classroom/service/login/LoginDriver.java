@@ -21,27 +21,27 @@ public class LoginDriver {
      * @param studentId 出席番号
      * @param password パスワード
      * @return ログインする学生のエンティティ
-     * @throws LoginFailedException ID・passでログインできる学生がいない場合
+     * @throws LoginFailedException ログインに失敗したときにスローされる例外
      */
     public LoginStudentDto getStudentToLogin(String studentId, String password)
             throws LoginFailedException {
         try (Connection conn = this.connectionManager.getConnection()) {
             StudentDao studentDao = new StudentDao(conn);
 
-            StudentEntity student = studentDao.select(studentId, password);
+            StudentEntity entity = studentDao.select(studentId, password);
 
-            if (student == null) {
+            if (entity == null) {
                 // ログイン失敗
                 throw new LoginFailedException("ログインに失敗しました。");
             }
 
             // ログイン成功
-            LoginStudentDto loginStudent = new LoginStudentDto();
-            loginStudent.setStudentId(studentId);
-            loginStudent.setName(student.getName());
-            loginStudent.setEmail(student.getEmail());
+            LoginStudentDto dto = new LoginStudentDto();
+            dto.setStudentId(studentId);
+            dto.setName(entity.getName());
+            dto.setEmail(entity.getEmail());
 
-            return loginStudent;
+            return dto;
 
         } catch (SQLException e) {
             throw new RuntimeException("予期しないログインエラーが発生しました", e);

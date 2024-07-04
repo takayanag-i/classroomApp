@@ -23,7 +23,7 @@ import jp.co.collasho.classroom.service.search.SearchDriver;
 @WebServlet("/SearchServlet")
 public class SearchServlet extends HttpServlet {
     /**
-     * doGet
+     * doGet 検索画面にフォワードする
      * 
      * @param req リクエスト
      * @param res レスポンス
@@ -44,7 +44,7 @@ public class SearchServlet extends HttpServlet {
     }
 
     /**
-     * doPost
+     * doPost 講座を検索する
      * 
      * @param req リクエスト
      * @param res レスポンス
@@ -65,7 +65,7 @@ public class SearchServlet extends HttpServlet {
             Validator.checkCourseId(courseId);
             Validator.checkCourseName(courseName);
             Validator.checkInstructorName(instructorName);
-            Validator.checkDay(dayOfWeek);
+            Validator.checkDayOfWeek(dayOfWeek);
             Validator.checkPeriod(period);
         } catch (InvalidInputException e) {
             req.setAttribute("errorMessage", e.getMessage());
@@ -74,20 +74,20 @@ public class SearchServlet extends HttpServlet {
         }
 
         // 検索条件オブジェクトの生成
-        SearchCriteriaDto criteria = new SearchCriteriaDto();
-        criteria.setCourseId(courseId);
-        criteria.setCourseName(courseName);
-        criteria.setInstructorName(instructorName);
-        criteria.setDayOfWeek(DayOfWeek.fromNum(dayOfWeek));
-        criteria.setPeriod(period);
+        SearchCriteriaDto criteriaDto = new SearchCriteriaDto();
+        criteriaDto.setCourseId(courseId);
+        criteriaDto.setCourseName(courseName);
+        criteriaDto.setInstructorName(instructorName);
+        criteriaDto.setDayOfWeek(DayOfWeek.fromNum(dayOfWeek));
+        criteriaDto.setPeriod(period);
 
         // 検索の実行
         SearchDriver driver = new SearchDriver();
-        List<CourseDto> results = driver.getCourses(criteria);
+        List<CourseDto> courseDtos = driver.getCourses(criteriaDto);
 
         // 結果を格納してフォワード
-        req.setAttribute("results", results);
-        req.setAttribute("criteria", criteria);
+        req.setAttribute("results", courseDtos);
+        req.setAttribute("criteria", criteriaDto);
         req.getRequestDispatcher("WEB-INF/jsp/search.jsp").forward(req, res);
     }
 }

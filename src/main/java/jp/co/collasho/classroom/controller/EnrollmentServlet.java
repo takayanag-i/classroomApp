@@ -17,10 +17,18 @@ import jp.co.collasho.classroom.exception.InValidEnrollmentException;
 import jp.co.collasho.classroom.service.enrollment.DisplayDriver;
 import jp.co.collasho.classroom.service.enrollment.EnrollmentDriver;
 
-
+/**
+ * 履修登録処理のコントローラ
+ */
 @WebServlet("/EnrollmentServlet")
 public class EnrollmentServlet extends HttpServlet {
 
+    /**
+     * doPost 履修登録をする
+     * 
+     * @param req リクエスト
+     * @param res レスポンス
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
@@ -44,21 +52,21 @@ public class EnrollmentServlet extends HttpServlet {
 
         // DTOの作成
 
-        EnrollmentDto enrollment = new EnrollmentDto();
-        enrollment.setStudentId(studentId);
-        enrollment.setCourseId(courseId);
-        enrollment.setEnrollmentDate(now);
+        EnrollmentDto enrollmentDto = new EnrollmentDto();
+        enrollmentDto.setStudentId(studentId);
+        enrollmentDto.setCourseId(courseId);
+        enrollmentDto.setEnrollmentDate(now);
 
         // 履修登録の実行
         EnrollmentDriver driver = new EnrollmentDriver();
         String forwardPath;
         try {
-            driver.enroll(enrollment);
+            driver.enroll(enrollmentDto);
             forwardPath = "WEB-INF/jsp/enrollment.jsp";
             // 表示用時間割データを取得
             DisplayDriver displayDriver = new DisplayDriver();
-            List<CourseDto> enrollments = displayDriver.getCourses(studentId);
-            req.setAttribute("enrollments", enrollments);
+            List<CourseDto> courseDtos = displayDriver.getCourses(studentId);
+            req.setAttribute("enrollments", courseDtos);
         } catch (InValidEnrollmentException e) {
             forwardPath = "WEB-INF/jsp/search.jsp";
             req.setAttribute("errorMessage", e.getMessage());

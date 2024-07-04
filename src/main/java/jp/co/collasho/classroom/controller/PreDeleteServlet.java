@@ -3,7 +3,7 @@ package jp.co.collasho.classroom.controller;
 import jakarta.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
-// Jakarta Servlet 5.0 API ~
+// Jakarta Servlet 6.0 API ~
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,10 +17,18 @@ import jp.co.collasho.classroom.dto.SearchCriteriaDto;
 import jp.co.collasho.classroom.exception.InvalidInputException;
 import jp.co.collasho.classroom.service.search.SearchDriver;
 
-
+/**
+ * 削除前確認処理のコントローラ
+ */
 @WebServlet("/PreDeleteServlet")
 public class PreDeleteServlet extends HttpServlet {
 
+    /**
+     * doPost 履修削除の前の確認をとる
+     * 
+     * @param req リクエスト
+     * @param res レスポンス
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
@@ -47,19 +55,19 @@ public class PreDeleteServlet extends HttpServlet {
         }
 
         // 検索条件オブジェクトの生成
-        SearchCriteriaDto criteria = new SearchCriteriaDto();
-        criteria.setCourseId(courseId);
-        criteria.setCourseName(""); // Dtoのフィールド初期値を適切に設定
-        criteria.setDayOfWeek(DayOfWeek.UNSET);
-        criteria.setPeriod("");
-        criteria.setInstructorName("");
+        SearchCriteriaDto criteriaDto = new SearchCriteriaDto();
+        criteriaDto.setCourseId(courseId);
+        criteriaDto.setCourseName(""); // Dtoのフィールド初期値を適切に設定
+        criteriaDto.setDayOfWeek(DayOfWeek.UNSET);
+        criteriaDto.setPeriod("");
+        criteriaDto.setInstructorName("");
 
         // 検索の実行
         SearchDriver driver = new SearchDriver();
-        List<CourseDto> results = driver.getCourses(criteria);
+        List<CourseDto> courseDtos = driver.getCourses(criteriaDto);
 
         // 結果を格納してフォワード
-        req.setAttribute("results", results);
+        req.setAttribute("results", courseDtos);
         req.getRequestDispatcher("WEB-INF/jsp/predelete.jsp").forward(req, res);
     }
 }

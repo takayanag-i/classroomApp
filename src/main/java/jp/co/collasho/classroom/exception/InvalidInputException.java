@@ -1,5 +1,8 @@
 package jp.co.collasho.classroom.exception;
 
+/**
+ * 不正な入力があったときにスローされる例外
+ */
 public class InvalidInputException extends Exception {
     /**
      * メッセージ付きコンストラクタ

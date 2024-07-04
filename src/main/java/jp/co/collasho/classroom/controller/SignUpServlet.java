@@ -20,7 +20,7 @@ import jp.co.collasho.classroom.service.signup.SignUpDriver;
 public class SignUpServlet extends HttpServlet {
 
     /**
-     * doGet
+     * doGet 新規登録画面にフォワードする
      * 
      * @param req リクエスト
      * @param res レスポンス
@@ -33,7 +33,7 @@ public class SignUpServlet extends HttpServlet {
     }
 
     /**
-     * doPost
+     * doPost 新しい学生を登録する
      * 
      * @param req リクエスト
      * @param res レスポンス
@@ -60,17 +60,17 @@ public class SignUpServlet extends HttpServlet {
         }
 
         // DTOの生成
-        StudentDto student = new StudentDto();
-        student.setStudentId(studentId);
-        student.setName(name);
-        student.setEmail(email);
-        student.setPassword(password);
+        StudentDto studentDto = new StudentDto();
+        studentDto.setStudentId(studentId);
+        studentDto.setName(name);
+        studentDto.setEmail(email);
+        studentDto.setPassword(password);
 
         // ユーザ登録の実行
         SignUpDriver driver = new SignUpDriver();
 
         try {
-            driver.drive(student);
+            driver.drive(studentDto);
             req.setAttribute("studentId", studentId);
             // 成功したらログイン画面にフォワード
             req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, res);

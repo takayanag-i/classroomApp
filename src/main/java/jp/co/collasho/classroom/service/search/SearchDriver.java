@@ -23,10 +23,10 @@ public class SearchDriver {
     /**
      * 表示用の講座リストを取得する
      * 
-     * @param criteria
+     * @param criteriaDto 検索条件
      * @return 講座オブジェクトのリスト
      */
-    public List<CourseDto> getCourses(SearchCriteriaDto criteria) {
+    public List<CourseDto> getCourses(SearchCriteriaDto criteriaDto) {
         List<CourseDto> courseDtos = new ArrayList<>();
 
         try (Connection conn = connectionManager.getConnection()) {
@@ -34,8 +34,8 @@ public class SearchDriver {
             InstructionDao instructionDao = new InstructionDao(conn);
 
             // 講座エンティティ，講座-教員対応エンティティの取得
-            List<CourseEntity> courseEntities = enrollmentDao.selectByCriteria(criteria);
-            List<InstructionEntity> instrucionEntities = instructionDao.select(criteria);
+            List<CourseEntity> courseEntities = enrollmentDao.selectByCriteria(criteriaDto);
+            List<InstructionEntity> instrucionEntities = instructionDao.select(criteriaDto);
 
             // 講座DTOの作成―複数教員に注意しながら―
             multipleInstructorsLogic logic = new multipleInstructorsLogic();

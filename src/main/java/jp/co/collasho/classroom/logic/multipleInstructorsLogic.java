@@ -42,6 +42,12 @@ public class multipleInstructorsLogic {
         return d;
     }
 
+    /**
+     * 講座-教員対応マップを生成する
+     * 
+     * @param instructionEntities
+     * @return 講座-教員対応マップ
+     */
     private Map<String, List<String>> getInstructionMap(
             List<InstructionEntity> instructionEntities) {
         Map<String, List<String>> instructionMap = new HashMap<>();

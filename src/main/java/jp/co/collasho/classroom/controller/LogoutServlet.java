@@ -10,10 +10,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 
-
+/**
+ * ログアウト処理のコントローラ
+ */
 @WebServlet("/LogoutServlet")
 public class LogoutServlet extends HttpServlet {
 
+    /**
+     * doGet ログアウトする
+     * 
+     * @param req リクエスト
+     * @param res レスポンス
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {

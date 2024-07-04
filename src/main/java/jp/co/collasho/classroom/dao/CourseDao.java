@@ -25,6 +25,12 @@ public class CourseDao {
         this.conn = conn;
     }
 
+    /**
+     * 講座IDを指定して取得する
+     * 
+     * @param courseId 講座コード
+     * @return 講座エンティティ
+     */
     public CourseEntity selectByCourseId(String courseId) {
         String query = "select * from Courses where course_id = ?";
 
@@ -44,13 +50,13 @@ public class CourseDao {
     }
 
     /**
-     * 出席番号から登録講座リストを取得する
+     * 出席番号を指定して登録講座リストを取得する
      * 
      * @param studentId 出席番号
-     * @return 登録講座エンティティのリスト
+     * @return 講座エンティティのリスト
      */
     public List<CourseEntity> selectByStudentId(String studentId) {
-        List<CourseEntity> courses = new ArrayList<>();
+        List<CourseEntity> entities = new ArrayList<>();
         String query =
                 "select e.course_id, c.course_name, c.day_of_week, c.period from Enrollments as e inner join Courses as c on c.course_id = e.course_id where e.student_id = ? ;";
 
@@ -59,42 +65,42 @@ public class CourseDao {
             ResultSet rs = pStmt.executeQuery();
 
             while (rs.next()) {
-                courses.add(this.getEntityFromReslut(rs));
+                entities.add(this.getEntityFromReslut(rs));
             }
 
         } catch (SQLException e) {
             throw new RuntimeException("SELECTクエリの実行に失敗してステートメントを解放しました。", e);
         }
-        return courses;
+        return entities;
     }
 
     /**
      * 検索条件に合致する講座リストを取得する
      * 
-     * @param criteria 検索条件オブジェクト
-     * @return 講座リスト
+     * @param criteriaDto 検索条件オブジェクト
+     * @return 講座エンティティのリスト
      */
-    public List<CourseEntity> selectByCriteria(SearchCriteriaDto criteria) {
-        List<CourseEntity> courses = new ArrayList<>();
+    public List<CourseEntity> selectByCriteria(SearchCriteriaDto criteriaDto) {
+        List<CourseEntity> entities = new ArrayList<>();
 
         String query =
                 "select course_id, course_name, day_of_week, period from Courses where course_id like ? and course_name like ? and day_of_week like ? and period like ? order by day_of_week asc, period asc;";
 
         try (PreparedStatement pStmt = conn.prepareStatement(query)) {
-            pStmt.setString(1, "%" + criteria.getCourseId() + "%");
-            pStmt.setString(2, "%" + criteria.getCourseName() + "%");
-            pStmt.setString(3, "%" + criteria.getDayOfWeek().getNum() + "%");
-            pStmt.setString(4, "%" + criteria.getPeriod() + "%");
+            pStmt.setString(1, "%" + criteriaDto.getCourseId() + "%");
+            pStmt.setString(2, "%" + criteriaDto.getCourseName() + "%");
+            pStmt.setString(3, "%" + criteriaDto.getDayOfWeek().getNum() + "%");
+            pStmt.setString(4, "%" + criteriaDto.getPeriod() + "%");
             ResultSet rs = pStmt.executeQuery();
 
             while (rs.next()) {
-                courses.add(this.getEntityFromReslut(rs));
+                entities.add(this.getEntityFromReslut(rs));
             }
 
         } catch (SQLException e) {
             throw new RuntimeException("SELECTクエリの実行に失敗してステートメントを解放しました。", e);
         }
-        return courses;
+        return entities;
     }
 
     /**
@@ -105,13 +111,13 @@ public class CourseDao {
      * @throws SQLException
      */
     private CourseEntity getEntityFromReslut(ResultSet rs) throws SQLException {
-        CourseEntity e = new CourseEntity();
+        CourseEntity entity = new CourseEntity();
 
-        e.setCourseId(rs.getString("course_id"));
-        e.setCourseName(rs.getString("course_name"));
-        e.setDayOfWeekNum(rs.getString("day_of_week"));
-        e.setPeriod(rs.getString("period"));
+        entity.setCourseId(rs.getString("course_id"));
+        entity.setCourseName(rs.getString("course_name"));
+        entity.setDayOfWeekNum(rs.getString("day_of_week"));
+        entity.setPeriod(rs.getString("period"));
 
-        return e;
+        return entity;
     }
 }

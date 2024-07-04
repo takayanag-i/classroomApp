@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     /**
-     * doPost 入力されたIDとパスワードを使用してログインを行う。
+     * doPost ログインする
      * 
      * @param req リクエスト
      * @param res レスポンス
@@ -74,8 +74,8 @@ public class LoginServlet extends HttpServlet {
 
         // 表示用時間割データを取得
         DisplayDriver displayDriver = new DisplayDriver();
-        List<CourseDto> enrollments = displayDriver.getCourses(studentId);
-        req.setAttribute("enrollments", enrollments);
+        List<CourseDto> courseDtos = displayDriver.getCourses(studentId);
+        req.setAttribute("enrollments", courseDtos);
         req.getRequestDispatcher("WEB-INF/jsp/enrollment.jsp").forward(req, res);
     }
 }

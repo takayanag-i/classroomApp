@@ -22,7 +22,7 @@ public class DisplayDriver {
     /**
      * 表示用の講座リストを取得する
      * 
-     * @param studentId 対象とする学生ID
+     * @param studentId 出席番号
      * @return 学生が登録している講座のDTOのリスト
      */
     public List<CourseDto> getCourses(String studentId) {

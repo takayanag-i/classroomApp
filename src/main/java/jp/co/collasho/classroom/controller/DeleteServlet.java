@@ -11,10 +11,18 @@ import jakarta.servlet.http.HttpSession;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.service.delete.DeleteDriver;
 
-
+/**
+ * 削除処理のコントローラ
+ */
 @WebServlet("/DeleteServlet")
 public class DeleteServlet extends HttpServlet {
 
+    /**
+     * doPost 履修登録を削除する
+     * 
+     * @param req リクエスト
+     * @param res レスポンス
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {

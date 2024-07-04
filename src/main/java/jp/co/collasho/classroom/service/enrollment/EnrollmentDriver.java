@@ -11,11 +11,20 @@ import jp.co.collasho.classroom.entity.CourseEntity;
 import jp.co.collasho.classroom.entity.EnrollmentEntity;
 import jp.co.collasho.classroom.exception.InValidEnrollmentException;
 
+/**
+ * 履修登録処理のドライバ
+ */
 public class EnrollmentDriver {
 
     /** コネクションマネージャ */
     ConnectionManager connectionManager = new ConnectionManager();
 
+    /**
+     * 履修登録する
+     * 
+     * @param enrollment 履修登録エンティティ
+     * @throws InValidEnrollmentException 不正な履修登録があったときにスローされる例外
+     */
     public void enroll(EnrollmentDto enrollment) throws InValidEnrollmentException {
         try (Connection conn = this.connectionManager.getConnection()) {
             EnrollmentDao enrollmentDao = new EnrollmentDao(conn);
@@ -44,24 +53,24 @@ public class EnrollmentDriver {
     /**
      * Enrollmentの変換 (DTO→Entity)
      * 
-     * @param d EnrollmentDTO
+     * @param dto EnrollmentDTO
      * @return EnrollmentEntity
      */
-    private EnrollmentEntity convert(EnrollmentDto d) {
-        EnrollmentEntity e = new EnrollmentEntity();
+    private EnrollmentEntity convert(EnrollmentDto dto) {
+        EnrollmentEntity entity = new EnrollmentEntity();
 
-        e.setStudentId(d.getStudentId());
-        e.setCourseId(d.getCourseId());
-        e.setEnrollmentDate(d.getEnrollmentDate());
+        entity.setStudentId(dto.getStudentId());
+        entity.setCourseId(dto.getCourseId());
+        entity.setEnrollmentDate(dto.getEnrollmentDate());
 
-        return e;
+        return entity;
     }
 
-    private boolean isValidEnrollment(CourseEntity target, List<CourseEntity> courses) {
+    private boolean isValidEnrollment(CourseEntity target, List<CourseEntity> entities) {
 
-        for (CourseEntity course : courses) {
-            String day = course.getDayOfWeekNum();
-            String period = course.getPeriod();
+        for (CourseEntity entity : entities) {
+            String day = entity.getDayOfWeekNum();
+            String period = entity.getPeriod();
 
             if (day.equals(target.getDayOfWeekNum()) && period.equals(target.getPeriod())) {
                 return false;
