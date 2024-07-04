@@ -22,19 +22,18 @@ public class EnrollmentDriver {
     /**
      * 履修登録する
      * 
-     * @param enrollment 履修登録エンティティ
+     * @param dto EnrollmentDTO
      * @throws InValidEnrollmentException 不正な履修登録があったときにスローされる例外
      */
-    public void enroll(EnrollmentDto enrollment) throws InValidEnrollmentException {
+    public void enroll(EnrollmentDto dto) throws InValidEnrollmentException {
         try (Connection conn = this.connectionManager.getConnection()) {
             EnrollmentDao enrollmentDao = new EnrollmentDao(conn);
             CourseDao courseDao = new CourseDao(conn);
-            EnrollmentEntity entity = this.convert(enrollment);
+            EnrollmentEntity entity = this.convert(dto);
 
             // 重複チェック
-            CourseEntity targetCourse = courseDao.selectByCourseId(enrollment.getCourseId());
-            List<CourseEntity> enrolledCourses =
-                    courseDao.selectByStudentId(enrollment.getStudentId());
+            CourseEntity targetCourse = courseDao.selectByCourseId(dto.getCourseId());
+            List<CourseEntity> enrolledCourses = courseDao.selectByStudentId(dto.getStudentId());
             if (!this.isValidEnrollment(targetCourse, enrolledCourses)) {
                 throw new InValidEnrollmentException("曜日・時限が重複しています。");
             }
@@ -53,8 +52,8 @@ public class EnrollmentDriver {
     /**
      * Enrollmentの変換 (DTO→Entity)
      * 
-     * @param dto EnrollmentDTO
-     * @return EnrollmentEntity
+     * @param dto 履修登録DTO
+     * @return 履修登録Entity
      */
     private EnrollmentEntity convert(EnrollmentDto dto) {
         EnrollmentEntity entity = new EnrollmentEntity();

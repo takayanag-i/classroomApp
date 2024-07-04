@@ -76,7 +76,7 @@ public class StudentDao {
      * 
      * @param studentId 出席番号 PK
      * @param password パスワード
-     * @return StudentEntity
+     * @return 学生Entity
      * @return null（該当値なしの場合）
      */
     public StudentEntity select(String studentId, String password) {

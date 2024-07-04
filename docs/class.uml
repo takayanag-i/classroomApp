@@ -75,30 +75,30 @@ class CourseDao {
     +CourseDao(Connection conn)
     +CourseEntity selectByCourseId(String courseId)
     +List<CourseEntity> selectByStudentId(String studentId)
-    +List<CourseEntity> selectByCriteria(SearchCriteriaDto criteria)
+    +List<CourseEntity> selectByCriteria(SearchCriteriaDto criteriaDto)
     -CourseEntity getEntityFromReslut(ResultSet rs)
 }
 
 class EnrollmentDao {
     -Connection conn
     +EnrollmentDao(Connection conn)
-    +void insert(EnrollmentEntity enrollment)
+    +void insert(EnrollmentEntity entity)
     +void delete(String studentId, String courseId)
 }
 
 class InstructionDao {
     -Connection conn
     +InstructionDao(Connection conn)
-    +List<InstructionEntity> select(List<CourseEntity> courses)
-    +List<InstructionEntity> select(SearchCriteriaDto criteria)
+    +List<InstructionEntity> select(List<CourseEntity> courseEntities)
+    +List<InstructionEntity> select(SearchCriteriaDto criteriaDto)
     -InstructionEntity getEntityFromResult(ResultSet rs)
-    -String getQueryWithInClause(List<CourseEntity> courses)
+    -String getQueryWithInClause(List<CourseEntity> entities)
 }
 
 class StudentDao {
     -Connection conn
     +StudentDao(Connection conn)
-    +void insert(StudentEntity student)
+    +void insert(StudentEntity entity)
     +List<StudentEntity> select()
     +StudentEntity select(String studentId, String password)
 }
@@ -132,10 +132,15 @@ enum DayOfWeek {
 }
 
 class Validator {
-    +static void checkStudentId(String studentId)
-    +static void checkName(String userId)
-    +static void checkEmail(String email)
-    +static void checkPassword(String password)
+    +static void checkStudentId(String studentId) throws InvalidInputException
+    +static void checkName(String userId) throws InvalidInputException
+    +static void checkEmail(String email) throws InvalidInputException
+    +static void checkPassword(String password) throws InvalidInputException
+    +static void checkDayOfWeek(String dayOfWeek) throws InvalidInputException
+    +static void checkPeriod(String period) throws InvalidInputException
+    +static void checkCourseId(String courseId) throws InvalidInputException
+    +static void checkCourseName(String courseName) throws InvalidInputException
+    +static void checkInstructorName(String instructorName) throws InvalidInputException
 }
 
 class CourseEntity {
@@ -202,9 +207,9 @@ class DisplayDriver {
 
 class EnrollmentDriver {
     -ConnectionManager connectionManager
-    +void enroll(EnrollmentDto enrollment) throws InValidEnrollmentException
-    -EnrollmentEntity convert(EnrollmentDto d)
-    -boolean isValidEnrollment(CourseEntity target, List<CourseEntity> courses)
+    +void enroll(EnrollmentDto dto) throws InValidEnrollmentException
+    -EnrollmentEntity convert(EnrollmentDto dto)
+    -boolean isValidEnrollment(CourseEntity target, List<CourseEntity> entities)
 }
 
 class LoginDriver {
@@ -214,14 +219,14 @@ class LoginDriver {
 
 class SearchDriver {
     -ConnectionManager connectionManager
-    +List<CourseDto> getCourses(SearchCriteriaDto criteria)
+    +List<CourseDto> getCourses(SearchCriteriaDto criteriaDto)
 }
 
 class SignUpDriver {
     -ConnectionManager connectionManager
-    +void drive(StudentDto studentDto) throws SignUpFailedException
-    -StudentEntity convertDtoToEntity(StudentDto d)
-    -void CheckIdAndEmail(StudentEntity candidate, List<StudentEntity> allStudents) throws SignUpFailedException
+    +void signUp(StudentDto studentDto) throws SignUpFailedException
+    -StudentEntity convertDtoToEntity(StudentDto dto)
+    -void CheckIdAndEmail(StudentEntity target, List<StudentEntity> entities) throws SignUpFailedException
 }
 
 DeleteServlet ..> DeleteDriver
@@ -247,6 +252,7 @@ SearchDriver ..> multipleInstructorsLogic
 
 Validator <.. SignUpServlet
 Validator <.. LoginServlet
+Validator <.. SearchServlet
 
 DeleteDriver ..> EnrollmentEntity
 EnrollmentDriver ..> EnrollmentDto
