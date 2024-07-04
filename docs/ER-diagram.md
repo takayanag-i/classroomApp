@@ -1,5 +1,5 @@
 # ER図
-@version: 1.1.0
+@version: 1.2.0
 
 
 ```mermaid
@@ -20,20 +20,21 @@ erDiagram
         
     Courses {
         CHAR(5) course_id PK
-        NVARCHAR(31) course_name
-        NCHAR(2) day_of_week
-        INT period
+        NVARCHAR(63) course_name
+        CHAR(1) day_of_week
+        CHAR(1) period
     }
     
     Enrollments {
         CHAR(4) student_id FK
         CHAR(5) course_id FK
-        DATETIME2 enrollment_date
+        DATETIME enrollment_date
+        BOOLEAN cancel_flag
     }
 
     Instructions {
-        string course_id PK,FK
-        string instructor_id PK,FK
+        CHAR(5) course_id PK,FK
+        CHAR(5) instructor_id PK,FK
     }
         
     Students ||--o{ Enrollments : enrolls

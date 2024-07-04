@@ -4,8 +4,7 @@ package jp.co.collasho.classroom.common;
  * 曜日の列挙子
  */
 public enum DayOfWeek {
-    MON("1", "月"), TUE("2", "火"), WED("3", "水"), THU("4", "木"), FRI("5", "金"), SAT("6",
-            "土"), SUN("7", "日"), UNSET("", "");
+    MON("1", "月"), TUE("2", "火"), WED("3", "水"), THU("4", "木"), FRI("5", "金"), UNSET("", "");
 
     /** 略称 */
     private final String num;

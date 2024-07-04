@@ -1,0 +1,276 @@
+@startuml
+
+class DeleteServlet {
+    #void doPost(res, req)
+}
+
+class EnrollmentServlet {
+    #void doPost(res, req)
+}
+
+class HomeServlet {
+    #void doGet(res, req)
+}
+
+class LoginServlet {
+    #void doGet(res, req)
+    #void doPost(res, req)
+}
+
+class LogoutServlet {
+    #void doGet(res, req)
+}
+
+class PreDeleteServlet {
+    #void doPost(res, req)
+}
+
+class SearchServlet {
+    #void doGet(res, req)
+    #void doPost(res, req)
+}
+
+class SignUpServlet {
+    #void doGet(res, req)
+    #void doPost(res, req)
+}
+
+class CourseDto {
+    -DayOfWeek dayOfWeek
+    -String period
+    -String courseId
+    -String courseName
+    -List<String> instructors
+}
+
+class EnrollmentDto {
+    -String studentId
+    -String courseId
+    -Timestamp enrollmentDate
+}
+
+class LoginStudentDto {
+    -String studentId
+    -String name
+    -String email
+}
+
+class SearchCriteriaDto {
+    -String courseId
+    -String courseName
+    -String instructorName
+    -DayOfWeek dayOfWeek
+    -String period
+}
+
+class StudentDto {
+    -String studentId
+    -String name
+    -String email
+    -String password
+}
+
+class CourseDao {
+    -Connection conn
+    +CourseDao(Connection conn)
+    +CourseEntity selectByCourseId(String courseId)
+    +List<CourseEntity> selectByStudentId(String studentId)
+    +List<CourseEntity> selectByCriteria(SearchCriteriaDto criteria)
+    -CourseEntity getEntityFromReslut(ResultSet rs)
+}
+
+class EnrollmentDao {
+    -Connection conn
+    +EnrollmentDao(Connection conn)
+    +void insert(EnrollmentEntity enrollment)
+    +void delete(String studentId, String courseId)
+}
+
+class InstructionDao {
+    -Connection conn
+    +InstructionDao(Connection conn)
+    +List<InstructionEntity> select(List<CourseEntity> courses)
+    +List<InstructionEntity> select(SearchCriteriaDto criteria)
+    -InstructionEntity getEntityFromResult(ResultSet rs)
+    -String getQueryWithInClause(List<CourseEntity> courses)
+}
+
+class StudentDao {
+    -Connection conn
+    +StudentDao(Connection conn)
+    +void insert(StudentEntity student)
+    +List<StudentEntity> select()
+    +StudentEntity select(String studentId, String password)
+}
+
+class ConnectionManager {
+    -Connection conn
+    -String jdbcUrl
+    -String user
+    -String password
+    +Connection getConnection()
+    +void closeConnection()
+    +void commit()
+    +void rollback()
+}
+
+enum DayOfWeek {
+    MON
+    TUE
+    WED
+    THU
+    FRI
+    SAT
+    SUN
+    UNSET
+    -String num
+    -String japanese
+    +String getNum()
+    +String getJapanese()
+    +static DayOfWeek fromNum(String num)
+    +static DayOfWeek fromJapanese(String japanese)
+}
+
+class Validator {
+    +static void checkStudentId(String studentId)
+    +static void checkName(String userId)
+    +static void checkEmail(String email)
+    +static void checkPassword(String password)
+}
+
+class CourseEntity {
+    -String courseId
+    -String courseName
+    -String dayOfWeekNum
+    -String period
+}
+
+class EnrollmentEntity {
+    -String studentId
+    -String courseId
+    -Timestamp enrollmentDate
+}
+
+class InstructionEntity {
+    -String courseId
+    -String instructor
+}
+
+class StudentEntity {
+    -String studentId
+    -String name
+    -String email
+    -String password
+}
+
+class InValidEnrollmentException {
+    +InValidEnrollmentException(String message)
+}
+
+class InvalidInputException {
+    +InvalidInputException(String message)
+    +InvalidInputException(String message, Throwable cause)
+}
+
+class LoginFailedException {
+    +LoginFailedException(String message)
+}
+
+class SignUpFailedException {
+    +SignUpFailedException(String message)
+}
+
+InValidEnrollmentException --|> Exception
+InvalidInputException --|> Exception
+LoginFailedException --|> Exception
+SignUpFailedException --|> Exception
+
+class multipleInstructorsLogic {
+    +CourseDto merge(CourseEntity courseEntity, List<InstructionEntity> instructionEntities)
+    -Map<String, List<String>> getInstructionMap(List<InstructionEntity> instructionEntities)
+}
+
+class DeleteDriver {
+    -ConnectionManager connectionManager
+    +void deleteEnrollment(String studentId, String courseId)
+}
+
+class DisplayDriver {
+    -ConnectionManager connectionManager
+    +List<CourseDto> getCourses(String studentId)
+}
+
+class EnrollmentDriver {
+    -ConnectionManager connectionManager
+    +void enroll(EnrollmentDto enrollment) throws InValidEnrollmentException
+    -EnrollmentEntity convert(EnrollmentDto d)
+    -boolean isValidEnrollment(CourseEntity target, List<CourseEntity> courses)
+}
+
+class LoginDriver {
+    -ConnectionManager connectionManager
+    +LoginStudentDto getStudentToLogin(String studentId, String password) throws LoginFailedException
+}
+
+class SearchDriver {
+    -ConnectionManager connectionManager
+    +List<CourseDto> getCourses(SearchCriteriaDto criteria)
+}
+
+class SignUpDriver {
+    -ConnectionManager connectionManager
+    +void drive(StudentDto studentDto) throws SignUpFailedException
+    -StudentEntity convertDtoToEntity(StudentDto d)
+    -void CheckIdAndEmail(StudentEntity candidate, List<StudentEntity> allStudents) throws SignUpFailedException
+}
+
+DeleteServlet ..> DeleteDriver
+EnrollmentServlet ..> EnrollmentDriver
+EnrollmentServlet ..> DisplayDriver
+HomeServlet ..> DisplayDriver
+LoginServlet ..> LoginDriver
+SearchServlet ..> SearchDriver
+SignUpServlet ..> SignUpDriver
+
+DeleteDriver ..> EnrollmentDao
+DisplayDriver ..> CourseDao
+DisplayDriver ..> InstructionDao
+EnrollmentDriver ..> CourseDao
+EnrollmentDriver ..> EnrollmentDao
+LoginDriver ..> StudentDao
+SearchDriver ..> CourseDao
+SearchDriver ..> InstructionDao
+SignUpDriver ..> StudentDao
+
+DisplayDriver ..> multipleInstructorsLogic
+SearchDriver ..> multipleInstructorsLogic
+
+Validator <.. SignUpServlet
+Validator <.. LoginServlet
+
+DeleteDriver ..> EnrollmentEntity
+EnrollmentDriver ..> EnrollmentDto
+EnrollmentDriver ..> CourseEntity
+EnrollmentDriver ..> EnrollmentEntity
+LoginDriver ..> LoginStudentDto
+LoginDriver ..> StudentEntity
+SearchDriver ..> CourseDto
+SearchDriver ..> SearchCriteriaDto
+SignUpDriver ..> StudentDto
+SignUpDriver ..> StudentEntity
+
+EnrollmentDao ..> EnrollmentEntity
+CourseDao ..> CourseEntity
+InstructionDao ..> InstructionEntity
+StudentDao ..> StudentEntity
+
+DeleteDriver ..> RuntimeException
+EnrollmentDriver ..> InValidEnrollmentException
+EnrollmentDriver ..> RuntimeException
+LoginDriver ..> LoginFailedException
+LoginDriver ..> RuntimeException
+SearchDriver ..> RuntimeException
+SignUpDriver ..> SignUpFailedException
+SignUpDriver ..> RuntimeException
+
+@enduml

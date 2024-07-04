@@ -33,8 +33,6 @@ public class DeleteServlet extends HttpServlet {
         // パラメタの取得
         String courseId = req.getParameter("course_id");
 
-        // TODO チェック
-
         // 履修抹消の実行
         DeleteDriver driver = new DeleteDriver();
         driver.deleteEnrollment(studentId, courseId);

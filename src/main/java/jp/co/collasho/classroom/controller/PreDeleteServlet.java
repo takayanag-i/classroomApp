@@ -10,9 +10,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jp.co.collasho.classroom.common.DayOfWeek;
+import jp.co.collasho.classroom.common.Validator;
 import jp.co.collasho.classroom.dto.CourseDto;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.dto.SearchCriteriaDto;
+import jp.co.collasho.classroom.exception.InvalidInputException;
 import jp.co.collasho.classroom.service.search.SearchDriver;
 
 
@@ -32,12 +34,17 @@ public class PreDeleteServlet extends HttpServlet {
             return;
         }
 
-        String studentId = loginStudent.getStudentId();
-
         // パラメタの取得
         String courseId = req.getParameter("course_id");
 
-        // TODO チェック
+        // バリデーションチェック
+        try {
+            Validator.checkCourseId(courseId);
+        } catch (InvalidInputException e) {
+            req.setAttribute("errorMessage", e.getMessage());
+            req.getRequestDispatcher("WEB-INF/jsp/search.jsp").forward(req, res);
+            return;
+        }
 
         // 検索条件オブジェクトの生成
         SearchCriteriaDto criteria = new SearchCriteriaDto();
