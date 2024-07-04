@@ -51,6 +51,9 @@ public class Validator {
 
     // 曜日のバリデーション
     public static void checkDay(String day) throws InvalidInputException {
+        if ("".equals(day)) {
+            return;
+        }
         if (day == null) {
             throw new RuntimeException("曜日の入力で予期しないnullが発生しました。");
         }
@@ -61,6 +64,9 @@ public class Validator {
 
     // 時限のバリデーション
     public static void checkPeriod(String period) throws InvalidInputException {
+        if ("".equals(period)) {
+            return;
+        }
         if (period == null) {
             throw new RuntimeException("時限の入力で予期しないnullが発生しました。");
         }
@@ -71,6 +77,9 @@ public class Validator {
 
     // 講座コードのバリデーション
     public static void checkCourseId(String courseId) throws InvalidInputException {
+        if ("".equals(courseId)) {
+            return;
+        }
         if (courseId == null) {
             throw new RuntimeException("講座コードの入力で予期しないnullが発生しました。");
         }
@@ -81,6 +90,9 @@ public class Validator {
 
     // 講座名のバリデーション
     public static void checkCourseName(String courseName) throws InvalidInputException {
+        if ("".equals(courseName)) {
+            return;
+        }
         if (courseName == null || "".equals(courseName)) {
             throw new RuntimeException("講座名の入力で予期しないnullが発生しました。");
         }
@@ -91,6 +103,9 @@ public class Validator {
 
     // 担当教員名のバリデーション
     public static void checkInstructorName(String instructorName) throws InvalidInputException {
+        if ("".equals(instructorName)) {
+            return;
+        }
         if (instructorName == null || "".equals(instructorName)) {
             throw new RuntimeException("担当教員名の入力で予期しないnullが発生しました。");
         }
