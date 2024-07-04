@@ -22,7 +22,7 @@ public class SignUpDriver {
      * @param dto 学生DTO
      * @throws SignUpFailedException 新規学生登録に失敗したときにスローされる例外
      */
-    public void drive(StudentDto dto) throws SignUpFailedException {
+    public void signUp(StudentDto dto) throws SignUpFailedException {
 
         try (Connection conn = this.connectionManager.getConnection()) {
             StudentDao studentDao = new StudentDao(conn);

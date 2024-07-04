@@ -70,7 +70,7 @@ public class SignUpServlet extends HttpServlet {
         SignUpDriver driver = new SignUpDriver();
 
         try {
-            driver.drive(studentDto);
+            driver.signUp(studentDto);
             req.setAttribute("studentId", studentId);
             // 成功したらログイン画面にフォワード
             req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, res);

@@ -20,7 +20,7 @@ import jp.co.collasho.classroom.service.enrollment.DisplayDriver;
 public class HomeServlet extends HttpServlet {
 
     /**
-     * doPost ホームへ戻る
+     * doGet ホームへ戻る
      * 
      * @param req リクエスト
      * @param res レスポンス
@@ -45,5 +45,17 @@ public class HomeServlet extends HttpServlet {
         List<CourseDto> dtos = driver.getCourses(studentId);
         req.setAttribute("enrollments", dtos);
         req.getRequestDispatcher("WEB-INF/jsp/enrollment.jsp").forward(req, res);
+    }
+
+    /**
+     * doPost ホームへ戻る
+     * 
+     * @param req リクエスト
+     * @param res レスポンス
+     */
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        this.doGet(req, res);
     }
 }
