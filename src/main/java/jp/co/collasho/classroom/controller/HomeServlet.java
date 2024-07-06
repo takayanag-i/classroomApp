@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jp.co.collasho.classroom.constants.PathConstants;
+import jp.co.collasho.classroom.constants.ScopeConstants;
 import jp.co.collasho.classroom.dto.CourseDto;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.service.enrollment.DisplayDriver;
@@ -16,7 +18,7 @@ import jp.co.collasho.classroom.service.enrollment.DisplayDriver;
 /**
  * ホームへ戻る処理のコントローラ
  */
-@WebServlet("/HomeServlet")
+@WebServlet(PathConstants.HOME_SERVLET)
 public class HomeServlet extends HttpServlet {
 
     /**
@@ -31,20 +33,15 @@ public class HomeServlet extends HttpServlet {
 
         // セッション情報の取得
         HttpSession session = req.getSession();
-        LoginStudentDto loginStudent = (LoginStudentDto) session.getAttribute("loginStudent");
-
-        if (loginStudent == null) {
-            req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, res);
-            return;
-        }
-
+        LoginStudentDto loginStudent =
+                (LoginStudentDto) session.getAttribute(ScopeConstants.LOGIN_STUDENT);
         String studentId = loginStudent.getStudentId();
 
         // 表示用時間割データを取得
         DisplayDriver driver = new DisplayDriver();
         List<CourseDto> dtos = driver.getCourses(studentId);
-        req.setAttribute("enrollments", dtos);
-        req.getRequestDispatcher("WEB-INF/jsp/enrollment.jsp").forward(req, res);
+        req.setAttribute(ScopeConstants.ENROLLMETNS, dtos);
+        req.getRequestDispatcher(PathConstants.HOME_VIEW).forward(req, res);
     }
 
     /**

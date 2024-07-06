@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jp.co.collasho.classroom.constants.PathConstants;
 import jp.co.collasho.classroom.constants.ScopeConstants;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.service.delete.DeleteDriver;
@@ -15,7 +16,7 @@ import jp.co.collasho.classroom.service.delete.DeleteDriver;
 /**
  * 削除処理のコントローラ
  */
-@WebServlet("/DeleteServlet")
+@WebServlet(PathConstants.DELETE_SERVLET)
 public class DeleteServlet extends HttpServlet {
 
     /**
@@ -32,20 +33,14 @@ public class DeleteServlet extends HttpServlet {
         HttpSession session = req.getSession();
         LoginStudentDto loginStudent =
                 (LoginStudentDto) session.getAttribute(ScopeConstants.LOGIN_STUDENT);
-
-        if (loginStudent == null) {
-            req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, res);
-            return;
-        }
-
         String studentId = loginStudent.getStudentId();
 
         // パラメタの取得
-        String courseId = req.getParameter("course_id");
+        String courseId = req.getParameter(ScopeConstants.COURSE_ID);
 
         // 履修抹消の実行
         DeleteDriver driver = new DeleteDriver();
         driver.deleteEnrollment(studentId, courseId);
-        req.getRequestDispatcher("HomeServlet").forward(req, res);
+        req.getRequestDispatcher(PathConstants.HOME_SERVLET).forward(req, res);
     }
 }

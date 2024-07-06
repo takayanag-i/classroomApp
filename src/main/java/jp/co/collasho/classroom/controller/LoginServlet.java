@@ -2,7 +2,7 @@ package jp.co.collasho.classroom.controller;
 
 import jakarta.servlet.ServletException;
 import java.io.IOException;
-import java.util.List;
+
 // Jakarta Servlet 6.0 API ~
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,17 +10,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jp.co.collasho.classroom.common.Validator;
-import jp.co.collasho.classroom.dto.CourseDto;
+import jp.co.collasho.classroom.constants.PathConstants;
+import jp.co.collasho.classroom.constants.ScopeConstants;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.exception.LoginFailedException;
 import jp.co.collasho.classroom.exception.InvalidInputException;
-import jp.co.collasho.classroom.service.enrollment.DisplayDriver;
 import jp.co.collasho.classroom.service.login.LoginDriver;
 
 /**
  * ログイン処理のコントローラ
  */
-@WebServlet("/LoginServlet")
+@WebServlet(PathConstants.LOGIN_SERVLET)
 public class LoginServlet extends HttpServlet {
 
     /**
@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, res);
+        req.getRequestDispatcher(PathConstants.LOGIN_VIEW).forward(req, res);
     }
 
     /**
@@ -46,16 +46,16 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // パラメタの取得
-        String studentId = req.getParameter("student_id");
-        String password = req.getParameter("password");
+        String studentId = req.getParameter(ScopeConstants.STUDENT_ID);
+        String password = req.getParameter(ScopeConstants.PASSWORD);
 
         // バリデーションチェック
         try {
             Validator.checkStudentId(studentId);
             Validator.checkPassword(password);
         } catch (InvalidInputException e) {
-            req.setAttribute("errorMessage", e.getMessage());
-            req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, res);
+            req.setAttribute(ScopeConstants.ERROR_MESSAGE, e.getMessage());
+            req.getRequestDispatcher(PathConstants.LOGIN_VIEW).forward(req, res);
             return;
         }
 
@@ -65,17 +65,14 @@ public class LoginServlet extends HttpServlet {
             LoginStudentDto loginStudent = loginDriver.getStudentToLogin(studentId, password);
 
             HttpSession session = req.getSession();
-            session.setAttribute("loginStudent", loginStudent);
+            session.setAttribute(ScopeConstants.LOGIN_STUDENT, loginStudent);
         } catch (LoginFailedException e) {
-            req.setAttribute("errorMessage", e.getMessage());
-            req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, res);
+            req.setAttribute(ScopeConstants.ERROR_MESSAGE, e.getMessage());
+            req.getRequestDispatcher(PathConstants.LOGIN_VIEW).forward(req, res);
             return;
         }
 
         // 表示用時間割データを取得
-        DisplayDriver displayDriver = new DisplayDriver();
-        List<CourseDto> courseDtos = displayDriver.getCourses(studentId);
-        req.setAttribute("enrollments", courseDtos);
-        req.getRequestDispatcher("WEB-INF/jsp/enrollment.jsp").forward(req, res);
+        req.getRequestDispatcher(PathConstants.HOME_SERVLET).forward(req, res);
     }
 }
