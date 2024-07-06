@@ -111,6 +111,14 @@ public class InstructionDao {
         sb.append(
                 "select n.course_id, r.name from Instructions as n inner join Instructors as r on r.instructor_id = n.instructor_id where n.course_id in (");
 
+        if (entities.isEmpty()) {
+            // 履修登録が1つもされていない場合の処理
+            sb.delete(sb.length() - 23, sb.length());
+            sb.append(";");
+
+            return sb.toString();
+        }
+
         for (int i = 0; i < entities.size(); i++) {
             sb.append("?, ");
         }
