@@ -29,7 +29,7 @@ public class SignUpDriver {
             StudentEntity entity = this.convertDtoToEntity(dto);
 
             // 重複ユーザチェック
-            List<StudentEntity> allEntities = studentDao.select();
+            List<StudentEntity> allEntities = studentDao.selectAll();
             this.CheckIdAndEmail(entity, allEntities);
 
             // インサート

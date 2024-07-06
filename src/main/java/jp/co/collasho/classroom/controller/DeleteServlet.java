@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jp.co.collasho.classroom.constants.ScopeConstants;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.service.delete.DeleteDriver;
 
@@ -29,7 +30,8 @@ public class DeleteServlet extends HttpServlet {
 
         // セッション情報の取得
         HttpSession session = req.getSession();
-        LoginStudentDto loginStudent = (LoginStudentDto) session.getAttribute("loginStudent");
+        LoginStudentDto loginStudent =
+                (LoginStudentDto) session.getAttribute(ScopeConstants.LOGIN_STUDENT);
 
         if (loginStudent == null) {
             req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, res);

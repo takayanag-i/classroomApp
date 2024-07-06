@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import jp.co.collasho.classroom.constants.DbConstants;
+import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.dto.SearchCriteriaDto;
 import jp.co.collasho.classroom.entity.CourseEntity;
 import jp.co.collasho.classroom.entity.InstructionEntity;
@@ -29,59 +31,59 @@ public class InstructionDao {
     /**
      * 講座リストを受け取り，講座と教員の対応づけを全取得する
      * 
-     * @param courseEntities 講座エンティティのリスト
+     * @param courses 講座エンティティのリスト
      * @return 講座-教員対応エンティティのリスト
      */
-    public List<InstructionEntity> select(List<CourseEntity> courseEntities) {
-        List<InstructionEntity> instructionEntities = new ArrayList<>();
+    public List<InstructionEntity> select(List<CourseEntity> courses) {
+        List<InstructionEntity> instructions = new ArrayList<>();
 
-        String query = this.getQueryWithInClause(courseEntities);
+        String query = this.getQueryWithInClause(courses);
 
         try (PreparedStatement pStmt = conn.prepareStatement(query)) {
             int i = 1;
-            for (CourseEntity courseEntity : courseEntities) {
-                pStmt.setString(i++, courseEntity.getCourseId());
+            for (CourseEntity course : courses) {
+                pStmt.setString(i++, course.getCourseId());
             }
             ResultSet rs = pStmt.executeQuery();
 
             while (rs.next()) {
-                InstructionEntity instructionEntity = this.getEntityFromResult(rs);
-                instructionEntities.add(instructionEntity);
+                InstructionEntity instruction = this.getEntityFromResult(rs);
+                instructions.add(instruction);
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("SELECTクエリの実行に失敗してステートメントを解放しました。", e);
+            throw new RuntimeException(ErrorMessages.UNEXPECTED_SELECT_ERROR, e);
         }
-        return instructionEntities;
+        return instructions;
     }
 
     /**
      * 検索条件の教員名から，講座と教員の対応づけを取得
      * 
-     * @param criteriaDto
+     * @param criteria
      * @return 講座-教員対応エンティティのリスト
      */
-    public List<InstructionEntity> select(SearchCriteriaDto criteriaDto) {
-        List<InstructionEntity> instructionsEntities = new ArrayList<>();
+    public List<InstructionEntity> select(SearchCriteriaDto criteria) {
+        List<InstructionEntity> instructions = new ArrayList<>();
 
         String query =
                 "select n.course_id, r.name from Instructions as n inner join Instructors as r on r.instructor_id = n.instructor_id where r.name like ?";
 
         try (PreparedStatement pStmt = conn.prepareStatement(query)) {
-            pStmt.setString(1, "%" + criteriaDto.getInstructorName() + "%");
+            pStmt.setString(1, "%" + criteria.getInstructorName() + "%");
 
             ResultSet rs = pStmt.executeQuery();
 
             while (rs.next()) {
-                InstructionEntity instructionEntity = this.getEntityFromResult(rs);
-                instructionsEntities.add(instructionEntity);
+                InstructionEntity instruction = this.getEntityFromResult(rs);
+                instructions.add(instruction);
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("SELECTクエリの実行に失敗してステートメントを開放しました。", e);
+            throw new RuntimeException(ErrorMessages.UNEXPECTED_SELECT_ERROR, e);
         }
 
-        return instructionsEntities;
+        return instructions;
     }
 
     /**
@@ -92,12 +94,12 @@ public class InstructionDao {
      * @throws SQLException
      */
     private InstructionEntity getEntityFromResult(ResultSet rs) throws SQLException {
-        InstructionEntity entity = new InstructionEntity();
+        InstructionEntity instruction = new InstructionEntity();
 
-        entity.setCourseId(rs.getString("course_id"));
-        entity.setInstructor(rs.getString("name"));
+        instruction.setCourseId(rs.getString(DbConstants.COURSE_ID));
+        instruction.setInstructor(rs.getString(DbConstants.INSTRUCTOR_NAME));
 
-        return entity;
+        return instruction;
     }
 
     /**
@@ -110,6 +112,14 @@ public class InstructionDao {
         StringBuilder sb = new StringBuilder();
         sb.append(
                 "select n.course_id, r.name from Instructions as n inner join Instructors as r on r.instructor_id = n.instructor_id where n.course_id in (");
+
+        if (entities.isEmpty()) {
+            // 履修登録が1つもされていない場合の処理
+            sb.delete(sb.length() - 23, sb.length());
+            sb.append(";");
+
+            return sb.toString();
+        }
 
         for (int i = 0; i < entities.size(); i++) {
             sb.append("?, ");

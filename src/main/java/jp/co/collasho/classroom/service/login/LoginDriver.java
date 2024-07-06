@@ -28,7 +28,7 @@ public class LoginDriver {
         try (Connection conn = this.connectionManager.getConnection()) {
             StudentDao studentDao = new StudentDao(conn);
 
-            StudentEntity entity = studentDao.select(studentId, password);
+            StudentEntity entity = studentDao.selectByIdAndPassword(studentId, password);
 
             if (entity == null) {
                 // ログイン失敗
