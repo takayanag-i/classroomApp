@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import jp.co.collasho.classroom.constants.DbConstants;
-import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.dto.SearchCriteriaDto;
 import jp.co.collasho.classroom.entity.CourseEntity;
 import jp.co.collasho.classroom.entity.InstructionEntity;
@@ -31,59 +29,59 @@ public class InstructionDao {
     /**
      * 講座リストを受け取り，講座と教員の対応づけを全取得する
      * 
-     * @param courses 講座エンティティのリスト
+     * @param courseEntities 講座エンティティのリスト
      * @return 講座-教員対応エンティティのリスト
      */
-    public List<InstructionEntity> select(List<CourseEntity> courses) {
-        List<InstructionEntity> instructions = new ArrayList<>();
+    public List<InstructionEntity> select(List<CourseEntity> courseEntities) {
+        List<InstructionEntity> instructionEntities = new ArrayList<>();
 
-        String query = this.getQueryWithInClause(courses);
+        String query = this.getQueryWithInClause(courseEntities);
 
         try (PreparedStatement pStmt = conn.prepareStatement(query)) {
             int i = 1;
-            for (CourseEntity course : courses) {
-                pStmt.setString(i++, course.getCourseId());
+            for (CourseEntity courseEntity : courseEntities) {
+                pStmt.setString(i++, courseEntity.getCourseId());
             }
             ResultSet rs = pStmt.executeQuery();
 
             while (rs.next()) {
-                InstructionEntity instruction = this.getEntityFromResult(rs);
-                instructions.add(instruction);
+                InstructionEntity instructionEntity = this.getEntityFromResult(rs);
+                instructionEntities.add(instructionEntity);
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(ErrorMessages.UNEXPECTED_SELECT_ERROR, e);
+            throw new RuntimeException("SELECTクエリの実行に失敗してステートメントを解放しました。", e);
         }
-        return instructions;
+        return instructionEntities;
     }
 
     /**
      * 検索条件の教員名から，講座と教員の対応づけを取得
      * 
-     * @param criteria
+     * @param criteriaDto
      * @return 講座-教員対応エンティティのリスト
      */
-    public List<InstructionEntity> select(SearchCriteriaDto criteria) {
-        List<InstructionEntity> instructions = new ArrayList<>();
+    public List<InstructionEntity> select(SearchCriteriaDto criteriaDto) {
+        List<InstructionEntity> instructionsEntities = new ArrayList<>();
 
         String query =
                 "select n.course_id, r.name from Instructions as n inner join Instructors as r on r.instructor_id = n.instructor_id where r.name like ?";
 
         try (PreparedStatement pStmt = conn.prepareStatement(query)) {
-            pStmt.setString(1, "%" + criteria.getInstructorName() + "%");
+            pStmt.setString(1, "%" + criteriaDto.getInstructorName() + "%");
 
             ResultSet rs = pStmt.executeQuery();
 
             while (rs.next()) {
-                InstructionEntity instruction = this.getEntityFromResult(rs);
-                instructions.add(instruction);
+                InstructionEntity instructionEntity = this.getEntityFromResult(rs);
+                instructionsEntities.add(instructionEntity);
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(ErrorMessages.UNEXPECTED_SELECT_ERROR, e);
+            throw new RuntimeException("SELECTクエリの実行に失敗してステートメントを開放しました。", e);
         }
 
-        return instructions;
+        return instructionsEntities;
     }
 
     /**
@@ -94,12 +92,12 @@ public class InstructionDao {
      * @throws SQLException
      */
     private InstructionEntity getEntityFromResult(ResultSet rs) throws SQLException {
-        InstructionEntity instruction = new InstructionEntity();
+        InstructionEntity entity = new InstructionEntity();
 
-        instruction.setCourseId(rs.getString(DbConstants.COURSE_ID));
-        instruction.setInstructor(rs.getString(DbConstants.INSTRUCTOR_NAME));
+        entity.setCourseId(rs.getString("course_id"));
+        entity.setInstructor(rs.getString("name"));
 
-        return instruction;
+        return entity;
     }
 
     /**
