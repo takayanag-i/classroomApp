@@ -47,7 +47,7 @@ public class CourseDao {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(ErrorMessages.UNEXPECTED_SELECT_ERROR, e);
+            throw new RuntimeException(ErrorMessages.DAO_SELECT_ERROR, e);
         }
     }
 
@@ -71,7 +71,7 @@ public class CourseDao {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(ErrorMessages.UNEXPECTED_SELECT_ERROR, e);
+            throw new RuntimeException(ErrorMessages.DAO_SELECT_ERROR, e);
         }
         return courses;
     }
@@ -100,7 +100,7 @@ public class CourseDao {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(ErrorMessages.UNEXPECTED_SELECT_ERROR, e);
+            throw new RuntimeException(ErrorMessages.DAO_SELECT_ERROR, e);
         }
         return courses;
     }

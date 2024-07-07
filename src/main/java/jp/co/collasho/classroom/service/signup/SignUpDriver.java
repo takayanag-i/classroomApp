@@ -2,11 +2,14 @@ package jp.co.collasho.classroom.service.signup;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.regex.Pattern;
 import jp.co.collasho.classroom.common.ConnectionManager;
+import jp.co.collasho.classroom.constants.DbConstants;
+import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.dao.StudentDao;
 import jp.co.collasho.classroom.dto.StudentDto;
 import jp.co.collasho.classroom.entity.StudentEntity;
+import jp.co.collasho.classroom.exception.DaoException;
 import jp.co.collasho.classroom.exception.SignUpFailedException;
 
 /**
@@ -19,33 +22,58 @@ public class SignUpDriver {
     /**
      * ユーザ登録を実行する
      * 
-     * @param dto 学生DTO
+     * @param dto StudentDto
      * @throws SignUpFailedException 新規学生登録に失敗したときにスローされる例外
      */
     public void signUp(StudentDto dto) throws SignUpFailedException {
 
+        StudentEntity entity = this.convertDtoToEntity(dto);
+
         try (Connection conn = this.connectionManager.getConnection()) {
             StudentDao studentDao = new StudentDao(conn);
-            StudentEntity entity = this.convertDtoToEntity(dto);
 
-            // 重複ユーザチェック
-            List<StudentEntity> allEntities = studentDao.selectAll();
-            this.CheckIdAndEmail(entity, allEntities);
-
-            // インサート
+            // INSERT
             studentDao.insert(entity);
             this.connectionManager.commit();
+
+        } catch (DaoException e) {
+            // DAO起因のエラー connectionが閉じてrollback
+            if (isDuplicateError(e, "Students.PRIMARY")) {
+                throw new SignUpFailedException(ErrorMessages.DUPLICATE_STUDENT_ID);
+
+            } else if (isDuplicateError(e, "Students.email")) {
+                throw new SignUpFailedException(ErrorMessages.DUPLICATE_EMAIL);
+
+            } else {
+                throw new RuntimeException(e.getMessage(), e);
+
+            }
         } catch (SQLException e) {
-            connectionManager.rollback();
-            throw new RuntimeException("登録の予期しないエラーが起こりました", e);
+            // 他のエラー connectionが閉じてrollback
+            throw new RuntimeException(ErrorMessages.DRIVER_SIGNUP_ERROR, e);
         }
+    }
+
+    private boolean isDuplicateError(DaoException e, String key) {
+        int code = e.getErrorCode();
+        String message = e.getMessage();
+        String regexFormat = "Duplicate entry '.*?' for key \\b%s\\b";
+        String regex = String.format(regexFormat, key);
+        Pattern pattern = Pattern.compile(regex);
+
+        if (code == 1062 && pattern.matcher(message).matches()) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     /**
      * Enrollmentの変換 (DTO→Entity)
      * 
-     * @param dto 学生DTO
-     * @return 学生エンティティ
+     * @param dto StudetnDto
+     * @return StudentEtnity
      */
     private StudentEntity convertDtoToEntity(StudentDto dto) {
         StudentEntity entity = new StudentEntity();
@@ -56,23 +84,5 @@ public class SignUpDriver {
         entity.setPassword(dto.getPassword());
 
         return entity;
-    }
-
-    /**
-     * 重複するIDとメールアドレスをチェックする
-     * 
-     * @param target チェックされる学生エンティティ
-     * @param entities 登録されている全学生エンティティ
-     * @throws SignUpFailedException 新規登録に失敗したときにスローされる例外
-     */
-    private void CheckIdAndEmail(StudentEntity target, List<StudentEntity> entities)
-            throws SignUpFailedException {
-        for (StudentEntity entity : entities) {
-            if (target.getStudentId().equals(entity.getStudentId())) {
-                throw new SignUpFailedException("重複するIDです");
-            } else if (target.getEmail().equals(entity.getEmail())) {
-                throw new SignUpFailedException("重複するメールアドレスです");
-            }
-        }
     }
 }

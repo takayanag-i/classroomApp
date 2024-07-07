@@ -18,7 +18,7 @@ public class PathConstants {
     public static final String LOGOUT_SERVLET = "/LogoutServlet";
     public static final String PREDELETE_SERVLET = "/PreDeleteServlet";
     public static final String SEARCH_SERVLET = "/SearchServlet";
-    public static final String SIGNUP_SERVLET = "/SignUPServlet";
+    public static final String SIGNUP_SERVLET = "/SignUpServlet";
 
 
 

@@ -36,7 +36,7 @@ public class EnrollmentDao {
             pStmt.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(ErrorMessages.UNEXPECTED_INSERT_ERROR, e);
+            throw new RuntimeException(ErrorMessages.DAO_INSERT_ERROR, e);
         }
     }
 
@@ -54,7 +54,7 @@ public class EnrollmentDao {
             pStmt.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(ErrorMessages.UNEXPECTED_DELETE_ERROR, e);
+            throw new RuntimeException(ErrorMessages.DAO_DELETE_ERROR, e);
         }
     }
 }

@@ -31,6 +31,8 @@ public class LoginFilter extends HttpFilter {
             return;
         }
 
+        chain.doFilter(req, res);
+
     }
 
 }

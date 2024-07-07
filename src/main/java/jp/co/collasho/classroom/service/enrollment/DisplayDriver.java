@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import jp.co.collasho.classroom.common.ConnectionManager;
+import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.dao.CourseDao;
 import jp.co.collasho.classroom.dao.InstructionDao;
 import jp.co.collasho.classroom.dto.CourseDto;
@@ -44,7 +45,7 @@ public class DisplayDriver {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("履修登録状況の表示に関して予期しないエラーが発生しました。", e);
+            throw new RuntimeException(ErrorMessages.DRIVER_DiSPLAY_ERROR, e);
         }
 
         return courseDtos;

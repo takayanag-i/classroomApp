@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import jp.co.collasho.classroom.common.ConnectionManager;
+import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.dao.CourseDao;
 import jp.co.collasho.classroom.dao.EnrollmentDao;
 import jp.co.collasho.classroom.dto.EnrollmentDto;
@@ -35,7 +36,7 @@ public class EnrollmentDriver {
             CourseEntity targetCourse = courseDao.selectByCourseId(dto.getCourseId());
             List<CourseEntity> enrolledCourses = courseDao.selectByStudentId(dto.getStudentId());
             if (!this.isValidEnrollment(targetCourse, enrolledCourses)) {
-                throw new InValidEnrollmentException("曜日・時限が重複しています。");
+                throw new InValidEnrollmentException(ErrorMessages.DUPLICATE_ENROLLMENT);
             }
 
             // インサート
@@ -44,7 +45,7 @@ public class EnrollmentDriver {
 
         } catch (SQLException e) {
             this.connectionManager.rollback();
-            throw new RuntimeException("履修登録における予期しないエラーが発生しました。", e);
+            throw new RuntimeException(ErrorMessages.DRIVER_ENROLLMENT_ERROR, e);
         }
     }
 

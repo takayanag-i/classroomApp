@@ -9,6 +9,7 @@ import java.util.List;
 import jp.co.collasho.classroom.constants.DbConstants;
 import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.entity.StudentEntity;
+import jp.co.collasho.classroom.exception.DaoException;
 
 public class StudentDao {
 
@@ -30,7 +31,7 @@ public class StudentDao {
      * 
      * @param student 学生エンティティ
      */
-    public void insert(StudentEntity student) {
+    public void insert(StudentEntity student) throws DaoException {
 
         String query =
                 "INSERT INTO Students (student_id, name, email, password) VALUES (?, ?, ?, ?);";
@@ -42,7 +43,7 @@ public class StudentDao {
             pStmt.setString(4, student.getPassword());
             pStmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(ErrorMessages.UNEXPECTED_INSERT_ERROR, e);
+            throw new DaoException(e);
         }
     }
 
@@ -62,7 +63,7 @@ public class StudentDao {
                 allStudents.add(student);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(ErrorMessages.UNEXPECTED_SELECT_ERROR, e);
+            throw new RuntimeException(ErrorMessages.DAO_SELECT_ERROR, e);
         }
 
         return allStudents;
@@ -93,7 +94,7 @@ public class StudentDao {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(ErrorMessages.UNEXPECTED_SELECT_ERROR, e);
+            throw new RuntimeException(ErrorMessages.DAO_SELECT_ERROR, e);
         }
     }
 

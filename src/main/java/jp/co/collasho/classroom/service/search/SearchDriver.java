@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import jp.co.collasho.classroom.common.ConnectionManager;
+import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.dao.CourseDao;
 import jp.co.collasho.classroom.dao.InstructionDao;
 import jp.co.collasho.classroom.dto.CourseDto;
@@ -48,7 +49,7 @@ public class SearchDriver {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("検索実行における予期しないエラーが発生しました。", e);
+            throw new RuntimeException(ErrorMessages.DRIVER_SEARCH_ERROR, e);
         }
 
         return courseDtos;
