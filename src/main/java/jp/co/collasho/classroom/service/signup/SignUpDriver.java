@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 import jp.co.collasho.classroom.common.ConnectionManager;
-import jp.co.collasho.classroom.constants.DbConstants;
 import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.dao.StudentDao;
 import jp.co.collasho.classroom.dto.StudentDto;
@@ -39,25 +38,35 @@ public class SignUpDriver {
         } catch (DaoException e) {
             // DAO起因のエラー connectionが閉じてrollback
             if (isDuplicateError(e, "Students.PRIMARY")) {
+                // 重複する出席番号
                 throw new SignUpFailedException(ErrorMessages.DUPLICATE_STUDENT_ID);
 
             } else if (isDuplicateError(e, "Students.email")) {
+                // 重複するメールアドレス
                 throw new SignUpFailedException(ErrorMessages.DUPLICATE_EMAIL);
 
             } else {
                 throw new RuntimeException(e.getMessage(), e);
-
             }
+
         } catch (SQLException e) {
             // 他のエラー connectionが閉じてrollback
             throw new RuntimeException(ErrorMessages.DRIVER_SIGNUP_ERROR, e);
         }
     }
 
+    /**
+     * 主キー重複またはユニーク制約違反かどうかを判定する
+     * 
+     * @param e DaoException
+     * @param key 判定したいキー テーブル名.PRIMARY または テーブル名.カラム名
+     * @return true / false
+     */
     private boolean isDuplicateError(DaoException e, String key) {
         int code = e.getErrorCode();
         String message = e.getMessage();
-        String regexFormat = "Duplicate entry '.*?' for key \\b%s\\b";
+        String regexFormat =
+                "java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '.*?' for key '%s'";
         String regex = String.format(regexFormat, key);
         Pattern pattern = Pattern.compile(regex);
 
@@ -66,7 +75,6 @@ public class SignUpDriver {
         } else {
             return false;
         }
-
     }
 
     /**

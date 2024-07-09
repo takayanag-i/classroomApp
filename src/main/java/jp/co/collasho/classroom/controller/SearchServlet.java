@@ -66,20 +66,20 @@ public class SearchServlet extends HttpServlet {
         }
 
         // 検索条件オブジェクトの生成
-        SearchCriteriaDto criteriaDto = new SearchCriteriaDto();
-        criteriaDto.setCourseId(courseId);
-        criteriaDto.setCourseName(courseName);
-        criteriaDto.setInstructorName(instructorName);
-        criteriaDto.setDayOfWeek(DayOfWeek.fromNum(dayOfWeek));
-        criteriaDto.setPeriod(period);
+        SearchCriteriaDto criteria = new SearchCriteriaDto();
+        criteria.setCourseId(courseId);
+        criteria.setCourseName(courseName);
+        criteria.setInstructorName(instructorName);
+        criteria.setDayOfWeek(DayOfWeek.fromNum(dayOfWeek));
+        criteria.setPeriod(period);
 
         // 検索の実行
         SearchDriver driver = new SearchDriver();
-        List<CourseDto> courseDtos = driver.getCourses(criteriaDto);
+        List<CourseDto> courseDtos = driver.getCourses(criteria);
 
         // 結果を格納してフォワード
         req.setAttribute(ScopeConstants.RESULTS, courseDtos);
-        req.setAttribute(ScopeConstants.CRITERIA, criteriaDto);
+        req.setAttribute(ScopeConstants.CRITERIA, criteria);
         req.getRequestDispatcher(PathConstants.SEARCH_VIEW).forward(req, res);
     }
 }

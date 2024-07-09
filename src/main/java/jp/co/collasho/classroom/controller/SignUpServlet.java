@@ -78,7 +78,7 @@ public class SignUpServlet extends HttpServlet {
             // 成功したらログイン画面にフォワード
             forwardPath = PathConstants.LOGIN_VIEW;
         } catch (SignUpFailedException e) {
-            req.setAttribute("errorMessage", e.getMessage());
+            req.setAttribute(ScopeConstants.ERROR_MESSAGE, e.getMessage());
             // 失敗したらユーザ登録画面にリフォワード
             forwardPath = PathConstants.SIGNUP_VIEW;
         }
