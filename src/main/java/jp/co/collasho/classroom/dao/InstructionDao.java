@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import jp.co.collasho.classroom.constants.DbConstants;
 import jp.co.collasho.classroom.dto.SearchCriteriaDto;
 import jp.co.collasho.classroom.entity.CourseEntity;
 import jp.co.collasho.classroom.entity.InstructionEntity;
@@ -94,8 +95,8 @@ public class InstructionDao {
     private InstructionEntity getEntityFromResult(ResultSet rs) throws SQLException {
         InstructionEntity entity = new InstructionEntity();
 
-        entity.setCourseId(rs.getString("course_id"));
-        entity.setInstructor(rs.getString("name"));
+        entity.setCourseId(rs.getString(DbConstants.COURSE_ID));
+        entity.setInstructor(rs.getString(DbConstants.INSTRUCTOR_NAME));
 
         return entity;
     }
