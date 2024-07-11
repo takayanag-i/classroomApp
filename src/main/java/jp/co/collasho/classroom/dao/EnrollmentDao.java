@@ -4,8 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.entity.EnrollmentEntity;
 
+/**
+ * Enrollmentテーブル用DAO
+ */
 public class EnrollmentDao {
     /** コネクション */
     Connection conn;
@@ -20,29 +24,27 @@ public class EnrollmentDao {
     }
 
     /**
-     * 履修の「登録」
+     * INSERT
      * 
-     * @param entity 履修登録エンティティ
+     * @param enrollment 履修登録エンティティ
      */
-    public void insert(EnrollmentEntity entity) {
+    public void insert(EnrollmentEntity enrollment) {
         String query =
                 "insert into Enrollments (student_id, course_id, enrollment_date) values (?, ?, ?);";
         try (PreparedStatement pStmt = conn.prepareStatement(query)) {
-            pStmt.setString(1, entity.getStudentId());
-            pStmt.setString(2, entity.getCourseId());
+            pStmt.setString(1, enrollment.getStudentId());
+            pStmt.setString(2, enrollment.getCourseId());
             pStmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
 
             pStmt.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("INSERTクエリの実行時に予期しないエラーが発生しました。", e);
+            throw new RuntimeException(ErrorMessages.DAO_INSERT_ERROR, e);
         }
     }
 
     /**
-     * 履修の「抹消」
-     * 
-     * 登録期間中は抹消することができる
+     * DELETE
      * 
      * @param courseId 講座コード
      */
@@ -55,7 +57,7 @@ public class EnrollmentDao {
             pStmt.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("DELETEクエリの実行時に予期しないエラーが発生しました。", e);
+            throw new RuntimeException(ErrorMessages.DAO_DELETE_ERROR, e);
         }
     }
 }

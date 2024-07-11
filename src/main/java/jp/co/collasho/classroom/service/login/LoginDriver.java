@@ -3,6 +3,7 @@ package jp.co.collasho.classroom.service.login;
 import java.sql.Connection;
 import java.sql.SQLException;
 import jp.co.collasho.classroom.common.ConnectionManager;
+import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.dao.StudentDao;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.entity.StudentEntity;
@@ -28,11 +29,11 @@ public class LoginDriver {
         try (Connection conn = this.connectionManager.getConnection()) {
             StudentDao studentDao = new StudentDao(conn);
 
-            StudentEntity entity = studentDao.select(studentId, password);
+            StudentEntity entity = studentDao.selectByIdAndPassword(studentId, password);
 
             if (entity == null) {
                 // ログイン失敗
-                throw new LoginFailedException("ログインに失敗しました。");
+                throw new LoginFailedException(ErrorMessages.LOGIN_FAILED);
             }
 
             // ログイン成功
@@ -44,7 +45,7 @@ public class LoginDriver {
             return dto;
 
         } catch (SQLException e) {
-            throw new RuntimeException("予期しないログインエラーが発生しました", e);
+            throw new RuntimeException(ErrorMessages.DRIVER_LOGIN_ERROR, e);
         }
     }
 }

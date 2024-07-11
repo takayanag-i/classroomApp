@@ -28,7 +28,6 @@ public class ConnectionManager {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 this.conn = DriverManager.getConnection(this.jdbcUrl, this.user, this.password);
                 this.conn.setAutoCommit(false);
-                System.out.println("データベースに接続しました。");
             } catch (SQLException e) {
                 throw new RuntimeException("データベースの接続に失敗しました。", e);
             } catch (ClassNotFoundException e) {
@@ -76,6 +75,14 @@ public class ConnectionManager {
             }
         } catch (SQLException e) {
             throw new RuntimeException("トランザクションのロールバックに失敗しました。", e);
+        }
+    }
+
+    public boolean isOpen() {
+        try {
+            return !this.conn.isClosed();
+        } catch (SQLException e) {
+            throw new RuntimeException("コネクションがオープンされているか判定できませんでした。");
         }
     }
 

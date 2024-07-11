@@ -8,15 +8,15 @@ import jp.co.collasho.classroom.common.DayOfWeek;
  */
 public class SearchCriteriaDto implements Serializable {
     /** コースID */
-    private String courseId;
+    private String courseId = "";
     /** コース名 */
-    private String courseName;
+    private String courseName = "";
     /** 教員名 */
-    private String instructorName;
+    private String instructorName = "";
     /** 曜日 */
-    private DayOfWeek dayOfWeek;
+    private DayOfWeek dayOfWeek = DayOfWeek.UNSET;
     /** 時限 */
-    private String period;
+    private String period = "";
 
     /**
      * publicで引数のないコンストラクタ

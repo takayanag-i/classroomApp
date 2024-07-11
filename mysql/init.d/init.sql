@@ -8,15 +8,16 @@ CREATE TABLE Students (
     name NVARCHAR(31) NOT NULL,
     email VARCHAR(63) NOT NULL,
     password VARCHAR(63) NOT NULL,
-    PRIMARY KEY (student_id)
+    PRIMARY KEY (student_id),
+    UNIQUE (email)
 );
 
 -- 学生テーブルのレコード挿入
 INSERT INTO Students
 (student_id, name, email, password) VALUES
-('1401', 'Java太郎', 'mail@example.com', 'JavaJava'),
-('1402', '山口', 'mail@example.com', '20020403'),
-('1403', '福武こころ', 'mail@example.com', 'baton');
+('1401', 'Java太郎', 'mail1@example.com', 'JavaJava'),
+('1402', '山口', 'mail2@example.com', '20020403'),
+('1403', '福武こころ', 'mail3@example.com', 'baton');
 
 -- コーステーブルの作成
 CREATE TABLE Courses (

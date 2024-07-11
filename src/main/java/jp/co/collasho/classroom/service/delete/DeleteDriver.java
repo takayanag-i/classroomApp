@@ -3,6 +3,7 @@ package jp.co.collasho.classroom.service.delete;
 import java.sql.Connection;
 import java.sql.SQLException;
 import jp.co.collasho.classroom.common.ConnectionManager;
+import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.dao.EnrollmentDao;
 
 /**
@@ -27,7 +28,7 @@ public class DeleteDriver {
 
         } catch (SQLException e) {
             this.connectionManager.rollback();
-            throw new RuntimeException("履修の抹消における予期せぬエラーが発生しました。", e);
+            throw new RuntimeException(ErrorMessages.DRIVER_DELETE_ERROR, e);
         }
     }
 }

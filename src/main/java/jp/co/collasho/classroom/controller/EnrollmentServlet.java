@@ -10,17 +10,21 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jp.co.collasho.classroom.common.Validator;
+import jp.co.collasho.classroom.constants.PathConstants;
+import jp.co.collasho.classroom.constants.ScopeConstants;
 import jp.co.collasho.classroom.dto.CourseDto;
 import jp.co.collasho.classroom.dto.EnrollmentDto;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.exception.InValidEnrollmentException;
+import jp.co.collasho.classroom.exception.InvalidInputException;
 import jp.co.collasho.classroom.service.enrollment.DisplayDriver;
 import jp.co.collasho.classroom.service.enrollment.EnrollmentDriver;
 
 /**
  * 履修登録処理のコントローラ
  */
-@WebServlet("/EnrollmentServlet")
+@WebServlet(PathConstants.ENROLLMENT_SERVLET)
 public class EnrollmentServlet extends HttpServlet {
 
     /**
@@ -35,17 +39,20 @@ public class EnrollmentServlet extends HttpServlet {
 
         // セッション情報の取得
         HttpSession session = req.getSession();
-        LoginStudentDto loginStudent = (LoginStudentDto) session.getAttribute("loginStudent");
-
-        if (loginStudent == null) {
-            req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, res);
-            return;
-        }
-
+        LoginStudentDto loginStudent =
+                (LoginStudentDto) session.getAttribute(ScopeConstants.LOGIN_STUDENT);
         String studentId = loginStudent.getStudentId();
 
         // パラメタの取得
-        String courseId = req.getParameter("selectedCourse");
+        String courseId = req.getParameter(ScopeConstants.SELECTED_COURSE);
+
+        // バリデーションチェック
+        try {
+            Validator.checkSelectedCourseId(courseId);
+        } catch (InvalidInputException e) {
+            req.setAttribute(ScopeConstants.ERROR_MESSAGE, e.getMessage());
+            req.getRequestDispatcher(PathConstants.SEARCH_VIEW).forward(req, res);
+        }
 
         // 現在日時の取得
         Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -62,14 +69,14 @@ public class EnrollmentServlet extends HttpServlet {
         String forwardPath;
         try {
             driver.enroll(enrollmentDto);
-            forwardPath = "WEB-INF/jsp/enrollment.jsp";
+            forwardPath = PathConstants.HOME_VIEW;
             // 表示用時間割データを取得
             DisplayDriver displayDriver = new DisplayDriver();
             List<CourseDto> courseDtos = displayDriver.getCourses(studentId);
-            req.setAttribute("enrollments", courseDtos);
+            req.setAttribute(ScopeConstants.ENROLLMETNS, courseDtos);
         } catch (InValidEnrollmentException e) {
-            forwardPath = "WEB-INF/jsp/search.jsp";
-            req.setAttribute("errorMessage", e.getMessage());
+            forwardPath = PathConstants.SEARCH_VIEW;
+            req.setAttribute(ScopeConstants.ERROR_MESSAGE, e.getMessage());
         }
 
         // フォワード

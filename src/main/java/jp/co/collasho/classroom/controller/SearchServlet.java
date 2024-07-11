@@ -8,11 +8,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jp.co.collasho.classroom.common.DayOfWeek;
 import jp.co.collasho.classroom.common.Validator;
+import jp.co.collasho.classroom.constants.PathConstants;
+import jp.co.collasho.classroom.constants.ScopeConstants;
 import jp.co.collasho.classroom.dto.CourseDto;
-import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.dto.SearchCriteriaDto;
 import jp.co.collasho.classroom.exception.InvalidInputException;
 import jp.co.collasho.classroom.service.search.SearchDriver;
@@ -20,7 +20,7 @@ import jp.co.collasho.classroom.service.search.SearchDriver;
 /**
  * 検索機能のコントローラ
  */
-@WebServlet("/SearchServlet")
+@WebServlet(PathConstants.SEARCH_SERVLET)
 public class SearchServlet extends HttpServlet {
     /**
      * doGet 検索画面にフォワードする
@@ -31,16 +31,8 @@ public class SearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        LoginStudentDto loginStudent = (LoginStudentDto) session.getAttribute("loginStudent");
-        String forwardPath;
-        if (loginStudent == null) {
-            forwardPath = "WEB-INF/jsp/login.jsp";
-        } else {
-            forwardPath = "WEB-INF/jsp/search.jsp";
-        }
 
-        req.getRequestDispatcher(forwardPath).forward(req, res);
+        req.getRequestDispatcher(PathConstants.SEARCH_VIEW).forward(req, res);
     }
 
     /**
@@ -54,41 +46,41 @@ public class SearchServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // パラメタの取得
-        String courseId = req.getParameter("course_id");
-        String courseName = req.getParameter("course_name");
-        String instructorName = req.getParameter("instructor_name");
-        String dayOfWeek = req.getParameter("day_of_week");
-        String period = req.getParameter("period");
+        String courseId = req.getParameter(ScopeConstants.COURSE_ID);
+        String courseName = req.getParameter(ScopeConstants.COURRSE_NAME);
+        String instructorName = req.getParameter(ScopeConstants.INSTRUCTOR_NAME);
+        String dayOfWeek = req.getParameter(ScopeConstants.DAY_OF_WEEK);
+        String period = req.getParameter(ScopeConstants.PERIOD);
 
         // バリデーションチェック
         try {
-            Validator.checkCourseId(courseId);
-            Validator.checkCourseName(courseName);
-            Validator.checkInstructorName(instructorName);
-            Validator.checkDayOfWeek(dayOfWeek);
-            Validator.checkPeriod(period);
+            Validator.checkCourseIdForSearch(courseId);
+            Validator.checkCourseNameForSearch(courseName);
+            Validator.checkInstructorNameForSearch(instructorName);
+            Validator.checkDayOfWeekForSearch(dayOfWeek);
+            Validator.checkPeriodForSearch(period);
         } catch (InvalidInputException e) {
-            req.setAttribute("errorMessage", e.getMessage());
-            req.getRequestDispatcher("WEB-INF/jsp/search.jsp").forward(req, res);
+            req.setAttribute(ScopeConstants.ERROR_MESSAGE, e.getMessage());
+            req.getRequestDispatcher(PathConstants.SEARCH_VIEW).forward(req, res);
             return;
         }
 
         // 検索条件オブジェクトの生成
-        SearchCriteriaDto criteriaDto = new SearchCriteriaDto();
-        criteriaDto.setCourseId(courseId);
-        criteriaDto.setCourseName(courseName);
-        criteriaDto.setInstructorName(instructorName);
-        criteriaDto.setDayOfWeek(DayOfWeek.fromNum(dayOfWeek));
-        criteriaDto.setPeriod(period);
+        SearchCriteriaDto criteria = new SearchCriteriaDto();
+        criteria.setCourseId(courseId);
+        criteria.setCourseName(courseName);
+        criteria.setInstructorName(instructorName);
+        criteria.setDayOfWeek(DayOfWeek.fromNum(dayOfWeek));
+        criteria.setPeriod(period);
 
         // 検索の実行
         SearchDriver driver = new SearchDriver();
-        List<CourseDto> courseDtos = driver.getCourses(criteriaDto);
+        List<CourseDto> courseDtos = driver.getCourses(criteria);
 
         // 結果を格納してフォワード
-        req.setAttribute("results", courseDtos);
-        req.setAttribute("criteria", criteriaDto);
-        req.getRequestDispatcher("WEB-INF/jsp/search.jsp").forward(req, res);
+        req.setAttribute(ScopeConstants.RESULTS, courseDtos);
+        req.setAttribute(ScopeConstants.CRITERIA, criteria);
+        req.getRequestDispatcher(PathConstants.SEARCH_VIEW).forward(req, res);
     }
 }
 

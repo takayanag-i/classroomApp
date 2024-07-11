@@ -1,4 +1,4 @@
-package jp.co.collasho.classroom.common;
+package jp.co.collasho.classroom.constants;
 
 /**
  * 定数管理クラス

@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jp.co.collasho.classroom.common.Validator;
+import jp.co.collasho.classroom.constants.PathConstants;
+import jp.co.collasho.classroom.constants.ScopeConstants;
 import jp.co.collasho.classroom.dto.StudentDto;
 import jp.co.collasho.classroom.exception.SignUpFailedException;
 import jp.co.collasho.classroom.exception.InvalidInputException;
@@ -16,7 +18,7 @@ import jp.co.collasho.classroom.service.signup.SignUpDriver;
 /**
  * ユーザ登録処理のコントローラ
  */
-@WebServlet("/SignUpServlet")
+@WebServlet(PathConstants.SIGNUP_SERVLET)
 public class SignUpServlet extends HttpServlet {
 
     /**
@@ -28,8 +30,8 @@ public class SignUpServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        req.setAttribute("errorMessage", "");
-        req.getRequestDispatcher("WEB-INF/jsp/signup.jsp").forward(req, res);
+        req.setAttribute(ScopeConstants.ERROR_MESSAGE, "");
+        req.getRequestDispatcher(PathConstants.SIGNUP_VIEW).forward(req, res);
     }
 
     /**
@@ -43,10 +45,10 @@ public class SignUpServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // パラメタの取得
-        String studentId = req.getParameter("student_id");
-        String name = req.getParameter("name");
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
+        String studentId = req.getParameter(ScopeConstants.STUDENT_ID);
+        String name = req.getParameter(ScopeConstants.NAME);
+        String email = req.getParameter(ScopeConstants.EMAIL);
+        String password = req.getParameter(ScopeConstants.PASSWORD);
 
         // バリデーションチェック
         try {
@@ -55,8 +57,8 @@ public class SignUpServlet extends HttpServlet {
             Validator.checkEmail(email);
             Validator.checkPassword(password);
         } catch (InvalidInputException e) {
-            req.setAttribute("errorMessage", e.getMessage());
-            req.getRequestDispatcher("WEB-INF/jsp/signup.jsp").forward(req, res);
+            req.setAttribute(ScopeConstants.ERROR_MESSAGE, e.getMessage());
+            req.getRequestDispatcher(PathConstants.SIGNUP_VIEW).forward(req, res);
         }
 
         // DTOの生成
@@ -69,15 +71,18 @@ public class SignUpServlet extends HttpServlet {
         // ユーザ登録の実行
         SignUpDriver driver = new SignUpDriver();
 
+        String forwardPath;
         try {
             driver.signUp(studentDto);
-            req.setAttribute("studentId", studentId);
+            req.setAttribute(ScopeConstants.SIGNED_UP_ID, studentId);
             // 成功したらログイン画面にフォワード
-            req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, res);
+            forwardPath = PathConstants.LOGIN_VIEW;
         } catch (SignUpFailedException e) {
-            req.setAttribute("errorMessage", e.getMessage());
+            req.setAttribute(ScopeConstants.ERROR_MESSAGE, e.getMessage());
             // 失敗したらユーザ登録画面にリフォワード
-            req.getRequestDispatcher("WEB-INF/jsp/signup.jsp").forward(req, res);
+            forwardPath = PathConstants.SIGNUP_VIEW;
         }
+
+        req.getRequestDispatcher(forwardPath).forward(req, res);
     }
 }

@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jp.co.collasho.classroom.dto.LoginStudentDto;
+import jp.co.collasho.classroom.constants.PathConstants;
 
 /**
  * ログアウト処理のコントローラ
@@ -26,17 +26,9 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        // セッション情報の取得
         HttpSession session = req.getSession();
-        LoginStudentDto loginStudent = (LoginStudentDto) session.getAttribute("loginStudent");
-
-        if (loginStudent == null) {
-            req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, res);
-            return;
-        }
-
         session.invalidate();
 
-        req.getRequestDispatcher("LoginServlet").forward(req, res);
+        req.getRequestDispatcher(PathConstants.LOGIN_VIEW).forward(req, res);
     }
 }
