@@ -7,6 +7,9 @@ import java.sql.Timestamp;
 import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.entity.EnrollmentEntity;
 
+/**
+ * Enrollmentテーブル用DAO
+ */
 public class EnrollmentDao {
     /** コネクション */
     Connection conn;

@@ -12,7 +12,7 @@ import jp.co.collasho.classroom.entity.CourseEntity;
 import jp.co.collasho.classroom.entity.InstructionEntity;
 
 /**
- * 教員データへのアクセス用オブジェクト
+ * Instrcutionテーブル用DAO
  */
 public class InstructionDao {
     /** コネクション */

@@ -12,7 +12,7 @@ import jp.co.collasho.classroom.dto.SearchCriteriaDto;
 import jp.co.collasho.classroom.entity.CourseEntity;
 
 /**
- * 講座データへのアクセス用オブジェクト
+ * Courseテーブル用DAO
  */
 public class CourseDao {
     /** コネクション */

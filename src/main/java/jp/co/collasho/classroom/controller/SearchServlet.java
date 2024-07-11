@@ -54,11 +54,11 @@ public class SearchServlet extends HttpServlet {
 
         // バリデーションチェック
         try {
-            Validator.checkCourseId(courseId);
-            Validator.checkCourseName(courseName);
-            Validator.checkInstructorName(instructorName);
-            Validator.checkDayOfWeek(dayOfWeek);
-            Validator.checkPeriod(period);
+            Validator.checkCourseIdForSearch(courseId);
+            Validator.checkCourseNameForSearch(courseName);
+            Validator.checkInstructorNameForSearch(instructorName);
+            Validator.checkDayOfWeekForSearch(dayOfWeek);
+            Validator.checkPeriodForSearch(period);
         } catch (InvalidInputException e) {
             req.setAttribute(ScopeConstants.ERROR_MESSAGE, e.getMessage());
             req.getRequestDispatcher(PathConstants.SEARCH_VIEW).forward(req, res);

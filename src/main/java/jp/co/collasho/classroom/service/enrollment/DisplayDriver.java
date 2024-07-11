@@ -45,7 +45,7 @@ public class DisplayDriver {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(ErrorMessages.DRIVER_DiSPLAY_ERROR, e);
+            throw new RuntimeException(ErrorMessages.DRIVER_DISPLAY_ERROR, e);
         }
 
         return courseDtos;

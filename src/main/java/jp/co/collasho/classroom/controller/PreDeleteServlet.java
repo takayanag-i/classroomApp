@@ -37,7 +37,7 @@ public class PreDeleteServlet extends HttpServlet {
 
         // バリデーションチェック
         try {
-            Validator.checkCourseId(courseId);
+            Validator.checkCourseIdForSearch(courseId);
         } catch (InvalidInputException e) {
             req.setAttribute(ScopeConstants.ERROR_MESSAGE, e.getMessage());
             req.getRequestDispatcher(PathConstants.SEARCH_VIEW).forward(req, res);

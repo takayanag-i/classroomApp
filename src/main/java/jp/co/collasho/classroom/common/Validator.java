@@ -73,12 +73,12 @@ public class Validator {
     }
 
     /**
-     * 曜日のバリデーションチェック
+     * 曜日のバリデーションチェック（検索用）
      * 
      * @param dayOfWeek 曜日番号
      * @throws InvalidInputException 不正な入力があったときにスローされる例外
      */
-    public static void checkDayOfWeek(String dayOfWeek) throws InvalidInputException {
+    public static void checkDayOfWeekForSearch(String dayOfWeek) throws InvalidInputException {
         if ("".equals(dayOfWeek)) {
             return;
         }
@@ -91,12 +91,12 @@ public class Validator {
     }
 
     /**
-     * 時限のバリデーションチェック
+     * 時限のバリデーションチェック（検索用）
      * 
      * @param period 時限
      * @throws InvalidInputException 不正な入力があったときにスローされる例外
      */
-    public static void checkPeriod(String period) throws InvalidInputException {
+    public static void checkPeriodForSearch(String period) throws InvalidInputException {
         if ("".equals(period)) {
             return;
         }
@@ -109,12 +109,12 @@ public class Validator {
     }
 
     /**
-     * 講座IDのバリデーションチェック
+     * 講座IDのバリデーションチェック（検索用）
      * 
      * @param courseId 講座ID
      * @throws InvalidInputException 不正な入力があったときにスローされる例外
      */
-    public static void checkCourseId(String courseId) throws InvalidInputException {
+    public static void checkCourseIdForSearch(String courseId) throws InvalidInputException {
         if ("".equals(courseId)) {
             return;
         }
@@ -127,12 +127,12 @@ public class Validator {
     }
 
     /**
-     * 講座名のバリデーションチェック
+     * 講座名のバリデーションチェック（検索用）
      * 
      * @param courseName 講座名
      * @throws InvalidInputException 不正な入力があったときにスローされる例外
      */
-    public static void checkCourseName(String courseName) throws InvalidInputException {
+    public static void checkCourseNameForSearch(String courseName) throws InvalidInputException {
         if ("".equals(courseName)) {
             return;
         }
@@ -145,12 +145,13 @@ public class Validator {
     }
 
     /**
-     * 担当教員名のバリデーションチェック
+     * 担当教員名のバリデーションチェック（検索用）
      * 
      * @param instructorName 担当教員名
      * @throws InvalidInputException 不正な入力があったときにスローされる例外
      */
-    public static void checkInstructorName(String instructorName) throws InvalidInputException {
+    public static void checkInstructorNameForSearch(String instructorName)
+            throws InvalidInputException {
         if ("".equals(instructorName)) {
             return;
         }
@@ -159,6 +160,19 @@ public class Validator {
         }
         if (instructorName.length() > 15) {
             throw new InvalidInputException("担当教員名は15字以内で入力してください。");
+        }
+    }
+
+    /**
+     * 講座コードのバリデーションチェック（選択式）
+     */
+    public static void checkSelectedCourseId(String courseId) throws InvalidInputException {
+        if (courseId == null || "".equals(courseId)) {
+            throw new InvalidInputException("講座を選択してください。");
+        }
+
+        if (!courseId.matches("[A-Za-z0-9]{5}")) {
+            throw new InvalidInputException("講座コードは5字の半角英数字で入力してください。");
         }
     }
 }

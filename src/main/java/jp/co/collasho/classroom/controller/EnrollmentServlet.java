@@ -10,12 +10,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jp.co.collasho.classroom.common.Validator;
 import jp.co.collasho.classroom.constants.PathConstants;
 import jp.co.collasho.classroom.constants.ScopeConstants;
 import jp.co.collasho.classroom.dto.CourseDto;
 import jp.co.collasho.classroom.dto.EnrollmentDto;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.exception.InValidEnrollmentException;
+import jp.co.collasho.classroom.exception.InvalidInputException;
 import jp.co.collasho.classroom.service.enrollment.DisplayDriver;
 import jp.co.collasho.classroom.service.enrollment.EnrollmentDriver;
 
@@ -43,6 +45,14 @@ public class EnrollmentServlet extends HttpServlet {
 
         // パラメタの取得
         String courseId = req.getParameter(ScopeConstants.SELECTED_COURSE);
+
+        // バリデーションチェック
+        try {
+            Validator.checkSelectedCourseId(courseId);
+        } catch (InvalidInputException e) {
+            req.setAttribute(ScopeConstants.ERROR_MESSAGE, e.getMessage());
+            req.getRequestDispatcher(PathConstants.SEARCH_VIEW).forward(req, res);
+        }
 
         // 現在日時の取得
         Timestamp now = new Timestamp(System.currentTimeMillis());

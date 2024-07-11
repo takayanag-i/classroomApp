@@ -34,8 +34,11 @@ public class EnrollmentDriver {
 
             // 重複チェック
             CourseEntity targetCourse = courseDao.selectByCourseId(dto.getCourseId());
+            if (targetCourse == null) {
+                throw new InValidEnrollmentException(ErrorMessages.DRIVER_NO_SUCH_COURSE);
+            }
             List<CourseEntity> enrolledCourses = courseDao.selectByStudentId(dto.getStudentId());
-            if (!this.isValidEnrollment(targetCourse, enrolledCourses)) {
+            if (this.isDuplicateEnrollment(targetCourse, enrolledCourses)) {
                 throw new InValidEnrollmentException(ErrorMessages.DUPLICATE_ENROLLMENT);
             }
 
@@ -66,16 +69,16 @@ public class EnrollmentDriver {
         return entity;
     }
 
-    private boolean isValidEnrollment(CourseEntity target, List<CourseEntity> entities) {
+    private boolean isDuplicateEnrollment(CourseEntity target, List<CourseEntity> entities) {
 
         for (CourseEntity entity : entities) {
             String day = entity.getDayOfWeekNum();
             String period = entity.getPeriod();
 
             if (day.equals(target.getDayOfWeekNum()) && period.equals(target.getPeriod())) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 }

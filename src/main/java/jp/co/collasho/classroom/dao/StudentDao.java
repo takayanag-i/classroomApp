@@ -11,6 +11,9 @@ import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.entity.StudentEntity;
 import jp.co.collasho.classroom.exception.DaoException;
 
+/**
+ * Studentテーブル用DAO
+ */
 public class StudentDao {
 
     /** コネクション */
