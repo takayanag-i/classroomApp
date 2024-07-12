@@ -1,11 +1,17 @@
 package jp.co.collasho.classroom.common;
 
+import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.exception.InvalidInputException;
 
 /**
  * バリデータクラス
  */
 public class Validator {
+
+    private Validator() {
+        throw new IllegalStateException(ErrorMessages.UTIL_NEW_ERROR);
+    }
+
     /**
      * 出席番号のバリデーションチェック
      * 

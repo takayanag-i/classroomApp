@@ -21,4 +21,8 @@ public class ScopeConstants {
     public static final String PERIOD = "period";
     public static final String SELECTED_COURSE = "selectedCourse";
     public static final String STUDENT_ID = "student_id";
+
+    private ScopeConstants() {
+        throw new IllegalStateException(ErrorMessages.UTIL_NEW_ERROR);
+    }
 }

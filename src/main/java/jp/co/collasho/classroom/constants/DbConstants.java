@@ -47,4 +47,8 @@ public class DbConstants {
     // Instructions
     /** テーブル名 */
     public static final String INSTRUCTIONS = "Instructions";
+
+    private DbConstants() {
+        throw new IllegalStateException(ErrorMessages.UTIL_NEW_ERROR);
+    }
 }

@@ -18,4 +18,10 @@ public class ErrorMessages {
     public static final String DUPLICATE_EMAIL = "重複するメールアドレスです。";
     public static final String LOGIN_FAILED = "ログインに失敗しました。";
 
+    public static final String UTIL_NEW_ERROR = "ユーティリティクラスをnewしないでください。";
+
+    private ErrorMessages() {
+        throw new IllegalStateException(UTIL_NEW_ERROR);
+    }
+
 }

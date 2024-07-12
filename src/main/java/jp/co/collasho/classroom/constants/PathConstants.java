@@ -20,6 +20,8 @@ public class PathConstants {
     public static final String SEARCH_SERVLET = "/SearchServlet";
     public static final String SIGNUP_SERVLET = "/SignUpServlet";
 
-
+    private PathConstants() {
+        throw new IllegalStateException(ErrorMessages.UTIL_NEW_ERROR);
+    }
 
 }

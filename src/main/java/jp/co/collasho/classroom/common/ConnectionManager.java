@@ -11,7 +11,7 @@ public class ConnectionManager {
     /** コネクション */
     private Connection conn;
     /** JDBCURL */
-    private String jdbcUrl = "jdbc:mysql://mysql:3306/training_db";
+    private String jdbcUrl = "jdbc:mysql://localhost:13306/training_db";
     /** ユーザ名 */
     private String user = "root";
     /** パスワード */
