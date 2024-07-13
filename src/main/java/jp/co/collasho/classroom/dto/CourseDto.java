@@ -12,9 +12,9 @@ public class CourseDto implements Serializable {
     private DayOfWeek dayOfWeek;
     /** 時限 */
     private String period;
-    /** コースId */
+    /** 講座コード */
     private String courseId;
-    /** コース名 */
+    /** 講座名 */
     private String courseName;
     /** 担当教員リスト */
     private List<String> instructors;
