@@ -1,10 +1,13 @@
 package jp.co.collasho.classroom.constants;
 
+/**
+ * スコープ変数名を格納する定数クラス
+ */
 public class ScopeConstants {
 
     // Attributes
     public static final String CRITERIA = "criteria";
-    public static final String ENROLLMETNS = "enrollments";
+    public static final String MATRIX = "matrix";
     public static final String ERROR_MESSAGE = "errorMessage";
     public static final String SIGNED_UP_ID = "studentId";
     public static final String LOGIN_STUDENT = "loginStudent";
@@ -21,4 +24,8 @@ public class ScopeConstants {
     public static final String PERIOD = "period";
     public static final String SELECTED_COURSE = "selectedCourse";
     public static final String STUDENT_ID = "student_id";
+
+    private ScopeConstants() {
+        throw new IllegalStateException(ErrorMessages.UTIL_NEW_ERROR);
+    }
 }

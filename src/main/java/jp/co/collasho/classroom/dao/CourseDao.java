@@ -31,10 +31,11 @@ public class CourseDao {
      * SELECT 講座IDを指定して取得する
      * 
      * @param courseId 講座コード
-     * @return 講座エンティティ
+     * @return CourseEntity
      */
     public CourseEntity selectByCourseId(String courseId) {
-        String query = "select * from Courses where course_id = ?";
+        String query =
+                "select c.course_id, c.course_name, t.day_of_week, t.period from Courses as c inner join TimeTable as t on t.course_id = c.course_id where c.course_id = ?";
 
         try (PreparedStatement pStmt = conn.prepareStatement(query)) {
             pStmt.setString(1, courseId);
@@ -55,12 +56,12 @@ public class CourseDao {
      * SELECT 出席番号を指定して登録講座リストを取得する
      * 
      * @param studentId 出席番号
-     * @return 講座エンティティのリスト
+     * @return CourseEntityのリスト
      */
     public List<CourseEntity> selectByStudentId(String studentId) {
         List<CourseEntity> courses = new ArrayList<>();
         String query =
-                "select e.course_id, c.course_name, c.day_of_week, c.period from Enrollments as e inner join Courses as c on c.course_id = e.course_id where e.student_id = ? ;";
+                "select c.course_id, c.course_name, t.day_of_week, t.period from Courses as c inner join TimeTable as t on t.course_id = c.course_id inner join Enrollments as e on e.course_id = t.course_id where e.student_id = ?;";
 
         try (PreparedStatement pStmt = conn.prepareStatement(query)) {
             pStmt.setString(1, studentId);
@@ -80,13 +81,13 @@ public class CourseDao {
      * SELECT 検索条件に合致する講座リストを取得する
      * 
      * @param criteria 検索条件オブジェクト
-     * @return 講座エンティティのリスト
+     * @return CourseEntityのリスト
      */
     public List<CourseEntity> selectByCriteria(SearchCriteriaDto criteria) {
         List<CourseEntity> courses = new ArrayList<>();
 
         String query =
-                "select course_id, course_name, day_of_week, period from Courses where course_id like ? and course_name like ? and day_of_week like ? and period like ? order by day_of_week asc, period asc;";
+                "select c.course_id, c.course_name, t.day_of_week, t.period from Courses as c inner join TimeTable as t on t.course_id = c.course_id where c.course_id like ? and c.course_name like ? and t.day_of_week like ? and t.period like ? order by t.day_of_week asc, t.period asc;";
 
         try (PreparedStatement pStmt = conn.prepareStatement(query)) {
             pStmt.setString(1, "%" + criteria.getCourseId() + "%");
@@ -109,7 +110,7 @@ public class CourseDao {
      * ResultSetから講座エンティティを生成
      * 
      * @param rs java.sql.ResultSet
-     * @return 講座エンティティ
+     * @return CourseEntity
      * @throws SQLException
      */
     private CourseEntity getEntityFromReslut(ResultSet rs) throws SQLException {

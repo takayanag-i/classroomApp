@@ -34,17 +34,46 @@ public enum DayOfWeek {
     }
 
     /**
-     * 略称→インスタンス
+     * 曜日番号をint型で返す
      * 
-     * @param num 番号
+     * @return 番号 int
+     */
+    public int getInt() {
+        return Integer.parseInt(num);
+    }
+
+    /**
+     * str文字列→インスタンス
+     * 
+     * @param str 番号 String
      * @return 曜日型
      */
-    public static DayOfWeek fromNum(String num) {
+    public static DayOfWeek fromNum(String str) {
         for (DayOfWeek day : DayOfWeek.values()) {
-            if (day.getNum().equals(num)) {
+            if (day.getNum().equals(str)) {
                 return day;
             }
         }
+
+        throw new IllegalArgumentException(str + "は曜日型にできません");
+    }
+
+    /**
+     * int文字列→インスタンス
+     * 
+     * @param num 番号 int
+     * @return 曜日型
+     */
+    public static DayOfWeek fromNum(int num) {
+
+        String str = String.valueOf(num);
+
+        for (DayOfWeek day : DayOfWeek.values()) {
+            if (day.getNum().equals(str)) {
+                return day;
+            }
+        }
+
         throw new IllegalArgumentException(num + "は曜日型にできません");
     }
 

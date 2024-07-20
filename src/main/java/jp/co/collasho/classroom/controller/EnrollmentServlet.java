@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jp.co.collasho.classroom.common.Validator;
 import jp.co.collasho.classroom.constants.PathConstants;
 import jp.co.collasho.classroom.constants.ScopeConstants;
 import jp.co.collasho.classroom.dto.CourseDto;
@@ -20,11 +19,12 @@ import jp.co.collasho.classroom.exception.InValidEnrollmentException;
 import jp.co.collasho.classroom.exception.InvalidInputException;
 import jp.co.collasho.classroom.service.enrollment.DisplayDriver;
 import jp.co.collasho.classroom.service.enrollment.EnrollmentDriver;
+import jp.co.collasho.classroom.util.Validator;
 
 /**
  * 履修登録処理のコントローラ
  */
-@WebServlet(PathConstants.ENROLLMENT_SERVLET)
+@WebServlet(PathConstants.ENROLLMENT_SERVLET_ANNT)
 public class EnrollmentServlet extends HttpServlet {
 
     /**
@@ -72,8 +72,9 @@ public class EnrollmentServlet extends HttpServlet {
             forwardPath = PathConstants.HOME_VIEW;
             // 表示用時間割データを取得
             DisplayDriver displayDriver = new DisplayDriver();
-            List<CourseDto> courseDtos = displayDriver.getCourses(studentId);
-            req.setAttribute(ScopeConstants.ENROLLMETNS, courseDtos);
+            List<CourseDto> courses = displayDriver.getCourses(studentId);
+            List<List<CourseDto>> matrix = displayDriver.getCourseMatrix(courses);
+            req.setAttribute(ScopeConstants.MATRIX, matrix);
         } catch (InValidEnrollmentException e) {
             forwardPath = PathConstants.SEARCH_VIEW;
             req.setAttribute(ScopeConstants.ERROR_MESSAGE, e.getMessage());

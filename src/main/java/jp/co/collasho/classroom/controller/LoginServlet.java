@@ -9,18 +9,18 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jp.co.collasho.classroom.common.Validator;
 import jp.co.collasho.classroom.constants.PathConstants;
 import jp.co.collasho.classroom.constants.ScopeConstants;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 import jp.co.collasho.classroom.exception.LoginFailedException;
 import jp.co.collasho.classroom.exception.InvalidInputException;
 import jp.co.collasho.classroom.service.login.LoginDriver;
+import jp.co.collasho.classroom.util.Validator;
 
 /**
  * ログイン処理のコントローラ
  */
-@WebServlet(PathConstants.LOGIN_SERVLET)
+@WebServlet(PathConstants.LOGIN_SERVLET_ANNT)
 public class LoginServlet extends HttpServlet {
 
     /**
@@ -73,6 +73,6 @@ public class LoginServlet extends HttpServlet {
         }
 
         // 表示用時間割データを取得
-        req.getRequestDispatcher(PathConstants.HOME_SERVLET).forward(req, res);
+        req.getRequestDispatcher(PathConstants.HOME_SERVLET_ANNT).forward(req, res);
     }
 }

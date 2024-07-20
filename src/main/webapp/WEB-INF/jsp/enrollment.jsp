@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -33,29 +33,23 @@
                     <tr>
                         <td>${period}</td>
                         <c:forEach var="day" begin="1" end="5">
-                            <td>
-                                <c:set var="is_empty" value="true" />
-                                <c:forEach var="course" items="${enrollments}">
-                                    <c:if test="${course.dayOfWeek.num == day && course.period == period}">
+                            <c:set var="course" value="${matrix[period - 1][day - 1]}" />
+                            <td rowspan="${course.rowspan}">
+                                <form action="${course.formAction}" method="post">
+                                    <input type="hidden" name="course_id" value="${course.courseId}">
+                                    <input type="hidden" name="day_of_week" value="${course.dayOfWeek.num}">
+                                    <input type="hidden" name="period" value="${course.period}">
+                                    <input type="hidden" name="course_name" value="">
+                                    <input type="hidden" name="instructor_name" value="">
+                                </form>
+                                <c:choose>
+                                    <c:when test="${not empty course.courseId}">
                                         <div class="course-name">${course.courseName}</div>
                                         <c:forEach var="instructor" items="${course.instructors}">
                                             <div class="instructor-name">${instructor}</div>
                                         </c:forEach>
-                                        <form action="PreDeleteServlet" method="post">
-                                            <input type="hidden" name="course_id" value="${course.courseId}">
-                                        </form>
-                                        <c:set var="is_empty" value="false" />
-                                    </c:if>
-                                </c:forEach>
-                                <c:if test="${is_empty}">
-                                    <form action="SearchServlet" method="post">
-                                        <input type="hidden" name="day_of_week" value="${day}">
-                                        <input type="hidden" name="period" value="${period}">
-                                        <input type="hidden" name="course_id" value="">
-                                        <input type="hidden" name="course_name" value="">
-                                        <input type="hidden" name="instructor_name" value="">
-                                    </form>
-                                </c:if>
+                                    </c:when>
+                                </c:choose>
                             </td>
                         </c:forEach>
                     </tr>

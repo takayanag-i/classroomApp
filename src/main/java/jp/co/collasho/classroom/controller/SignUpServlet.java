@@ -7,18 +7,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jp.co.collasho.classroom.common.Validator;
 import jp.co.collasho.classroom.constants.PathConstants;
 import jp.co.collasho.classroom.constants.ScopeConstants;
 import jp.co.collasho.classroom.dto.StudentDto;
 import jp.co.collasho.classroom.exception.SignUpFailedException;
 import jp.co.collasho.classroom.exception.InvalidInputException;
 import jp.co.collasho.classroom.service.signup.SignUpDriver;
+import jp.co.collasho.classroom.util.Validator;
 
 /**
  * ユーザ登録処理のコントローラ
  */
-@WebServlet(PathConstants.SIGNUP_SERVLET)
+@WebServlet(PathConstants.SIGNUP_SERVLET_ANNT)
 public class SignUpServlet extends HttpServlet {
 
     /**

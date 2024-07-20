@@ -12,9 +12,12 @@ import jp.co.collasho.classroom.constants.PathConstants;
 import jp.co.collasho.classroom.constants.ScopeConstants;
 import jp.co.collasho.classroom.dto.LoginStudentDto;
 
-@WebFilter(urlPatterns = {PathConstants.HOME_SERVLET, PathConstants.ENROLLMENT_SERVLET,
-        PathConstants.SEARCH_SERVLET, PathConstants.PREDELETE_SERVLET, PathConstants.DELETE_SERVLET,
-        PathConstants.LOGOUT_SERVLET})
+/**
+ * ログインをチェックするフィルタ
+ */
+@WebFilter(urlPatterns = {PathConstants.HOME_SERVLET_ANNT, PathConstants.ENROLLMENT_SERVLET_ANNT,
+        PathConstants.SEARCH_SERVLET_ANNT, PathConstants.PREDELETE_SERVLET_ANNT,
+        PathConstants.DELETE_SERVLET_ANNT, PathConstants.LOGOUT_SERVLET_ANNT})
 public class LoginFilter extends HttpFilter {
     private static final long serialVersionUID = 1L;
 

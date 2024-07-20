@@ -18,7 +18,7 @@ import jp.co.collasho.classroom.service.enrollment.DisplayDriver;
 /**
  * ホームへ戻る処理のコントローラ
  */
-@WebServlet(PathConstants.HOME_SERVLET)
+@WebServlet(PathConstants.HOME_SERVLET_ANNT)
 public class HomeServlet extends HttpServlet {
 
     /**
@@ -39,8 +39,9 @@ public class HomeServlet extends HttpServlet {
 
         // 表示用時間割データを取得
         DisplayDriver driver = new DisplayDriver();
-        List<CourseDto> dtos = driver.getCourses(studentId);
-        req.setAttribute(ScopeConstants.ENROLLMETNS, dtos);
+        List<CourseDto> courses = driver.getCourses(studentId);
+        List<List<CourseDto>> matrix = driver.getCourseMatrix(courses);
+        req.setAttribute(ScopeConstants.MATRIX, matrix);
         req.getRequestDispatcher(PathConstants.HOME_VIEW).forward(req, res);
     }
 

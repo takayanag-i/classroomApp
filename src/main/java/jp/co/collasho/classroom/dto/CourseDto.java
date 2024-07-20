@@ -12,12 +12,16 @@ public class CourseDto implements Serializable {
     private DayOfWeek dayOfWeek;
     /** 時限 */
     private String period;
-    /** コースId */
+    /** 講座コード */
     private String courseId;
-    /** コース名 */
+    /** 講座名 */
     private String courseName;
     /** 担当教員リスト */
     private List<String> instructors;
+    /** ポストリクエスト先 */
+    private String formAction;
+    /** rowspan */
+    private int rowspan = 1;
 
     /**
      * publicで引数のないコンストラクタ
@@ -65,5 +69,21 @@ public class CourseDto implements Serializable {
 
     public void setInstructors(List<String> instructors) {
         this.instructors = instructors;
+    }
+
+    public String getFormAction() {
+        return formAction;
+    }
+
+    public void setFormAction(String formAction) {
+        this.formAction = formAction;
+    }
+
+    public int getRowspan() {
+        return rowspan;
+    }
+
+    public void setRowspan(int rowspan) {
+        this.rowspan = rowspan;
     }
 }
