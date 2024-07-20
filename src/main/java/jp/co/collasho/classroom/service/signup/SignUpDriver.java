@@ -2,7 +2,6 @@ package jp.co.collasho.classroom.service.signup;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.regex.Pattern;
 import jp.co.collasho.classroom.common.ConnectionManager;
 import jp.co.collasho.classroom.constants.ErrorMessages;
 import jp.co.collasho.classroom.dao.StudentDao;
