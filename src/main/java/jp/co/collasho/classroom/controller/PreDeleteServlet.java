@@ -8,13 +8,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jp.co.collasho.classroom.common.Validator;
 import jp.co.collasho.classroom.constants.PathConstants;
 import jp.co.collasho.classroom.constants.ScopeConstants;
 import jp.co.collasho.classroom.dto.CourseDto;
 import jp.co.collasho.classroom.dto.SearchCriteriaDto;
 import jp.co.collasho.classroom.exception.InvalidInputException;
 import jp.co.collasho.classroom.service.search.SearchDriver;
+import jp.co.collasho.classroom.util.Validator;
 
 /**
  * 削除前確認処理のコントローラ

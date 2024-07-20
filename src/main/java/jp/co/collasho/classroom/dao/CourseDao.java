@@ -56,7 +56,7 @@ public class CourseDao {
      * SELECT 出席番号を指定して登録講座リストを取得する
      * 
      * @param studentId 出席番号
-     * @return 講座エンティティのリスト
+     * @return CourseEntityのリスト
      */
     public List<CourseEntity> selectByStudentId(String studentId) {
         List<CourseEntity> courses = new ArrayList<>();
@@ -81,7 +81,7 @@ public class CourseDao {
      * SELECT 検索条件に合致する講座リストを取得する
      * 
      * @param criteria 検索条件オブジェクト
-     * @return 講座エンティティのリスト
+     * @return CourseEntityのリスト
      */
     public List<CourseEntity> selectByCriteria(SearchCriteriaDto criteria) {
         List<CourseEntity> courses = new ArrayList<>();
@@ -110,7 +110,7 @@ public class CourseDao {
      * ResultSetから講座エンティティを生成
      * 
      * @param rs java.sql.ResultSet
-     * @return 講座エンティティ
+     * @return CourseEntity
      * @throws SQLException
      */
     private CourseEntity getEntityFromReslut(ResultSet rs) throws SQLException {

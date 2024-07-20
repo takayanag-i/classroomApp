@@ -16,7 +16,7 @@ import jp.co.collasho.classroom.service.delete.DeleteDriver;
 /**
  * 削除処理のコントローラ
  */
-@WebServlet(PathConstants.DELETE_SERVLET)
+@WebServlet(PathConstants.DELETE_SERVLET_ANNT)
 public class DeleteServlet extends HttpServlet {
 
     /**
@@ -41,6 +41,6 @@ public class DeleteServlet extends HttpServlet {
         // 履修抹消の実行
         DeleteDriver driver = new DeleteDriver();
         driver.deleteEnrollment(studentId, courseId);
-        req.getRequestDispatcher(PathConstants.HOME_SERVLET).forward(req, res);
+        req.getRequestDispatcher(PathConstants.HOME_SERVLET_ANNT).forward(req, res);
     }
 }

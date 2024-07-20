@@ -9,18 +9,18 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jp.co.collasho.classroom.common.DayOfWeek;
-import jp.co.collasho.classroom.common.Validator;
 import jp.co.collasho.classroom.constants.PathConstants;
 import jp.co.collasho.classroom.constants.ScopeConstants;
 import jp.co.collasho.classroom.dto.CourseDto;
 import jp.co.collasho.classroom.dto.SearchCriteriaDto;
 import jp.co.collasho.classroom.exception.InvalidInputException;
 import jp.co.collasho.classroom.service.search.SearchDriver;
+import jp.co.collasho.classroom.util.Validator;
 
 /**
  * 検索機能のコントローラ
  */
-@WebServlet(PathConstants.SEARCH_SERVLET)
+@WebServlet(PathConstants.SEARCH_SERVLET_ANNT)
 public class SearchServlet extends HttpServlet {
     /**
      * doGet 検索画面にフォワードする
